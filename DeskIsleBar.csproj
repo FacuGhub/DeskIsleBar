@@ -1,4 +1,4 @@
-<Project Sdk="Microsoft.NET.Sdk">
+﻿<Project Sdk="Microsoft.NET.Sdk">
 
   <PropertyGroup>
     <OutputType>WinExe</OutputType>
@@ -12,7 +12,7 @@
     <ApplicationIcon>Recursos\DeskIsleBar.ico</ApplicationIcon>
     <AssemblyName>DeskIsleBar</AssemblyName>
     <!-- Version de la app: la toman el .exe, el diagnostico y el instalador (Instalador\armar.ps1) -->
-    <Version>1.0.0</Version>
+    <Version>1.0.1</Version>
     <RootNamespace>DeskIsleBar</RootNamespace>
   </PropertyGroup>
 
