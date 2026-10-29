@@ -13,9 +13,21 @@ if (-not $version) { $version = '1.0.0' }
 
 $publicado = "$raiz\bin\publicar"
 if (Test-Path $publicado) { Remove-Item $publicado -Recurse -Force }
-& $dotnet publish "$raiz\DeskIsleBar.csproj" -c Release -r win-x64 --self-contained true -p:PublishReadyToRun=true -o $publicado
+# Sin informacion de depuracion: si no, el .dll guarda la ruta del .pdb, que incluye el usuario de Windows de
+# quien compila (C:\Users\<usuario>\...). Al final se verifica que no haya quedado ninguna ruta de la PC.
+& $dotnet publish "$raiz\DeskIsleBar.csproj" -c Release -r win-x64 --self-contained true -p:PublishReadyToRun=true `
+    -p:DebugType=None -p:DebugSymbols=false -o $publicado
 if ($LASTEXITCODE -ne 0) { throw 'fallo dotnet publish' }
-Remove-Item "$publicado\*.pdb" -ErrorAction SilentlyContinue   # simbolos de depuracion: no van en el instalador
+Remove-Item "$publicado\*.pdb" -ErrorAction SilentlyContinue
+
+$usuario = [Text.Encoding]::ASCII.GetBytes($env:USERNAME)
+foreach ($archivo in Get-ChildItem $publicado -Recurse -File) {
+    $datos = [IO.File]::ReadAllBytes($archivo.FullName)
+    $texto = [Text.Encoding]::ASCII.GetString($datos)
+    if ($texto.IndexOf("Users\$env:USERNAME", [StringComparison]::OrdinalIgnoreCase) -ge 0) {
+        throw "El archivo $($archivo.Name) contiene la ruta del usuario ($env:USERNAME): no se arma el instalador"
+    }
+}
 
 & $iscc "/DVersion=$version" "$PSScriptRoot\DeskIsleBar.iss"
 if ($LASTEXITCODE -ne 0) { throw 'fallo Inno Setup' }
