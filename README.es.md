@@ -91,6 +91,8 @@ Como cualquier programa: *Configuración → Aplicaciones → Aplicaciones insta
 ## ¿Encontraste un error? ¿Tenés una idea?
 
 - **Errores y sugerencias:** abrí un [issue](../../issues) contando qué pasó y qué esperabas. Ayuda mucho adjuntar el informe de diagnóstico: corré `DeskIsleBar.exe --diagnostico` y se abre un archivo de texto con qué funciones de Windows pudo leer la isla en tu PC (no manda nada a ningún lado).
+- **Preguntas e ideas:** [Discussions](../../discussions).
+- **Temas privados** (por ejemplo, un problema de seguridad): escribí a [facughub.apps@gmail.com](mailto:facughub.apps@gmail.com).
 - **Soporte para más dispositivos:** la batería de marcas que solo la informan por su propio software (Corsair, Logitech, Razer, SteelSeries…) se puede sumar como integración opcional. Si tenés uno de esos dispositivos y querés ayudar, abrí un issue o un pull request: la integración tiene que activarse solo si está instalado el software de la marca, y necesita a alguien con el equipo para probarla.
 
 ## Apoyar el proyecto

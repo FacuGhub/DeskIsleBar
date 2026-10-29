@@ -89,6 +89,8 @@ Like any other program: *Settings → Apps → Installed apps → DeskIsleBar �
 ## Found a bug? Have an idea?
 
 - **Bugs and suggestions:** open an [issue](../../issues) describing what happened and what you expected. Attaching the diagnostics report helps a lot: run `DeskIsleBar.exe --diagnostico` and it opens a text file listing which Windows features the island could read on your PC (it doesn't send anything anywhere).
+- **Questions and ideas:** [Discussions](../../discussions).
+- **Private matters** (for example, a security problem): write to [facughub.apps@gmail.com](mailto:facughub.apps@gmail.com).
 - **Support for more devices:** battery readings for brands that only expose it through their own software (Corsair, Logitech, Razer, SteelSeries…) can be added as optional integrations. If you own one of those devices and want to help, open an issue or a pull request: the integration should only turn on when the brand's software is installed, and it needs someone with the hardware to test it.
 
 ## Support the project
