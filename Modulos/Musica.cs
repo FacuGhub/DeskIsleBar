@@ -52,6 +52,9 @@ public class Musica
     // La portada solo se recarga cuando cambia el tema, no en cada play/pausa
     private string? _clavePortada;
     private BitmapImage? _portada;
+    private byte[]? _huellaPortada;
+    // Segunda mirada a la portada 2 s despues de cada tema nuevo (apps que la cambian sin avisar)
+    private readonly DispatcherTimer _revisarPortada = new() { Interval = TimeSpan.FromSeconds(2) };
 
     public EstadoMusica? Estado { get; private set; }
     /// <summary>AppUserModelId de la app que se esta mostrando (ej. "com.squirrel.TIDAL.TIDAL").</summary>
@@ -100,6 +103,7 @@ public class Musica
         _gestor.SessionsChanged += (_, _) => _ui.InvokeAsync(ElegirSesion);
         _gestor.CurrentSessionChanged += (_, _) => _ui.InvokeAsync(ElegirSesion);
         _revision.Tick += (_, _) => ElegirSesion();
+        _revisarPortada.Tick += async (_, _) => { _revisarPortada.Stop(); await ActualizarAsync(releerPortada: true); };
         _revision.Start();
         ElegirSesion();
     }
@@ -114,15 +118,15 @@ public class Musica
 
         if (_sesion is not null)
         {
-            _sesion.MediaPropertiesChanged -= AlCambiarSesion;
-            _sesion.PlaybackInfoChanged -= AlCambiarSesion;
+            _sesion.MediaPropertiesChanged -= AlCambiarPropiedades;
+            _sesion.PlaybackInfoChanged -= AlCambiarReproduccion;
         }
 
         _sesion = nueva;
         if (_sesion is not null)
         {
-            _sesion.MediaPropertiesChanged += AlCambiarSesion;
-            _sesion.PlaybackInfoChanged += AlCambiarSesion;
+            _sesion.MediaPropertiesChanged += AlCambiarPropiedades;
+            _sesion.PlaybackInfoChanged += AlCambiarReproduccion;
         }
 
         _ = ActualizarAsync();
@@ -152,10 +156,20 @@ public class Musica
     private static bool Coincide(GlobalSystemMediaTransportControlsSession sesion, string[] ids) =>
         ids.Any(id => sesion.SourceAppUserModelId.Contains(id, StringComparison.OrdinalIgnoreCase));
 
-    private void AlCambiarSesion(GlobalSystemMediaTransportControlsSession sesion, object args) =>
-        _ui.InvokeAsync(ActualizarAsync);
+    // Datos del tema (titulo, artista, portada): puede cambiar solo la portada con el mismo titulo
+    private void AlCambiarPropiedades(GlobalSystemMediaTransportControlsSession sesion, object args) =>
+        _ui.InvokeAsync(() => ActualizarAsync(releerPortada: true));
 
-    private async Task ActualizarAsync()
+    // Play/pausa y controles: la portada no cambia
+    private void AlCambiarReproduccion(GlobalSystemMediaTransportControlsSession sesion, object args) =>
+        _ui.InvokeAsync(() => ActualizarAsync());
+
+    /// <param name="releerPortada">
+    /// Volver a leer la portada aunque el tema sea el mismo. Muchas apps (Tidal entre ellas) avisan el tema nuevo en
+    /// dos pasos: primero el titulo y un instante despues la portada; si solo se leyera al cambiar el titulo, quedaria
+    /// la del tema anterior (o ninguna).
+    /// </param>
+    private async Task ActualizarAsync(bool releerPortada = false)
     {
         var sesion = _sesion;
         if (sesion is null)
@@ -170,12 +184,24 @@ public class Musica
             var reproduccion = sesion.GetPlaybackInfo();
 
             string clave = $"{sesion.SourceAppUserModelId}|{propiedades.Artist}|{propiedades.Title}";
-            bool temaNuevo = false;
-            if (clave != _clavePortada)
+            bool cambioDeTema = clave != _clavePortada;
+            bool temaNuevo = cambioDeTema && _clavePortada is not null;
+            if (cambioDeTema || releerPortada)
             {
-                temaNuevo = _clavePortada is not null;
-                _portada = propiedades.Thumbnail is { } miniatura ? await CargarPortadaAsync(miniatura) : null;
-                _clavePortada = clave;
+                var (portada, huella) = propiedades.Thumbnail is { } miniatura ? await CargarPortadaAsync(miniatura) : (null, null);
+                // Misma imagen que la que ya esta: no se reemplaza (evita redibujar la portada en cada aviso)
+                if (cambioDeTema || !MismaHuella(huella, _huellaPortada))
+                {
+                    _portada = portada;
+                    _huellaPortada = huella;
+                }
+                if (cambioDeTema)
+                {
+                    _clavePortada = clave;
+                    // Por si la app cambia la portada sin avisar: una segunda mirada un rato despues
+                    _revisarPortada.Stop();
+                    _revisarPortada.Start();
+                }
             }
 
             if (sesion != _sesion) return;   // cambio de sesion mientras esperabamos
@@ -209,7 +235,10 @@ public class Musica
         Cambio?.Invoke(estado);
     }
 
-    private static async Task<BitmapImage?> CargarPortadaAsync(IRandomAccessStreamReference miniatura)
+    private static bool MismaHuella(byte[]? a, byte[]? b) => a is null ? b is null : b is not null && a.AsSpan().SequenceEqual(b);
+
+    /// <summary>La portada lista para mostrar y su huella (SHA-256 de los bytes), para saber si cambio.</summary>
+    private static async Task<(BitmapImage? Imagen, byte[]? Huella)> CargarPortadaAsync(IRandomAccessStreamReference miniatura)
     {
         try
         {
@@ -217,6 +246,7 @@ public class Musica
             using var lectura = origen.AsStream();
             var memoria = new MemoryStream();
             await lectura.CopyToAsync(memoria);
+            byte[] huella = System.Security.Cryptography.SHA256.HashData(memoria.ToArray());
             memoria.Position = 0;
 
             var imagen = new BitmapImage();
@@ -226,12 +256,12 @@ public class Musica
             imagen.StreamSource = memoria;
             imagen.EndInit();
             imagen.Freeze();
-            return imagen;
+            return (imagen, huella);
         }
         catch (Exception ex)
         {
             Log.Escribir($"musica: no se pudo cargar la portada: {ex.Message}");
-            return null;
+            return (null, null);
         }
     }
 
