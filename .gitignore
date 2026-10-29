@@ -1,0 +1,12 @@
+# Compilacion
+bin/
+obj/
+
+# Visual Studio / Rider
+.vs/
+.idea/
+*.user
+*.suo
+
+# Registro (se genera al lado del exe)
+*.log

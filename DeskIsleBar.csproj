@@ -1,0 +1,26 @@
+<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <OutputType>WinExe</OutputType>
+    <!-- Version de Windows explicita para tener las APIs de WinRT (controles multimedia) -->
+    <TargetFramework>net10.0-windows10.0.19041.0</TargetFramework>
+    <UseWPF>true</UseWPF>
+    <Nullable>enable</Nullable>
+    <ImplicitUsings>enable</ImplicitUsings>
+    <ApplicationManifest>app.manifest</ApplicationManifest>
+    <!-- Icono del .exe (inicio de Windows, Administrador de tareas). Se regenera con Recursos\dibujar-icono.ps1 -->
+    <ApplicationIcon>Recursos\DeskIsleBar.ico</ApplicationIcon>
+    <AssemblyName>DeskIsleBar</AssemblyName>
+    <!-- Version de la app: la toman el .exe, el diagnostico y el instalador (Instalador\armar.ps1) -->
+    <Version>1.0.0</Version>
+    <RootNamespace>DeskIsleBar</RootNamespace>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <PackageReference Include="NAudio.Wasapi" Version="2.2.1" />
+    <!-- Lectura de la base de notificaciones de Windows con el SQLite que trae el sistema (winsqlite3.dll) -->
+    <PackageReference Include="Microsoft.Data.Sqlite.Core" Version="10.0.0" />
+    <PackageReference Include="SQLitePCLRaw.bundle_winsqlite3" Version="2.1.11" />
+  </ItemGroup>
+
+</Project>

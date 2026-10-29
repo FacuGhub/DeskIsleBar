@@ -1,0 +1,191 @@
+<!-- English texts. Every key must also exist in es.xaml (and in any new language). -->
+<ResourceDictionary xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+                    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+                    xmlns:sys="clr-namespace:System;assembly=System.Runtime">
+
+    <!-- Date formats (.NET) and weekdays starting on Monday -->
+    <sys:String x:Key="Fmt.FechaLarga">dddd, MMMM d</sys:String>
+    <sys:String x:Key="Cal.Iniciales">M,T,W,T,F,S,S</sys:String>
+
+    <!-- Common -->
+    <sys:String x:Key="Comun.AbrirApp">Open the app</sys:String>
+    <sys:String x:Key="Comun.Cancelar">Cancel</sys:String>
+    <sys:String x:Key="Comun.Volver">Back</sys:String>
+
+    <!-- Home -->
+    <sys:String x:Key="Inicio.LoUltimo">Last played</sys:String>
+    <sys:String x:Key="Inicio.Retomar">Resume</sys:String>
+
+    <!-- Shortcuts -->
+    <sys:String x:Key="Herr.Centrar">Center</sys:String>
+    <sys:String x:Key="Herr.Opciones">Settings</sys:String>
+    <sys:String x:Key="Herr.Personalizado">Custom</sys:String>
+    <sys:String x:Key="Herr.Iniciar">Start</sys:String>
+    <sys:String x:Key="Herr.Minutos">{0} min</sys:String>
+
+    <!-- Settings -->
+    <sys:String x:Key="Op.Arranque">Start with Windows</sys:String>
+    <sys:String x:Key="Op.Foco">Pomodoro focus</sys:String>
+    <sys:String x:Key="Op.FocoDetalle">While you study, notifications wait for the break. Important alerts still show up.</sys:String>
+    <sys:String x:Key="Op.Cerrar">Close DeskIsleBar</sys:String>
+    <sys:String x:Key="Op.Notificaciones">Windows notifications</sys:String>
+    <sys:String x:Key="Op.NoMolestar">Respect Do not disturb</sys:String>
+    <sys:String x:Key="Op.Paneles">Panels</sys:String>
+    <sys:String x:Key="Op.Calendario">Calendar</sys:String>
+    <sys:String x:Key="Op.Clima">Weather</sys:String>
+    <sys:String x:Key="Op.Pc">PC status</sys:String>
+    <sys:String x:Key="Op.Notas">Quick notes</sys:String>
+    <sys:String x:Key="Op.AppMusica">Music app</sys:String>
+    <sys:String x:Key="Op.Idioma">Language</sys:String>
+    <sys:String x:Key="Op.IdiomaAuto">Automatic</sys:String>
+    <sys:String x:Key="Op.PrimerPlano">Stay on top</sys:String>
+    <sys:String x:Key="Op.CapaSiempre">Always</sys:String>
+    <sys:String x:Key="Op.CapaSiempreDetalle">On top of everything, including full-screen games and videos.</sys:String>
+    <sys:String x:Key="Op.CapaAuto">Auto</sys:String>
+    <sys:String x:Key="Op.CapaAutoDetalle">On top, but hides in full-screen games. Over a video it only shows up for alerts.</sys:String>
+    <sys:String x:Key="Op.CapaDetras">Behind</sys:String>
+    <sys:String x:Key="Op.CapaDetrasDetalle">Behind your apps: it doesn't cover tabs or buttons. It comes to the front only for alerts and volume.</sys:String>
+    <sys:String x:Key="Op.Ciudad">City (weather)</sys:String>
+    <sys:String x:Key="Op.Calendarios">Calendars</sys:String>
+    <sys:String x:Key="Op.Administrar">Manage</sys:String>
+    <sys:String x:Key="Op.CalNinguno">None</sys:String>
+    <sys:String x:Key="Op.CalUno">1 linked</sys:String>
+    <sys:String x:Key="Op.CalVarios">{0} linked</sys:String>
+
+    <!-- Music -->
+    <sys:String x:Key="Musica.Auto">Automatic</sys:String>
+    <sys:String x:Key="Musica.TidalExclusivo">Tidal (exclusive)</sys:String>
+
+    <!-- PC status and cleanup -->
+    <sys:String x:Key="Pc.Encendida">Up for</sys:String>
+    <sys:String x:Key="Pc.TemporalesYPapelera">Temp files and recycle bin</sys:String>
+    <sys:String x:Key="Pc.Liberar">Free up space</sys:String>
+    <sys:String x:Key="Pc.Analizando">Analyzing…</sys:String>
+    <sys:String x:Key="Pc.NadaQueLimpiar">Nothing to clean up</sys:String>
+    <sys:String x:Key="Pc.Analisis">Temp files {0} · recycle bin {1}</sys:String>
+    <sys:String x:Key="Pc.LiberarN">Free {0}</sys:String>
+    <sys:String x:Key="Pc.Limpiando">Cleaning up…</sys:String>
+    <sys:String x:Key="Pc.EnUso"> ({0} in use were skipped)</sys:String>
+    <sys:String x:Key="Pc.Listo">Done: {0} freed{1}</sys:String>
+
+    <!-- Notes -->
+    <sys:String x:Key="Notas.Titulo">Notes</sys:String>
+    <sys:String x:Key="Notas.Pista">Write something so you don't forget…</sys:String>
+
+    <!-- Weather -->
+    <sys:String x:Key="Clima.ElegiCiudad">Choose your city in Settings</sys:String>
+    <sys:String x:Key="Clima.NoEncontre">Couldn't find "{0}"</sys:String>
+    <sys:String x:Key="Clima.SinConexion">Can't reach the weather service</sys:String>
+    <sys:String x:Key="Clima.Cargando">Loading the weather…</sys:String>
+    <sys:String x:Key="Clima.Extra">Feels like {0}° · {1}% · {2} km/h</sys:String>
+    <sys:String x:Key="Clima.Despejado">Clear</sys:String>
+    <sys:String x:Key="Clima.MayormenteDespejado">Mostly clear</sys:String>
+    <sys:String x:Key="Clima.ParcialmenteNublado">Partly cloudy</sys:String>
+    <sys:String x:Key="Clima.Nublado">Cloudy</sys:String>
+    <sys:String x:Key="Clima.Niebla">Fog</sys:String>
+    <sys:String x:Key="Clima.Llovizna">Drizzle</sys:String>
+    <sys:String x:Key="Clima.Lluvia">Rain</sys:String>
+    <sys:String x:Key="Clima.Nieve">Snow</sys:String>
+    <sys:String x:Key="Clima.Chaparrones">Showers</sys:String>
+    <sys:String x:Key="Clima.Nevadas">Snow showers</sys:String>
+    <sys:String x:Key="Clima.Tormenta">Thunderstorm</sys:String>
+
+    <!-- Calendar -->
+    <sys:String x:Key="Cal.VolverAHoy">Back to today</sys:String>
+    <sys:String x:Key="Cal.MesAnterior">Previous month</sys:String>
+    <sys:String x:Key="Cal.MesSiguiente">Next month</sys:String>
+    <sys:String x:Key="Cal.VolverAProximos">Back to upcoming</sys:String>
+    <sys:String x:Key="Cal.Proximos">Upcoming</sys:String>
+    <sys:String x:Key="Cal.Administrar">Manage calendars</sys:String>
+    <sys:String x:Key="Cal.Vincula">Link your calendar to see your events here</sys:String>
+    <sys:String x:Key="Cal.ComoVinculo">How do I link it?</sys:String>
+    <sys:String x:Key="Cal.ErrorLeer">Couldn't read the calendar</sys:String>
+    <sys:String x:Key="Cal.NadaProximos">Nothing in the next 14 days</sys:String>
+    <sys:String x:Key="Cal.SinEventosDia">No events this day</sys:String>
+    <sys:String x:Key="Cal.Mas">+{0} more</sys:String>
+    <sys:String x:Key="Cal.TodoElDia">All day</sys:String>
+    <sys:String x:Key="Cal.AbrirGoogle">Open in Google Calendar</sys:String>
+    <sys:String x:Key="Cal.AbrirOutlook">Open in Outlook</sys:String>
+    <sys:String x:Key="Cal.Hoy">Today</sys:String>
+    <sys:String x:Key="Cal.Manana">Tomorrow</sys:String>
+    <sys:String x:Key="Cal.SinTitulo">(no title)</sys:String>
+
+    <!-- Linked calendars -->
+    <sys:String x:Key="Cals.Titulo">Linked calendars</sys:String>
+    <sys:String x:Key="Cals.ComoConsigo">How do I get the link?</sys:String>
+    <sys:String x:Key="Cals.Nombre">Name</sys:String>
+    <sys:String x:Key="Cals.PistaLink">Paste the private .ics link</sys:String>
+    <sys:String x:Key="Cals.Agregar">Add</sys:String>
+    <sys:String x:Key="Cals.Ninguno">You haven't linked any yet.</sys:String>
+    <sys:String x:Key="Cals.CambiarColor">Change color</sys:String>
+    <sys:String x:Key="Cals.Renombrar">Click to rename</sys:String>
+    <sys:String x:Key="Cals.Quitar">Remove</sys:String>
+    <sys:String x:Key="Cals.NoSePuedeLeer">can't be read on this PC</sys:String>
+    <sys:String x:Key="Cals.Fallo">couldn't be read — check the link</sys:String>
+    <sys:String x:Key="Cals.LinkInvalido">That doesn't look like a valid link: it has to start with https:// or webcal://</sys:String>
+    <sys:String x:Key="Cals.NombrePorDefecto">Calendar {0}</sys:String>
+
+    <!-- Tutorial for linking the calendar -->
+    <sys:String x:Key="Tut.Titulo">Link your calendar</sys:String>
+    <sys:String x:Key="Tut.Privado">The link is private: anyone who has it can see your events. Don't share it; DeskIsleBar keeps it only on this PC.</sys:String>
+    <sys:String x:Key="Tut.AbrirConfig">Open settings</sys:String>
+    <sys:String x:Key="Tut.YaTengo">I have the link</sys:String>
+    <sys:String x:Key="Tut.Google1">Open Google Calendar on your computer and go to ⚙ Settings.</sys:String>
+    <sys:String x:Key="Tut.Google2">On the left, under “Settings for my calendars”, choose your calendar.</sys:String>
+    <sys:String x:Key="Tut.Google3">Scroll down to “Integrate calendar” and copy the “Secret address in iCal format”.</sys:String>
+    <sys:String x:Key="Tut.Google4">Click “I have the link” and paste it with Ctrl+V.</sys:String>
+    <sys:String x:Key="Tut.Outlook1">Open Outlook.com and go to ⚙ Settings → Calendar → Shared calendars.</sys:String>
+    <sys:String x:Key="Tut.Outlook2">Under “Publish a calendar”, choose your calendar and “Can view all details”.</sys:String>
+    <sys:String x:Key="Tut.Outlook3">Click “Publish” and copy the ICS link.</sys:String>
+    <sys:String x:Key="Tut.Outlook4">Click “I have the link” and paste it with Ctrl+V.</sys:String>
+
+    <!-- Alerts -->
+    <sys:String x:Key="Av.Titulo">Alerts</sys:String>
+    <sys:String x:Key="Av.Op.Baterias">Wireless batteries</sys:String>
+    <sys:String x:Key="Av.Op.Dispositivos">Device connections</sys:String>
+    <sys:String x:Key="Av.Op.Recordatorios">Event reminders</sys:String>
+    <sys:String x:Key="Av.Op.Camara">Camera and mic</sys:String>
+    <sys:String x:Key="Av.Op.BateriaPc">PC battery</sys:String>
+    <sys:String x:Key="Av.Op.BloqMayus">Caps Lock</sys:String>
+    <sys:String x:Key="Av.Op.Internet">Internet</sys:String>
+    <sys:String x:Key="Av.Op.Captura">Copied image</sys:String>
+    <sys:String x:Key="Av.BloqMayusSi">Caps Lock on</sys:String>
+    <sys:String x:Key="Av.BloqMayusNo">Caps Lock off</sys:String>
+    <sys:String x:Key="Av.CamaraSi">Camera in use</sys:String>
+    <sys:String x:Key="Av.CamaraNo">Camera off</sys:String>
+    <sys:String x:Key="Av.MicrofonoSi">Microphone in use</sys:String>
+    <sys:String x:Key="Av.MicrofonoNo">Microphone off</sys:String>
+    <sys:String x:Key="Av.Enchufada">Charging</sys:String>
+    <sys:String x:Key="Av.Desenchufada">On battery</sys:String>
+    <sys:String x:Key="Av.PcBaja">Battery low</sys:String>
+    <sys:String x:Key="Av.PcCritica">Battery almost empty</sys:String>
+    <sys:String x:Key="Av.PcDetalle">{0}% left. Plug in your PC</sys:String>
+    <sys:String x:Key="Av.InternetSi">Back online</sys:String>
+    <sys:String x:Key="Av.InternetNo">No internet connection</sys:String>
+    <sys:String x:Key="Av.RecordatorioDetalle">In {0} min · {1}</sys:String>
+    <sys:String x:Key="Av.ImagenCopiada">Image copied</sys:String>
+    <sys:String x:Key="Av.ImagenCopiadaDetalle">Paste it with Ctrl+V</sys:String>
+    <sys:String x:Key="Bat.CriticaTitulo">{0} almost out of battery</sys:String>
+    <sys:String x:Key="Bat.CriticaDetalle">Plug it in now ({0})</sys:String>
+    <sys:String x:Key="Bat.BajaTitulo">{0} battery low</sys:String>
+    <sys:String x:Key="Bat.BajaDetalle">Charge it when you can ({0})</sys:String>
+    <sys:String x:Key="Bat.ControlXbox">Xbox controller</sys:String>
+    <sys:String x:Key="Disp.ControlGenerico">Controller</sys:String>
+    <sys:String x:Key="XI.Cable">Wired</sys:String>
+    <sys:String x:Key="XI.Llena">Battery full</sys:String>
+    <sys:String x:Key="XI.Media">Battery medium</sys:String>
+    <sys:String x:Key="XI.Baja">Battery low</sys:String>
+    <sys:String x:Key="XI.CasiVacia">Battery almost empty</sys:String>
+    <sys:String x:Key="Disp.JoystickConectado">Controller connected</sys:String>
+    <sys:String x:Key="Disp.JoystickDesconectado">Controller disconnected</sys:String>
+    <sys:String x:Key="Disp.AudioConectado">Audio connected</sys:String>
+    <sys:String x:Key="Disp.AudioDesconectado">Audio disconnected</sys:String>
+    <sys:String x:Key="Disp.DispositivoAudio">Audio device</sys:String>
+    <sys:String x:Key="Disp.UsbConectado">USB connected</sys:String>
+    <sys:String x:Key="Disp.UsbDesconectado">USB disconnected</sys:String>
+    <sys:String x:Key="Tmp.FinEstudio">Study block finished</sys:String>
+    <sys:String x:Key="Tmp.Descanso">Take a {0}-minute break</sys:String>
+    <sys:String x:Key="Tmp.FinDescanso">Break's over</sys:String>
+    <sys:String x:Key="Tmp.AEstudiar">Back to studying</sys:String>
+    <sys:String x:Key="Tmp.Fin">Timer finished</sys:String>
+</ResourceDictionary>

@@ -1,0 +1,191 @@
+<!-- Textos en español. Cada clave tiene que existir tambien en en.xaml (y en cualquier idioma nuevo). -->
+<ResourceDictionary xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+                    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+                    xmlns:sys="clr-namespace:System;assembly=System.Runtime">
+
+    <!-- Formatos de fecha (.NET) y dias de la semana empezando el lunes -->
+    <sys:String x:Key="Fmt.FechaLarga">dddd d 'de' MMMM</sys:String>
+    <sys:String x:Key="Cal.Iniciales">L,M,M,J,V,S,D</sys:String>
+
+    <!-- Comunes -->
+    <sys:String x:Key="Comun.AbrirApp">Abrir la app</sys:String>
+    <sys:String x:Key="Comun.Cancelar">Cancelar</sys:String>
+    <sys:String x:Key="Comun.Volver">Volver</sys:String>
+
+    <!-- Inicio -->
+    <sys:String x:Key="Inicio.LoUltimo">Lo último</sys:String>
+    <sys:String x:Key="Inicio.Retomar">Retomar</sys:String>
+
+    <!-- Accesos -->
+    <sys:String x:Key="Herr.Centrar">Centrar</sys:String>
+    <sys:String x:Key="Herr.Opciones">Opciones</sys:String>
+    <sys:String x:Key="Herr.Personalizado">A medida</sys:String>
+    <sys:String x:Key="Herr.Iniciar">Iniciar</sys:String>
+    <sys:String x:Key="Herr.Minutos">{0} min</sys:String>
+
+    <!-- Opciones -->
+    <sys:String x:Key="Op.Arranque">Arrancar con Windows</sys:String>
+    <sys:String x:Key="Op.Foco">Foco en el Pomodoro</sys:String>
+    <sys:String x:Key="Op.FocoDetalle">Mientras estudiás, las notificaciones esperan al descanso. Los avisos importantes salen igual.</sys:String>
+    <sys:String x:Key="Op.Cerrar">Cerrar DeskIsleBar</sys:String>
+    <sys:String x:Key="Op.Notificaciones">Notificaciones de Windows</sys:String>
+    <sys:String x:Key="Op.NoMolestar">Respetar No molestar</sys:String>
+    <sys:String x:Key="Op.Paneles">Paneles</sys:String>
+    <sys:String x:Key="Op.Calendario">Calendario</sys:String>
+    <sys:String x:Key="Op.Clima">Clima</sys:String>
+    <sys:String x:Key="Op.Pc">Estado de la PC</sys:String>
+    <sys:String x:Key="Op.Notas">Notas rápidas</sys:String>
+    <sys:String x:Key="Op.AppMusica">App de música</sys:String>
+    <sys:String x:Key="Op.Idioma">Idioma</sys:String>
+    <sys:String x:Key="Op.IdiomaAuto">Automático</sys:String>
+    <sys:String x:Key="Op.PrimerPlano">Primer plano</sys:String>
+    <sys:String x:Key="Op.CapaSiempre">Siempre</sys:String>
+    <sys:String x:Key="Op.CapaSiempreDetalle">Encima de todo, también de juegos y videos a pantalla completa.</sys:String>
+    <sys:String x:Key="Op.CapaAuto">Auto</sys:String>
+    <sys:String x:Key="Op.CapaAutoDetalle">Encima, pero se oculta en los juegos a pantalla completa. Sobre un video solo aparece para los avisos.</sys:String>
+    <sys:String x:Key="Op.CapaDetras">Detrás</sys:String>
+    <sys:String x:Key="Op.CapaDetrasDetalle">Detrás de las apps: no tapa pestañas ni botones. Pasa al frente solo para avisos y el volumen.</sys:String>
+    <sys:String x:Key="Op.Ciudad">Ciudad (clima)</sys:String>
+    <sys:String x:Key="Op.Calendarios">Calendarios</sys:String>
+    <sys:String x:Key="Op.Administrar">Administrar</sys:String>
+    <sys:String x:Key="Op.CalNinguno">Ninguno</sys:String>
+    <sys:String x:Key="Op.CalUno">1 vinculado</sys:String>
+    <sys:String x:Key="Op.CalVarios">{0} vinculados</sys:String>
+
+    <!-- Musica -->
+    <sys:String x:Key="Musica.Auto">Automática</sys:String>
+    <sys:String x:Key="Musica.TidalExclusivo">Tidal (exclusivo)</sys:String>
+
+    <!-- Estado de la PC y limpieza -->
+    <sys:String x:Key="Pc.Encendida">Encendida hace</sys:String>
+    <sys:String x:Key="Pc.TemporalesYPapelera">Temporales y papelera</sys:String>
+    <sys:String x:Key="Pc.Liberar">Liberar espacio</sys:String>
+    <sys:String x:Key="Pc.Analizando">Analizando…</sys:String>
+    <sys:String x:Key="Pc.NadaQueLimpiar">No hay nada para limpiar</sys:String>
+    <sys:String x:Key="Pc.Analisis">Temporales {0} · papelera {1}</sys:String>
+    <sys:String x:Key="Pc.LiberarN">Liberar {0}</sys:String>
+    <sys:String x:Key="Pc.Limpiando">Limpiando…</sys:String>
+    <sys:String x:Key="Pc.EnUso"> ({0} en uso quedaron)</sys:String>
+    <sys:String x:Key="Pc.Listo">Listo: se liberaron {0}{1}</sys:String>
+
+    <!-- Notas -->
+    <sys:String x:Key="Notas.Titulo">Notas</sys:String>
+    <sys:String x:Key="Notas.Pista">Escribí algo para no olvidarte…</sys:String>
+
+    <!-- Clima -->
+    <sys:String x:Key="Clima.ElegiCiudad">Elegí tu ciudad en Opciones</sys:String>
+    <sys:String x:Key="Clima.NoEncontre">No encontré "{0}"</sys:String>
+    <sys:String x:Key="Clima.SinConexion">Sin conexión con el servicio del clima</sys:String>
+    <sys:String x:Key="Clima.Cargando">Cargando el clima…</sys:String>
+    <sys:String x:Key="Clima.Extra">Sensación {0}° · {1}% · {2} km/h</sys:String>
+    <sys:String x:Key="Clima.Despejado">Despejado</sys:String>
+    <sys:String x:Key="Clima.MayormenteDespejado">Mayormente despejado</sys:String>
+    <sys:String x:Key="Clima.ParcialmenteNublado">Parcialmente nublado</sys:String>
+    <sys:String x:Key="Clima.Nublado">Nublado</sys:String>
+    <sys:String x:Key="Clima.Niebla">Niebla</sys:String>
+    <sys:String x:Key="Clima.Llovizna">Llovizna</sys:String>
+    <sys:String x:Key="Clima.Lluvia">Lluvia</sys:String>
+    <sys:String x:Key="Clima.Nieve">Nieve</sys:String>
+    <sys:String x:Key="Clima.Chaparrones">Chaparrones</sys:String>
+    <sys:String x:Key="Clima.Nevadas">Nevadas</sys:String>
+    <sys:String x:Key="Clima.Tormenta">Tormenta</sys:String>
+
+    <!-- Calendario -->
+    <sys:String x:Key="Cal.VolverAHoy">Volver a hoy</sys:String>
+    <sys:String x:Key="Cal.MesAnterior">Mes anterior</sys:String>
+    <sys:String x:Key="Cal.MesSiguiente">Mes siguiente</sys:String>
+    <sys:String x:Key="Cal.VolverAProximos">Volver a los próximos</sys:String>
+    <sys:String x:Key="Cal.Proximos">Próximos</sys:String>
+    <sys:String x:Key="Cal.Administrar">Administrar calendarios</sys:String>
+    <sys:String x:Key="Cal.Vincula">Vinculá tu calendario para ver tus eventos acá</sys:String>
+    <sys:String x:Key="Cal.ComoVinculo">¿Cómo lo vinculo?</sys:String>
+    <sys:String x:Key="Cal.ErrorLeer">No se pudo leer el calendario</sys:String>
+    <sys:String x:Key="Cal.NadaProximos">Nada en los próximos 14 días</sys:String>
+    <sys:String x:Key="Cal.SinEventosDia">Sin eventos este día</sys:String>
+    <sys:String x:Key="Cal.Mas">+{0} más</sys:String>
+    <sys:String x:Key="Cal.TodoElDia">Todo el día</sys:String>
+    <sys:String x:Key="Cal.AbrirGoogle">Abrir en Google Calendar</sys:String>
+    <sys:String x:Key="Cal.AbrirOutlook">Abrir en Outlook</sys:String>
+    <sys:String x:Key="Cal.Hoy">Hoy</sys:String>
+    <sys:String x:Key="Cal.Manana">Mañana</sys:String>
+    <sys:String x:Key="Cal.SinTitulo">(sin título)</sys:String>
+
+    <!-- Calendarios vinculados -->
+    <sys:String x:Key="Cals.Titulo">Calendarios vinculados</sys:String>
+    <sys:String x:Key="Cals.ComoConsigo">¿Cómo consigo el link?</sys:String>
+    <sys:String x:Key="Cals.Nombre">Nombre</sys:String>
+    <sys:String x:Key="Cals.PistaLink">Pegá el link privado .ics</sys:String>
+    <sys:String x:Key="Cals.Agregar">Agregar</sys:String>
+    <sys:String x:Key="Cals.Ninguno">Todavía no vinculaste ninguno.</sys:String>
+    <sys:String x:Key="Cals.CambiarColor">Cambiar color</sys:String>
+    <sys:String x:Key="Cals.Renombrar">Clic para renombrar</sys:String>
+    <sys:String x:Key="Cals.Quitar">Quitar</sys:String>
+    <sys:String x:Key="Cals.NoSePuedeLeer">no se puede leer en esta PC</sys:String>
+    <sys:String x:Key="Cals.Fallo">no se pudo leer — revisá el link</sys:String>
+    <sys:String x:Key="Cals.LinkInvalido">Ese no parece un link válido: tiene que empezar con https:// o webcal://</sys:String>
+    <sys:String x:Key="Cals.NombrePorDefecto">Calendario {0}</sys:String>
+
+    <!-- Tutorial para vincular el calendario -->
+    <sys:String x:Key="Tut.Titulo">Vincular tu calendario</sys:String>
+    <sys:String x:Key="Tut.Privado">El link es privado: con él se pueden ver tus eventos. No lo compartas; DeskIsleBar lo guarda solo en esta PC.</sys:String>
+    <sys:String x:Key="Tut.AbrirConfig">Abrir la configuración</sys:String>
+    <sys:String x:Key="Tut.YaTengo">Ya tengo el link</sys:String>
+    <sys:String x:Key="Tut.Google1">Abrí Google Calendar en la compu y entrá a ⚙ Configuración.</sys:String>
+    <sys:String x:Key="Tut.Google2">A la izquierda, en «Configuración de mis calendarios», elegí tu calendario.</sys:String>
+    <sys:String x:Key="Tut.Google3">Bajá hasta «Integrar el calendario» y copiá la «Dirección secreta en formato iCal».</sys:String>
+    <sys:String x:Key="Tut.Google4">Tocá «Ya tengo el link» y pegalo con Ctrl+V.</sys:String>
+    <sys:String x:Key="Tut.Outlook1">Abrí Outlook.com y entrá a ⚙ Configuración → Calendario → Calendarios compartidos.</sys:String>
+    <sys:String x:Key="Tut.Outlook2">En «Publicar un calendario», elegí tu calendario y «Puede ver todos los detalles».</sys:String>
+    <sys:String x:Key="Tut.Outlook3">Tocá «Publicar» y copiá el vínculo ICS.</sys:String>
+    <sys:String x:Key="Tut.Outlook4">Tocá «Ya tengo el link» y pegalo con Ctrl+V.</sys:String>
+
+    <!-- Avisos -->
+    <sys:String x:Key="Av.Titulo">Avisos</sys:String>
+    <sys:String x:Key="Av.Op.Baterias">Baterías inalámbricas</sys:String>
+    <sys:String x:Key="Av.Op.Dispositivos">Conexión de dispositivos</sys:String>
+    <sys:String x:Key="Av.Op.Recordatorios">Recordatorios</sys:String>
+    <sys:String x:Key="Av.Op.Camara">Cámara y micrófono</sys:String>
+    <sys:String x:Key="Av.Op.BateriaPc">Batería de la PC</sys:String>
+    <sys:String x:Key="Av.Op.BloqMayus">Bloq Mayús</sys:String>
+    <sys:String x:Key="Av.Op.Internet">Internet</sys:String>
+    <sys:String x:Key="Av.Op.Captura">Imagen copiada</sys:String>
+    <sys:String x:Key="Av.BloqMayusSi">Bloq Mayús activado</sys:String>
+    <sys:String x:Key="Av.BloqMayusNo">Bloq Mayús desactivado</sys:String>
+    <sys:String x:Key="Av.CamaraSi">Cámara en uso</sys:String>
+    <sys:String x:Key="Av.CamaraNo">Cámara apagada</sys:String>
+    <sys:String x:Key="Av.MicrofonoSi">Micrófono en uso</sys:String>
+    <sys:String x:Key="Av.MicrofonoNo">Micrófono apagado</sys:String>
+    <sys:String x:Key="Av.Enchufada">Cargando</sys:String>
+    <sys:String x:Key="Av.Desenchufada">Usando la batería</sys:String>
+    <sys:String x:Key="Av.PcBaja">Batería baja</sys:String>
+    <sys:String x:Key="Av.PcCritica">Batería casi agotada</sys:String>
+    <sys:String x:Key="Av.PcDetalle">Queda {0}%. Enchufá la PC</sys:String>
+    <sys:String x:Key="Av.InternetSi">Volvió la conexión</sys:String>
+    <sys:String x:Key="Av.InternetNo">Sin conexión a internet</sys:String>
+    <sys:String x:Key="Av.RecordatorioDetalle">En {0} min · {1}</sys:String>
+    <sys:String x:Key="Av.ImagenCopiada">Imagen copiada</sys:String>
+    <sys:String x:Key="Av.ImagenCopiadaDetalle">Pegala con Ctrl+V</sys:String>
+    <sys:String x:Key="Bat.CriticaTitulo">{0} casi sin batería</sys:String>
+    <sys:String x:Key="Bat.CriticaDetalle">Enchufalo ya ({0})</sys:String>
+    <sys:String x:Key="Bat.BajaTitulo">{0} con batería baja</sys:String>
+    <sys:String x:Key="Bat.BajaDetalle">Ponelo a cargar cuando puedas ({0})</sys:String>
+    <sys:String x:Key="Bat.ControlXbox">Control de Xbox</sys:String>
+    <sys:String x:Key="Disp.ControlGenerico">Control</sys:String>
+    <sys:String x:Key="XI.Cable">Por cable</sys:String>
+    <sys:String x:Key="XI.Llena">Batería llena</sys:String>
+    <sys:String x:Key="XI.Media">Batería media</sys:String>
+    <sys:String x:Key="XI.Baja">Batería baja</sys:String>
+    <sys:String x:Key="XI.CasiVacia">Batería casi vacía</sys:String>
+    <sys:String x:Key="Disp.JoystickConectado">Control conectado</sys:String>
+    <sys:String x:Key="Disp.JoystickDesconectado">Control desconectado</sys:String>
+    <sys:String x:Key="Disp.AudioConectado">Audio conectado</sys:String>
+    <sys:String x:Key="Disp.AudioDesconectado">Audio desconectado</sys:String>
+    <sys:String x:Key="Disp.DispositivoAudio">Dispositivo de audio</sys:String>
+    <sys:String x:Key="Disp.UsbConectado">USB conectado</sys:String>
+    <sys:String x:Key="Disp.UsbDesconectado">USB desconectado</sys:String>
+    <sys:String x:Key="Tmp.FinEstudio">Terminó el bloque de estudio</sys:String>
+    <sys:String x:Key="Tmp.Descanso">Tomate {0} minutos de descanso</sys:String>
+    <sys:String x:Key="Tmp.FinDescanso">Terminó el descanso</sys:String>
+    <sys:String x:Key="Tmp.AEstudiar">A estudiar de nuevo</sys:String>
+    <sys:String x:Key="Tmp.Fin">Terminó el temporizador</sys:String>
+</ResourceDictionary>
