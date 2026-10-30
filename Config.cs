@@ -55,6 +55,9 @@ public class Config
     public bool FocoPomodoro { get; set; } = true;
 
     public string Ciudad { get; set; } = "";
+
+    /// <summary>Ya vio (o salteo) la bienvenida: no se vuelve a mostrar sola, tampoco al actualizar.</summary>
+    public bool BienvenidaVista { get; set; }
     public List<CalendarioVinculado> Calendarios { get; set; } = [];
 
     /// <summary>Formato viejo (un solo link, sin cifrar): se migra a <see cref="Calendarios"/> al cargar.</summary>

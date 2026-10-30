@@ -220,7 +220,7 @@
             <Setter Property="Template">
                 <Setter.Value>
                     <ControlTemplate TargetType="TextBox">
-                        <Border x:Name="Fondo" Background="#14FFFFFF" CornerRadius="8" Padding="8,5" BorderThickness="1" BorderBrush="Transparent">
+                        <Border x:Name="Fondo" Background="#1FFFFFFF" CornerRadius="8" Padding="8,5" BorderThickness="1" BorderBrush="#33FFFFFF">
                             <ScrollViewer x:Name="PART_ContentHost" VerticalScrollBarVisibility="Hidden" HorizontalScrollBarVisibility="Hidden"/>
                         </Border>
                         <ControlTemplate.Triggers>
@@ -259,6 +259,16 @@
                     </ControlTemplate>
                 </Setter.Value>
             </Setter>
+        </Style>
+
+        <!-- Etiquetitas de la bienvenida (lo que hay en Opciones) -->
+        <Style x:Key="EtiquetaDemo" TargetType="Border">
+            <Setter Property="Background" Value="#14FFFFFF"/>
+            <Setter Property="CornerRadius" Value="9"/>
+            <Setter Property="Padding" Value="9,3"/>
+            <Setter Property="Margin" Value="0,0,6,6"/>
+            <Setter Property="TextElement.Foreground" Value="#D9FFFFFF"/>
+            <Setter Property="TextElement.FontSize" Value="11.5"/>
         </Style>
 
         <Style x:Key="Etiqueta" TargetType="TextBlock">
@@ -389,6 +399,9 @@
 
                         <TextBlock x:Name="Icono" FontFamily="Segoe Fluent Icons, Segoe MDL2 Assets" FontSize="22"
                                    Foreground="White" VerticalAlignment="Center"/>
+                        <!-- Icono de la app (notificaciones), en lugar del glifo -->
+                        <Image x:Name="IconoApp" Width="28" Height="28" VerticalAlignment="Center" Visibility="Collapsed"
+                               RenderOptions.BitmapScalingMode="HighQuality"/>
 
                         <StackPanel Grid.Column="1" Margin="14,0" VerticalAlignment="Center">
                             <TextBlock x:Name="Titulo" Foreground="White" FontSize="14" FontWeight="SemiBold" TextTrimming="CharacterEllipsis"/>
@@ -502,6 +515,9 @@
                                         <TextBlock FontFamily="Segoe Fluent Icons, Segoe MDL2 Assets" Text="&#xE76B;" FontSize="11"/>
                                     </Button>
                                     <TextBlock Text="{DynamicResource Herr.Opciones}" Foreground="White" FontSize="14" FontWeight="SemiBold" VerticalAlignment="Center"/>
+                                    <Button Style="{StaticResource BotonIcono}" Click="VerBienvenida_Click" ToolTip="{DynamicResource Bien.VerDeNuevo}" Margin="4,0,0,0">
+                                        <TextBlock FontFamily="Segoe Fluent Icons, Segoe MDL2 Assets" Text="&#xE897;" FontSize="11"/>
+                                    </Button>
                                 </StackPanel>
                                 <StackPanel Orientation="Horizontal" HorizontalAlignment="Right">
                                     <Button Style="{StaticResource BotonTexto}" Click="Avisos_Click" Margin="0,0,6,0">
@@ -525,23 +541,31 @@
                                 </StackPanel>
                             </Grid>
                             <UniformGrid Columns="2">
-                                <StackPanel Orientation="Horizontal">
+                                <StackPanel Orientation="Horizontal" Background="Transparent" ToolTip="{DynamicResource Op.ArranqueDetalle}">
                                     <ToggleButton x:Name="InterruptorArranque" Style="{StaticResource Interruptor}" Click="Arranque_Click"/>
                                     <TextBlock Text="{DynamicResource Op.Arranque}" Foreground="White" FontSize="12.5" Margin="10,0,0,0" VerticalAlignment="Center"/>
+                                    <TextBlock FontFamily="Segoe Fluent Icons, Segoe MDL2 Assets" Text="&#xE946;" FontSize="10" Foreground="#80FFFFFF"
+                                               Margin="5,0,0,0" VerticalAlignment="Center"/>
                                 </StackPanel>
-                                <StackPanel Orientation="Horizontal" ToolTip="{DynamicResource Op.FocoDetalle}">
+                                <StackPanel Orientation="Horizontal" Background="Transparent" ToolTip="{DynamicResource Op.FocoDetalle}">
                                     <ToggleButton x:Name="InterruptorFoco" Style="{StaticResource Interruptor}" Click="Foco_Click"/>
                                     <TextBlock Text="{DynamicResource Op.Foco}" Foreground="White" FontSize="12.5" Margin="10,0,0,0" VerticalAlignment="Center"/>
+                                    <TextBlock FontFamily="Segoe Fluent Icons, Segoe MDL2 Assets" Text="&#xE946;" FontSize="10" Foreground="#80FFFFFF"
+                                               Margin="5,0,0,0" VerticalAlignment="Center"/>
                                 </StackPanel>
                             </UniformGrid>
                             <UniformGrid Columns="2" Margin="0,10,0,0">
-                                <StackPanel Orientation="Horizontal">
+                                <StackPanel Orientation="Horizontal" Background="Transparent" ToolTip="{DynamicResource Op.NotificacionesDetalle}">
                                     <ToggleButton x:Name="InterruptorNotificaciones" Style="{StaticResource Interruptor}" Click="Notificaciones_Click"/>
                                     <TextBlock Text="{DynamicResource Op.Notificaciones}" Foreground="White" FontSize="12.5" Margin="10,0,0,0" VerticalAlignment="Center"/>
+                                    <TextBlock FontFamily="Segoe Fluent Icons, Segoe MDL2 Assets" Text="&#xE946;" FontSize="10" Foreground="#80FFFFFF"
+                                               Margin="5,0,0,0" VerticalAlignment="Center"/>
                                 </StackPanel>
-                                <StackPanel Orientation="Horizontal">
+                                <StackPanel Orientation="Horizontal" Background="Transparent" ToolTip="{DynamicResource Op.NoMolestarDetalle}">
                                     <ToggleButton x:Name="InterruptorNoMolestar" Style="{StaticResource Interruptor}" Click="Notificaciones_Click"/>
                                     <TextBlock Text="{DynamicResource Op.NoMolestar}" Foreground="White" FontSize="12.5" Margin="10,0,0,0" VerticalAlignment="Center"/>
+                                    <TextBlock FontFamily="Segoe Fluent Icons, Segoe MDL2 Assets" Text="&#xE946;" FontSize="10" Foreground="#80FFFFFF"
+                                               Margin="5,0,0,0" VerticalAlignment="Center"/>
                                 </StackPanel>
                             </UniformGrid>
 
@@ -565,8 +589,13 @@
                                 </StackPanel>
                             </UniformGrid>
 
-                            <TextBlock Text="{DynamicResource Op.AppMusica}" Style="{StaticResource Etiqueta}" Margin="0,14,0,6"/>
-                            <StackPanel x:Name="ChipsMusica" Orientation="Horizontal"/>
+                            <StackPanel Orientation="Horizontal" Margin="0,14,0,6" HorizontalAlignment="Left" Background="Transparent"
+                                        ToolTip="{DynamicResource Op.AppMusicaDetalle}">
+                                <TextBlock Text="{DynamicResource Op.AppMusica}" Style="{StaticResource Etiqueta}"/>
+                                <TextBlock FontFamily="Segoe Fluent Icons, Segoe MDL2 Assets" Text="&#xE946;" FontSize="10" Foreground="#80FFFFFF"
+                                           Margin="5,0,0,0" VerticalAlignment="Center"/>
+                            </StackPanel>
+                            <StackPanel x:Name="ChipsMusica" Orientation="Horizontal" ToolTip="{DynamicResource Op.AppMusicaDetalle}"/>
 
                             <!-- Idioma y primer plano comparten fila, cada uno en su mitad -->
                             <Grid Margin="0,14,0,0">
@@ -592,7 +621,12 @@
                                 </Grid.ColumnDefinitions>
                                 <StackPanel>
                                     <TextBlock Text="{DynamicResource Op.Ciudad}" Style="{StaticResource Etiqueta}" Margin="0,0,0,6"/>
-                                    <TextBox x:Name="CampoCiudad" Style="{StaticResource CampoTexto}" LostKeyboardFocus="CampoCiudad_LostKeyboardFocus"/>
+                                    <Grid>
+                                        <TextBox x:Name="CampoCiudad" Style="{StaticResource CampoTexto}" MaxLength="60"
+                                                 LostKeyboardFocus="CampoCiudad_LostKeyboardFocus" TextChanged="CampoCiudad_TextChanged"/>
+                                        <TextBlock x:Name="PistaCiudad" Text="{DynamicResource Comun.EjemploCiudad}" Foreground="#66FFFFFF" FontSize="12"
+                                                   Margin="10,6,0,0" IsHitTestVisible="False"/>
+                                    </Grid>
                                 </StackPanel>
                                 <StackPanel Grid.Column="2">
                                     <TextBlock Text="{DynamicResource Op.Calendarios}" Style="{StaticResource Etiqueta}" Margin="0,0,0,6"/>
@@ -600,7 +634,8 @@
                                         <TextBlock x:Name="ResumenCalendarios" Foreground="White" FontSize="12" VerticalAlignment="Center"/>
                                         <Button Style="{StaticResource BotonAccion}" HorizontalAlignment="Right" Click="AdministrarCalendarios_Click">
                                             <StackPanel Orientation="Horizontal">
-                                                <TextBlock Text="{DynamicResource Op.Administrar}"/>
+                                                <TextBlock FontFamily="Segoe Fluent Icons, Segoe MDL2 Assets" Text="&#xE787;" FontSize="11" Margin="0,0,6,0" VerticalAlignment="Center"/>
+                                                <TextBlock x:Name="TextoBotonCalendarios" Text="{DynamicResource Op.AdministrarCalendarios}"/>
                                                 <TextBlock FontFamily="Segoe Fluent Icons, Segoe MDL2 Assets" Text="&#xE76C;" FontSize="10" Margin="6,0,0,0" VerticalAlignment="Center"/>
                                             </StackPanel>
                                         </Button>
@@ -933,6 +968,143 @@
                                 </Button>
                             </StackPanel>
                         </StackPanel>
+                    </Grid>
+
+                    <!-- Bienvenida: la primera vez que se abre (y desde Opciones → ?). Cada paso muestra su demo; los de
+                         accion (cambiar de panel, mover, volumen) esperan a que se haga. Ver MainWindow.Bienvenida.cs -->
+                    <Grid x:Name="ContenidoBienvenida" Opacity="0" Margin="22,16,22,22" Visibility="Collapsed" Background="Transparent"
+                          PreviewMouseLeftButtonDown="Panel_PreviewMouseLeftButtonDown" PreviewMouseMove="Panel_PreviewMouseMove" PreviewMouseLeftButtonUp="Panel_PreviewMouseLeftButtonUp">
+                        <Grid.RenderTransform>
+                            <TranslateTransform/>
+                        </Grid.RenderTransform>
+                        <Grid.RowDefinitions>
+                            <RowDefinition Height="Auto"/>
+                            <RowDefinition Height="Auto"/>
+                            <RowDefinition Height="*"/>
+                            <RowDefinition Height="Auto"/>
+                        </Grid.RowDefinitions>
+
+                        <Grid>
+                            <TextBlock x:Name="TituloBienvenida" Foreground="White" FontSize="14" FontWeight="SemiBold" VerticalAlignment="Center"/>
+                            <Button x:Name="SaltarBienvenida" Style="{StaticResource BotonLink}" Content="{DynamicResource Bien.Saltar}"
+                                    HorizontalAlignment="Right" VerticalAlignment="Center" Click="SaltarBienvenida_Click"/>
+                        </Grid>
+                        <TextBlock x:Name="TextoBienvenida" Grid.Row="1" Foreground="#D9FFFFFF" FontSize="12.5" TextWrapping="Wrap"
+                                   LineHeight="18" Margin="0,8,0,0"/>
+
+                        <Grid Grid.Row="2" Margin="0,10,0,0" VerticalAlignment="Center">
+                            <!-- Hola: idioma -->
+                            <StackPanel x:Name="DemoHola" Orientation="Horizontal" Visibility="Collapsed"/>
+
+                            <!-- Cambiar de panel: tres paneles en miniatura que pasan, y un "dedo" que arrastra -->
+                            <Grid x:Name="DemoPaneles" Visibility="Collapsed" HorizontalAlignment="Left">
+                                <Border Width="150" Height="40" CornerRadius="10" ClipToBounds="True" Background="#0FFFFFFF">
+                                    <StackPanel x:Name="CarruselDemo" Orientation="Horizontal">
+                                        <StackPanel.RenderTransform>
+                                            <TranslateTransform/>
+                                        </StackPanel.RenderTransform>
+                                        <TextBlock Width="150" FontFamily="Segoe Fluent Icons, Segoe MDL2 Assets" Text="&#xE8D6;" FontSize="18" Foreground="#FF30D158"
+                                                   TextAlignment="Center" VerticalAlignment="Center"/>
+                                        <TextBlock Width="150" FontFamily="Segoe Fluent Icons, Segoe MDL2 Assets" Text="&#xE787;" FontSize="18" Foreground="#FFFF9F0A"
+                                                   TextAlignment="Center" VerticalAlignment="Center"/>
+                                        <TextBlock Width="150" FontFamily="Segoe Fluent Icons, Segoe MDL2 Assets" Text="&#xE706;" FontSize="18" Foreground="#FFFFD60A"
+                                                   TextAlignment="Center" VerticalAlignment="Center"/>
+                                    </StackPanel>
+                                </Border>
+                                <Ellipse x:Name="DedoDemo" Width="16" Height="16" Fill="#59FFFFFF" Stroke="#CCFFFFFF" StrokeThickness="1.5"
+                                         VerticalAlignment="Center" HorizontalAlignment="Center" Opacity="0" IsHitTestVisible="False">
+                                    <Ellipse.RenderTransform>
+                                        <TranslateTransform/>
+                                    </Ellipse.RenderTransform>
+                                </Ellipse>
+                            </Grid>
+
+                            <!-- Mover: una pantalla en miniatura donde la pildora cambia de lugar, y el boton Centrar -->
+                            <StackPanel x:Name="DemoMover" Orientation="Horizontal" Visibility="Collapsed">
+                                <Border Width="96" Height="56" CornerRadius="6" BorderBrush="#4DFFFFFF" BorderThickness="1">
+                                    <Border x:Name="PildoraDemo" Width="24" Height="6" CornerRadius="3" Background="#E6FFFFFF"
+                                            HorizontalAlignment="Center" VerticalAlignment="Center">
+                                        <Border.RenderTransform>
+                                            <TranslateTransform/>
+                                        </Border.RenderTransform>
+                                    </Border>
+                                </Border>
+                                <Button Style="{StaticResource BotonAccion}" Click="VolverAlCentro_Click" Margin="16,0,0,0" VerticalAlignment="Center">
+                                    <StackPanel Orientation="Horizontal">
+                                        <TextBlock FontFamily="Segoe Fluent Icons, Segoe MDL2 Assets" Text="&#xE80F;" FontSize="11" VerticalAlignment="Center"/>
+                                        <TextBlock Text="{DynamicResource Herr.Centrar}" Margin="6,0,0,0"/>
+                                    </StackPanel>
+                                </Button>
+                            </StackPanel>
+
+                            <!-- Volumen: un mouse con la ruedita que gira, y la barra que se mueve de verdad -->
+                            <StackPanel x:Name="DemoVolumen" Orientation="Horizontal" Visibility="Collapsed">
+                                <Border Width="22" Height="32" CornerRadius="11" BorderBrush="#99FFFFFF" BorderThickness="1.5">
+                                    <Border x:Name="RuedaDemo" Width="3" Height="7" CornerRadius="1.5" Background="White"
+                                            VerticalAlignment="Top" Margin="0,5,0,0">
+                                        <Border.RenderTransform>
+                                            <TranslateTransform/>
+                                        </Border.RenderTransform>
+                                    </Border>
+                                </Border>
+                                <TextBlock FontFamily="Segoe Fluent Icons, Segoe MDL2 Assets" Text="&#xE767;" FontSize="14" Foreground="White"
+                                           VerticalAlignment="Center" Margin="18,0,10,0"/>
+                                <Grid Width="150" Height="4" VerticalAlignment="Center">
+                                    <Border Background="#26FFFFFF" CornerRadius="2"/>
+                                    <Border Background="White" CornerRadius="2" RenderTransformOrigin="0,0.5">
+                                        <Border.RenderTransform>
+                                            <ScaleTransform x:Name="EscalaVolumenDemo" ScaleX="0"/>
+                                        </Border.RenderTransform>
+                                    </Border>
+                                </Grid>
+                                <TextBlock x:Name="PorcentajeVolumenDemo" Foreground="White" FontSize="12" FontWeight="SemiBold" MinWidth="28"
+                                           Typography.NumeralAlignment="Tabular" VerticalAlignment="Center" Margin="10,0,0,0"/>
+                            </StackPanel>
+
+                            <!-- Calendario: dos eventos de ejemplo, para que se vea que existe -->
+                            <Border x:Name="DemoCalendario" Visibility="Collapsed" Background="#0FFFFFFF" CornerRadius="10" Padding="12,7"
+                                    HorizontalAlignment="Left" MinWidth="230">
+                                <StackPanel>
+                                    <StackPanel Orientation="Horizontal">
+                                        <Ellipse Width="7" Height="7" Fill="#FF0A84FF" VerticalAlignment="Center"/>
+                                        <TextBlock Text="10:00" Foreground="#99FFFFFF" FontSize="11.5" Margin="8,0,8,0" Typography.NumeralAlignment="Tabular"/>
+                                        <TextBlock Text="{DynamicResource Bien.Calendario.Ejemplo1}" Foreground="White" FontSize="11.5"/>
+                                    </StackPanel>
+                                    <StackPanel Orientation="Horizontal" Margin="0,4,0,0">
+                                        <Ellipse Width="7" Height="7" Fill="#FFFF9F0A" VerticalAlignment="Center"/>
+                                        <TextBlock Text="18:30" Foreground="#99FFFFFF" FontSize="11.5" Margin="8,0,8,0" Typography.NumeralAlignment="Tabular"/>
+                                        <TextBlock Text="{DynamicResource Bien.Calendario.Ejemplo2}" Foreground="White" FontSize="11.5"/>
+                                    </StackPanel>
+                                </StackPanel>
+                            </Border>
+
+                            <!-- Clima: la ciudad -->
+                            <Grid x:Name="DemoClima" Visibility="Collapsed" Width="240" HorizontalAlignment="Left">
+                                <TextBox x:Name="CampoCiudadBienvenida" Style="{StaticResource CampoTexto}" MaxLength="60"
+                                         TextChanged="CampoCiudadBienvenida_TextChanged"/>
+                                <TextBlock x:Name="PistaCiudadBienvenida" Text="{DynamicResource Comun.EjemploCiudad}" Foreground="#66FFFFFF" FontSize="12"
+                                           Margin="10,6,0,0" IsHitTestVisible="False"/>
+                            </Grid>
+
+                            <!-- Opciones: lo que hay adentro -->
+                            <WrapPanel x:Name="DemoOpciones" Visibility="Collapsed">
+                                <Border Style="{StaticResource EtiquetaDemo}"><TextBlock Text="{DynamicResource Op.Paneles}"/></Border>
+                                <Border Style="{StaticResource EtiquetaDemo}"><TextBlock Text="{DynamicResource Av.Titulo}"/></Border>
+                                <Border Style="{StaticResource EtiquetaDemo}"><TextBlock Text="{DynamicResource Op.Idioma}"/></Border>
+                                <Border Style="{StaticResource EtiquetaDemo}"><TextBlock Text="{DynamicResource Op.AppMusica}"/></Border>
+                                <Border Style="{StaticResource EtiquetaDemo}"><TextBlock Text="{DynamicResource Op.PrimerPlano}"/></Border>
+                            </WrapPanel>
+                        </Grid>
+
+                        <Grid Grid.Row="3" Margin="0,10,0,0">
+                            <TextBlock x:Name="PistaBienvenida" FontSize="11.5" Foreground="#FF0A84FF" VerticalAlignment="Center"/>
+                            <Button x:Name="SiguienteBienvenida" Style="{StaticResource BotonAccion}" HorizontalAlignment="Right" Click="SiguienteBienvenida_Click">
+                                <StackPanel Orientation="Horizontal">
+                                    <TextBlock x:Name="TextoSiguienteBienvenida"/>
+                                    <TextBlock FontFamily="Segoe Fluent Icons, Segoe MDL2 Assets" Text="&#xE76C;" FontSize="10" Margin="6,0,0,0" VerticalAlignment="Center"/>
+                                </StackPanel>
+                            </Button>
+                        </Grid>
                     </Grid>
 
                     <!-- Indicador de pagina de la ronda de paneles (se arma en codigo) -->

@@ -8,7 +8,10 @@ namespace DeskIsleBar;
 /// <param name="Persistente">true = queda expandida hasta que se la toque (y suena).</param>
 /// <param name="Segundos">Cuanto queda expandida si no es persistente.</param>
 /// <param name="Tipo">Clase de aviso que se puede apagar en Opciones → Avisos (ver <see cref="TiposAviso"/>); null = siempre se muestra.</param>
-public record Aviso(string Icono, string Titulo, string Detalle, Color Acento, double? Carga, bool Persistente, double Segundos = 8, string? Tipo = null);
+/// <param name="Imagen">Icono de la app (notificaciones): reemplaza al glifo.</param>
+/// <param name="AlTocar">Que hacer al hacerle clic (ej. abrir la app o el chat de la notificacion); null = solo se cierra.</param>
+public record Aviso(string Icono, string Titulo, string Detalle, Color Acento, double? Carga, bool Persistente, double Segundos = 8,
+                    string? Tipo = null, ImageSource? Imagen = null, Action? AlTocar = null);
 
 /// <summary>Los avisos que se pueden prender o apagar, en el orden de la pantalla Avisos, con su clave de texto.</summary>
 public static class TiposAviso

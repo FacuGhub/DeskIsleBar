@@ -129,12 +129,17 @@ public class NotificacionesWindows
     private Aviso? ComoAviso(Notificacion n)
     {
         List<string> textos;
+        string? activacion, argumentos;
         try
         {
-            textos = XDocument.Parse(Encoding.UTF8.GetString(n.Contenido))
-                .Descendants("binding").Take(1).Descendants("text")
+            var toast = XDocument.Parse(Encoding.UTF8.GetString(n.Contenido)).Root;
+            if (toast is null) return null;
+            textos = toast.Descendants("binding").Take(1).Descendants("text")
                 .Where(t => (string?)t.Attribute("placement") != "attribution")
                 .Select(t => UnaLinea(t.Value)).Where(t => t.Length > 0).ToList();
+            // Lo que Windows usa al tocar la notificacion (ver AbrirNotificacion)
+            activacion = (string?)toast.Attribute("activationType");
+            argumentos = (string?)toast.Attribute("launch");
         }
         catch (System.Xml.XmlException) { return null; }
         if (textos.Count == 0) return null;   // toasts sin texto (solo imagen, progreso vacio...)
@@ -143,7 +148,8 @@ public class NotificacionesWindows
         string detalle = string.Join(" · ", textos.Skip(1));
         detalle = detalle.Length == 0 ? app : $"{app} · {detalle}";
         if (detalle.Length > MaxDetalle) detalle = detalle[..MaxDetalle].TrimEnd() + "…";
-        return new Aviso(Campana, textos[0], detalle, Azul, Carga: null, Persistente: false, Segundos: 6);
+        return new Aviso(Campana, textos[0], detalle, Azul, Carga: null, Persistente: false, Segundos: 6,
+                         Imagen: AbrirNotificacion.IconoDe(n.App), AlTocar: () => AbrirNotificacion.Abrir(n.App, activacion, argumentos));
     }
 
     private static string UnaLinea(string texto) =>

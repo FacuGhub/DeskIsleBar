@@ -16,7 +16,7 @@ namespace DeskIsleBar;
 
 public partial class MainWindow : Window
 {
-    private enum Modo { Reposo, Aviso, Musica, Volumen, Herramientas, Opciones, Calendario, Clima, Pc, Notas, Tutorial, Calendarios, Inicio, Avisos }
+    private enum Modo { Reposo, Aviso, Musica, Volumen, Herramientas, Opciones, Calendario, Clima, Pc, Notas, Tutorial, Calendarios, Inicio, Avisos, Bienvenida }
 
     private const double DistanciaGesto = 60;   // px de arrastre horizontal para cambiar de panel
 
@@ -52,6 +52,7 @@ public partial class MainWindow : Window
     private bool _ocultaPorPantallaCompleta;   // juego a pantalla completa
     private bool _conVideo;   // video a pantalla completa: oculta solo en reposo
     private bool _avisoFijo;   // el aviso a la vista es persistente
+    private Action? _alTocarAviso;   // lo que hace el clic en el aviso a la vista (ej. abrir el chat)
     // El recorte de Windows escribe el portapapeles varias veces seguidas: se espera a que se quede quieto
     private readonly DispatcherTimer _portapapeles = new() { Interval = TimeSpan.FromMilliseconds(400) };
     private readonly List<Aviso> _retenidos = [];   // modo foco: avisos que esperan al fin del bloque de estudio
@@ -107,6 +108,7 @@ public partial class MainWindow : Window
         ArmarChipsIdioma();
         ArmarChipsPrimerPlano();
         ArmarInterruptoresAvisos();
+        PrepararBienvenida();
         Idioma.Cambio += AlCambiarIdioma;
 
         CampoNotas.Text = Demo.Activo ? Demo.Nota : Notas.Leer();
@@ -159,7 +161,7 @@ public partial class MainWindow : Window
         _salida.Tick += (_, _) =>
         {
             _salida.Stop();
-            if (EnPanel && _inicioGesto is null) Colapsar();
+            if (EnPanel && _inicioGesto is null && _modo != Modo.Bienvenida) Colapsar();
         };
         SystemEvents.DisplaySettingsChanged += (_, _) => Dispatcher.Invoke(Ubicar);
     }
@@ -294,6 +296,7 @@ public partial class MainWindow : Window
             if (!IsVisible) Show();
             if (!Zona.IsMouseOver) Nativo.ReafirmarTopmost(_hwnd);   // con el mouse encima puede haber un cartelito de ayuda
             if (estabaOculta) MostrarSiguienteDeLaCola();
+            IntentarBienvenida();
             return;
         }
 
@@ -306,6 +309,7 @@ public partial class MainWindow : Window
             _conVideo = false;
             if (_ocultaPorPantallaCompleta) return;
             _ocultaPorPantallaCompleta = true;
+            if (_modo == Modo.Bienvenida) _bienvenidaPendiente = true;   // se retoma al salir del juego
             if (EnPanel) Colapsar();
             // Un fijo que ya estaba a la vista queda encima del juego hasta que lo toquen
             if (!(_modo == Modo.Aviso && _avisoFijo)) Hide();
@@ -330,6 +334,7 @@ public partial class MainWindow : Window
             if (!Zona.IsMouseOver) AplicarCapa();
         }
         if (veniaDeJuego) MostrarSiguienteDeLaCola();
+        IntentarBienvenida();
     }
 
     /// <summary>
@@ -430,14 +435,18 @@ public partial class MainWindow : Window
             Show();
             Nativo.ReafirmarTopmost(_hwnd);
         }
-        else if (_ocultaPorPantallaCompleta || _modo == Modo.Aviso)
+        else if (_ocultaPorPantallaCompleta || _modo is Modo.Aviso or Modo.Bienvenida)
         {
             if (_cola.Count < MaxCola) _cola.Enqueue(aviso);
             return;
         }
 
-        Icono.Text = aviso.Icono;
+        Icono.Text = aviso.Imagen is null ? aviso.Icono : "";
         Icono.Foreground = new SolidColorBrush(aviso.Acento);
+        IconoApp.Source = aviso.Imagen;
+        IconoApp.Visibility = aviso.Imagen is null ? Visibility.Collapsed : Visibility.Visible;
+        _alTocarAviso = aviso.AlTocar;
+        Pildora.Cursor = aviso.AlTocar is null ? null : Cursors.Hand;
         Titulo.Text = aviso.Titulo;
         Detalle.Text = aviso.Detalle;
         Detalle.Visibility = string.IsNullOrEmpty(aviso.Detalle) ? Visibility.Collapsed : Visibility.Visible;
@@ -475,6 +484,11 @@ public partial class MainWindow : Window
     {
         // Es efimero: si la isla esta oculta o mostrando un aviso, no vale la pena encolarlo
         if (_ocultaPorPantallaCompleta || _modo == Modo.Aviso) return;
+        if (_modo == Modo.Bienvenida)
+        {
+            MostrarVolumenEnBienvenida(nivel, silenciado);
+            return;
+        }
 
         _volumenDeApp = deApp;
         int porcentaje = (int)Math.Round(nivel * 100);
@@ -624,7 +638,7 @@ public partial class MainWindow : Window
     {
         _entrada.Stop();
         if (_escribiendo) return;   // escribiendo no se cierra al sacar el mouse: se cierra al hacer clic afuera
-        if (EnPanel && _pistaArrastrada is null) _salida.Start();
+        if (EnPanel && _pistaArrastrada is null && _modo != Modo.Bienvenida) _salida.Start();   // la bienvenida no se cierra sola
     }
 
     // ---------- Gestos sobre los paneles ----------
@@ -636,6 +650,11 @@ public partial class MainWindow : Window
         _soltarDelGesto = false;   // por si el soltar del gesto cayo fuera de un panel: no debe comerse este clic
         if (e.OriginalSource is not DependencyObject origen) return;
         if (PistaProgreso.IsAncestorOf(origen) || PistaVolumen.IsAncestorOf(origen)) return;   // las barras tienen su propio arrastre
+        if (MoverEnBienvenida(origen))
+        {
+            e.Handled = true;
+            return;
+        }
 
         _campoPendiente = null;
         if (CampoDeTexto(origen) is { } campo)
@@ -680,6 +699,11 @@ public partial class MainWindow : Window
     /// <summary>Recorre la ronda de paneles: +1 = siguiente, -1 = anterior, dando la vuelta.</summary>
     private void Pasar(int direccion)
     {
+        if (_modo == Modo.Bienvenida)
+        {
+            PasarBienvenida(direccion);
+            return;
+        }
         double desde = direccion > 0 ? 40 : -40;   // el panel nuevo entra desde el lado hacia el que se arrastro
 
         // Opciones y el tutorial no estan en la ronda: se sale hacia el panel desde el que se entra
@@ -799,6 +823,11 @@ public partial class MainWindow : Window
     private void Zona_MouseWheel(object sender, MouseWheelEventArgs e)
     {
         if (_volumen is null || _modo == Modo.Aviso) return;
+        if (RuedaEnBienvenida())
+        {
+            e.Handled = true;
+            return;
+        }
         // Sobre un texto que tiene para desplazarse (una nota larga), la rueda es para desplazarlo; en el resto, volumen
         if (e.OriginalSource is DependencyObject origen && CampoDeTexto(origen) is { } campo && campo.ExtentHeight > campo.ViewportHeight) return;
         e.Handled = true;
@@ -980,12 +1009,14 @@ public partial class MainWindow : Window
         Modo.Tutorial => (ContenidoTutorial, 440, 250),
         Modo.Calendarios => (ContenidoCalendarios, 440, Math.Min(250, 116 + 28 * _config.Calendarios.Count)),
         Modo.Avisos => (ContenidoAvisos, 440, 90 + 32 * ((TiposAviso.Todos.Length + 1) / 2)),
+        Modo.Bienvenida => (ContenidoBienvenida, 440, 236),
         _ => (ContenidoVolumen, 300, 40),
     };
 
     private FrameworkElement[] Contenidos =>
         [ContenidoReposo, ContenidoAviso, ContenidoMusica, ContenidoVolumen, ContenidoHerramientas, ContenidoOpciones,
-         ContenidoCalendario, ContenidoClima, ContenidoPc, ContenidoNotas, ContenidoTutorial, ContenidoCalendarios, ContenidoInicio, ContenidoAvisos];
+         ContenidoCalendario, ContenidoClima, ContenidoPc, ContenidoNotas, ContenidoTutorial, ContenidoCalendarios, ContenidoInicio, ContenidoAvisos,
+         ContenidoBienvenida];
 
     /// <param name="deslizarDesde">Si no es 0, el contenido nuevo entra deslizandose desde ese desplazamiento.</param>
     private void Expandir(Modo modo, double deslizarDesde = 0)
@@ -996,6 +1027,8 @@ public partial class MainWindow : Window
             Nativo.ReafirmarTopmost(_hwnd);
         }
         if (modo != Modo.Volumen) SoltarZona();
+        if (_modo == Modo.Bienvenida && modo != Modo.Bienvenida) AnimarDemo(null);
+        if (modo == Modo.Bienvenida) MostrarPasoBienvenida();
         if (modo == Modo.Herramientas)
         {
             BotonCancelarTemporizador.Visibility = _temporizador?.Activo == true ? Visibility.Visible : Visibility.Collapsed;
@@ -1032,7 +1065,7 @@ public partial class MainWindow : Window
             _tutorialProveedor = "google";
             MostrarPasos();
         }
-        if (_escribiendo && modo is not (Modo.Notas or Modo.Opciones)) SoltarTeclado();
+        if (_escribiendo && modo is not (Modo.Notas or Modo.Opciones or Modo.Bienvenida)) SoltarTeclado();
         if (modo == Modo.Calendario)
         {
             if (_modo == Modo.Reposo) VolverAHoy();   // al abrir la isla de cero, el calendario arranca en hoy
@@ -1106,6 +1139,8 @@ public partial class MainWindow : Window
         _lecturaPc.Stop();
         if (_escribiendo) SoltarTeclado();
         SoltarZona();
+        Pildora.Cursor = null;
+        if (_modo == Modo.Bienvenida) AnimarDemo(null);
         _modo = Modo.Reposo;
         AplicarCapa();   // "detras de las apps": vuelve atras
         Puntos.Visibility = Visibility.Collapsed;
@@ -1139,22 +1174,32 @@ public partial class MainWindow : Window
     /// <summary>Un puntito por panel de la ronda; el actual resaltado. Solo si hay mas de uno.</summary>
     private void ActualizarPuntos(Modo modo)
     {
+        if (modo == Modo.Bienvenida)
+        {
+            ArmarPuntos(PasosBienvenida.Length, (int)_pasoBienvenida);
+            return;
+        }
         var paginas = Paginas;
-        Puntos.Children.Clear();
         if (paginas.Length < 2 || Array.IndexOf(paginas, modo) < 0)
         {
+            Puntos.Children.Clear();
             Puntos.Visibility = Visibility.Collapsed;
             return;
         }
+        ArmarPuntos(paginas.Length, Array.IndexOf(paginas, modo));
+    }
 
-        foreach (var pagina in paginas)
+    private void ArmarPuntos(int cantidad, int actual)
+    {
+        Puntos.Children.Clear();
+        for (int i = 0; i < cantidad; i++)
         {
             Puntos.Children.Add(new Ellipse
             {
                 Width = 5,
                 Height = 5,
                 Margin = new Thickness(2.5, 0, 2.5, 0),
-                Fill = new SolidColorBrush(pagina == modo ? Color.FromArgb(0xE6, 0xFF, 0xFF, 0xFF) : Color.FromArgb(0x4D, 0xFF, 0xFF, 0xFF)),
+                Fill = new SolidColorBrush(i == actual ? Color.FromArgb(0xE6, 0xFF, 0xFF, 0xFF) : Color.FromArgb(0x4D, 0xFF, 0xFF, 0xFF)),
             });
         }
         Puntos.Visibility = Visibility.Visible;
@@ -1177,7 +1222,11 @@ public partial class MainWindow : Window
 
     private void Pildora_Click(object sender, MouseButtonEventArgs e)
     {
-        if (_modo == Modo.Aviso) Colapsar();
+        if (_modo != Modo.Aviso) return;
+        var accion = _alTocarAviso;
+        _alTocarAviso = null;
+        Colapsar();
+        accion?.Invoke();
     }
 
     // Botones del panel de accesos. Tag: "25+5" = Pomodoro (estudio + descanso), "10" = temporizador simple, en minutos.
@@ -1276,6 +1325,18 @@ public partial class MainWindow : Window
     /// <summary>Herramienta de desarrollo: "--panel calendario" abre ese panel al arrancar (para capturas).</summary>
     public void AbrirPanel(string nombre)
     {
+        _bienvenidaPendiente = false;   // se pidio otro panel: la bienvenida no lo tapa
+        // "bienvenida.clima": un paso puntual de la bienvenida
+        if (nombre.Split('.') is ["bienvenida", var paso] && Enum.TryParse(paso, ignoreCase: true, out PasoBienvenida p))
+        {
+            Dispatcher.BeginInvoke(DispatcherPriority.ApplicationIdle, () =>
+            {
+                MostrarBienvenida();
+                _pasoBienvenida = p;
+                Expandir(Modo.Bienvenida);
+            });
+            return;
+        }
         if (Enum.TryParse(nombre, ignoreCase: true, out Modo modo) && modo is not (Modo.Reposo or Modo.Aviso or Modo.Volumen))
             Dispatcher.BeginInvoke(DispatcherPriority.ApplicationIdle, () => Expandir(modo));
     }
@@ -1336,6 +1397,11 @@ public partial class MainWindow : Window
     /// <summary>Un chip por app de <see cref="Musica.Apps"/>; marca la guardada en el config.</summary>
     private void ArmarChipsMusica()
     {
+        if (!Musica.Apps.Any(a => a.Clave == _config.AppMusica))
+        {
+            _config.AppMusica = "auto";   // era una app que ya no esta en la lista (ej. YouTube Music)
+            _config.Guardar();
+        }
         foreach (var (clave, nombre, _) in Musica.Apps)
         {
             var chip = new RadioButton
@@ -1432,6 +1498,7 @@ public partial class MainWindow : Window
     {
         int n = _config.Calendarios.Count;
         ResumenCalendarios.Text = n switch { 0 => Idioma.T("Op.CalNinguno"), 1 => Idioma.T("Op.CalUno"), _ => Idioma.T("Op.CalVarios", n) };
+        TextoBotonCalendarios.SetResourceReference(TextBlock.TextProperty, n == 0 ? "Op.VincularCalendario" : "Op.AdministrarCalendarios");
     }
 
     private void AppMusica_Click(object sender, RoutedEventArgs e)
@@ -1722,7 +1789,7 @@ public partial class MainWindow : Window
     {
         if (!_escribiendo) return;
         SoltarTeclado();
-        if (EnPanel && !Zona.IsMouseOver) Colapsar();
+        if (EnPanel && !Zona.IsMouseOver && _modo != Modo.Bienvenida) Colapsar();
     }
 
     private void Ventana_PreviewKeyDown(object sender, KeyEventArgs e)
@@ -1741,7 +1808,13 @@ public partial class MainWindow : Window
 
         if (e.Key == Key.Escape)
         {
-            Colapsar();
+            if (_modo == Modo.Bienvenida) SoltarTeclado();   // deja de escribir, pero la bienvenida sigue
+            else Colapsar();
+            e.Handled = true;
+        }
+        else if (e.Key == Key.Enter && CampoCiudadBienvenida.IsKeyboardFocused)
+        {
+            AvanzarBienvenida(+1, desde: 40);   // guarda la ciudad
             e.Handled = true;
         }
         else if (e.Key == Key.Enter && CampoCiudad.IsKeyboardFocused)

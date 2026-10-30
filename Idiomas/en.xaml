@@ -11,6 +11,7 @@
     <sys:String x:Key="Comun.AbrirApp">Open the app</sys:String>
     <sys:String x:Key="Comun.Cancelar">Cancel</sys:String>
     <sys:String x:Key="Comun.Volver">Back</sys:String>
+    <sys:String x:Key="Comun.EjemploCiudad">e.g. London</sys:String>
 
     <!-- Home -->
     <sys:String x:Key="Inicio.LoUltimo">Last played</sys:String>
@@ -25,17 +26,21 @@
 
     <!-- Settings -->
     <sys:String x:Key="Op.Arranque">Start with Windows</sys:String>
+    <sys:String x:Key="Op.ArranqueDetalle">DeskIsleBar opens by itself when you sign in to Windows.</sys:String>
     <sys:String x:Key="Op.Foco">Pomodoro focus</sys:String>
     <sys:String x:Key="Op.FocoDetalle">While you study, notifications wait for the break. Important alerts still show up.</sys:String>
     <sys:String x:Key="Op.Cerrar">Close DeskIsleBar</sys:String>
-    <sys:String x:Key="Op.Notificaciones">Windows notifications</sys:String>
+    <sys:String x:Key="Op.Notificaciones">App notifications</sys:String>
+    <sys:String x:Key="Op.NotificacionesDetalle">Shows your apps' notifications on the island (Chrome, WhatsApp, Discord...). They're read only on your PC: never stored or sent anywhere.</sys:String>
     <sys:String x:Key="Op.NoMolestar">Respect Do not disturb</sys:String>
+    <sys:String x:Key="Op.NoMolestarDetalle">On: when Windows is in «Do not disturb», the island doesn't show notifications. Off: the island shows them anyway, even though Windows hides them.</sys:String>
     <sys:String x:Key="Op.Paneles">Panels</sys:String>
     <sys:String x:Key="Op.Calendario">Calendar</sys:String>
     <sys:String x:Key="Op.Clima">Weather</sys:String>
     <sys:String x:Key="Op.Pc">PC status</sys:String>
     <sys:String x:Key="Op.Notas">Quick notes</sys:String>
     <sys:String x:Key="Op.AppMusica">Music app</sys:String>
+    <sys:String x:Key="Op.AppMusicaDetalle">Which music app the island shows and whose volume it controls. Automatic detects whichever one is playing.</sys:String>
     <sys:String x:Key="Op.Idioma">Language</sys:String>
     <sys:String x:Key="Op.IdiomaAuto">Automatic</sys:String>
     <sys:String x:Key="Op.PrimerPlano">Stay on top</sys:String>
@@ -47,7 +52,8 @@
     <sys:String x:Key="Op.CapaDetrasDetalle">Behind your apps: it doesn't cover tabs or buttons. It comes to the front only for alerts and volume.</sys:String>
     <sys:String x:Key="Op.Ciudad">City (weather)</sys:String>
     <sys:String x:Key="Op.Calendarios">Calendars</sys:String>
-    <sys:String x:Key="Op.Administrar">Manage</sys:String>
+    <sys:String x:Key="Op.AdministrarCalendarios">Manage calendars</sys:String>
+    <sys:String x:Key="Op.VincularCalendario">Link a calendar</sys:String>
     <sys:String x:Key="Op.CalNinguno">None</sys:String>
     <sys:String x:Key="Op.CalUno">1 linked</sys:String>
     <sys:String x:Key="Op.CalVarios">{0} linked</sys:String>
@@ -188,4 +194,29 @@
     <sys:String x:Key="Tmp.FinDescanso">Break's over</sys:String>
     <sys:String x:Key="Tmp.AEstudiar">Back to studying</sys:String>
     <sys:String x:Key="Tmp.Fin">Timer finished</sys:String>
+    <!-- Welcome (first time it opens) -->
+    <sys:String x:Key="Bien.Saltar">Skip</sys:String>
+    <sys:String x:Key="Bien.Siguiente">Next</sys:String>
+    <sys:String x:Key="Bien.Empezar">Start</sys:String>
+    <sys:String x:Key="Bien.VerOpciones">See Options</sys:String>
+    <sys:String x:Key="Bien.VerDeNuevo">Show the welcome again</sys:String>
+    <sys:String x:Key="Bien.Hola.Titulo">Hi! I'm DeskIsleBar</sys:String>
+    <sys:String x:Key="Bien.Hola.Texto">I live at the edge of your screen: I open when you hover over me and close when you move away. Let me show you the basics in a minute. Which language?</sys:String>
+    <sys:String x:Key="Bien.Paneles.Titulo">Switching panels</sys:String>
+    <sys:String x:Key="Bien.Paneles.Texto">I have several panels: music, calendar, weather, your PC, notes and shortcuts. To move between them, click, hold and drag sideways. The dots at the bottom show where you are.</sys:String>
+    <sys:String x:Key="Bien.Paneles.Pista">Try it: drag this panel sideways</sys:String>
+    <sys:String x:Key="Bien.Mover.Titulo">Put it anywhere</sys:String>
+    <sys:String x:Key="Bien.Mover.Texto">When I'm closed, grab me and take me anywhere: top, bottom or to a side. If you ever lose me, Options has «Center».</sys:String>
+    <sys:String x:Key="Bien.Mover.Pista">Try it: grab this panel and move it</sys:String>
+    <sys:String x:Key="Bien.Volumen.Titulo">Volume with the wheel</sys:String>
+    <sys:String x:Key="Bien.Volumen.Texto">With the mouse over me, the wheel turns the volume up and down. If music is playing, it changes that app's volume; otherwise, Windows'.</sys:String>
+    <sys:String x:Key="Bien.Volumen.Pista">Try it: scroll the wheel</sys:String>
+    <sys:String x:Key="Bien.Calendario.Titulo">Your calendar</sys:String>
+    <sys:String x:Key="Bien.Calendario.Texto">The Calendar panel shows the month and your upcoming events, and I remind you 10 minutes before each one. You can link Google Calendar or Outlook from Options whenever you want; no need to do it now.</sys:String>
+    <sys:String x:Key="Bien.Calendario.Ejemplo1">Team meeting</sys:String>
+    <sys:String x:Key="Bien.Calendario.Ejemplo2">Soccer with friends</sys:String>
+    <sys:String x:Key="Bien.Clima.Titulo">Weather</sys:String>
+    <sys:String x:Key="Bien.Clima.Texto">Which city do you want the weather for? You can leave it empty and fill it in later in Options.</sys:String>
+    <sys:String x:Key="Bien.Opciones.Titulo">Last one: Options</sys:String>
+    <sys:String x:Key="Bien.Opciones.Texto">There you turn panels and alerts on or off, pick the language, the music app and whether the island stays on top of games. Find them in the shortcuts panel, under ⚙.</sys:String>
 </ResourceDictionary>

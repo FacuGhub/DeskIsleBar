@@ -14,8 +14,8 @@ A small floating island for Windows that shows what matters without getting in t
 
 ## Features
 
-- **Music** — cover, title, controls and progress for the app that is playing (Tidal, Spotify, YouTube Music, Apple Music or anything that uses the Windows media controls). The volume wheel moves the app's own volume, not the whole system.
-- **Windows notifications** — notifications from your apps appear in the island. With *Do not disturb* turned on in Windows, the island can replace Windows' own banners (or respect *Do not disturb*, your choice).
+- **Music** — cover, title, controls and progress for the app that is playing (Tidal, Spotify, YouTube Music, Apple Music or anything that uses the Windows media controls). The volume wheel moves the app's own volume, not the whole system (if the music plays in a browser, like YouTube Music, it moves the system volume).
+- **App notifications** — notifications from your apps appear in the island. With *Do not disturb* turned on in Windows, the island can replace Windows' own banners (or respect *Do not disturb*, your choice).
 - **Calendar** — upcoming events from your Google or Outlook calendars (private iCal links), with a navigable month view.
 - **Weather** — current weather and today's high and low for your city (Open-Meteo).
 - **PC** — CPU, GPU and RAM usage, uptime, and a "free up space" tool for old temporary files and the recycle bin.
@@ -66,7 +66,7 @@ Nothing else leaves your PC.
 Yes, to show them in the island — locally and read-only. They never leave your PC and their content is not written to any log. You can turn it off in the options at any time.
 
 **What does it store, and where?**
-Your settings, notes and the island's position live in `%LOCALAPPDATA%\DeskIsleBar`. Calendar links work like passwords, so they are encrypted with Windows DPAPI: only your Windows user can read them. A small technical log (`deskislebar.log`, in that same folder) records events and errors, such as which app sent a notification. It never records the content of Windows notifications or your calendar links (it does record the title of messages that your own scripts send with `--aviso`).
+Your settings, notes and the island's position live in `%LOCALAPPDATA%\DeskIsleBar`. Calendar links work like passwords, so they are encrypted with Windows DPAPI: only your Windows user can read them. A small technical log (`deskislebar.log`, in that same folder) records events and errors, such as which app sent a notification. It never records the content of notifications, of the messages your scripts send with `--aviso`, or your calendar links.
 
 **Does it need administrator permissions?**
 No. Everything runs as your user, including *Start with Windows*.

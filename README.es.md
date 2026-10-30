@@ -16,8 +16,8 @@ Una pequeña isla flotante para Windows que te muestra lo importante sin estorba
 
 ## Qué hace
 
-- **Música**: portada, título, controles y progreso de la app que esté sonando (Tidal, Spotify, YouTube Music, Apple Music o cualquiera que use los controles multimedia de Windows). La rueda de volumen mueve el volumen propio de la app, no el de todo el sistema.
-- **Notificaciones de Windows**: las notificaciones de tus apps aparecen en la isla. Con *No molestar* prendido en Windows, la isla puede reemplazar los carteles de Windows (o respetar el *No molestar*, como prefieras).
+- **Música**: portada, título, controles y progreso de la app que esté sonando (Tidal, Spotify, YouTube Music, Apple Music o cualquiera que use los controles multimedia de Windows). La rueda de volumen mueve el volumen propio de la app, no el de todo el sistema (si la música suena en el navegador, como YouTube Music, mueve el general).
+- **Notificaciones de apps**: las notificaciones de tus apps aparecen en la isla. Con *No molestar* prendido en Windows, la isla puede reemplazar los carteles de Windows (o respetar el *No molestar*, como prefieras).
 - **Calendario**: próximos eventos de tus calendarios de Google u Outlook (links iCal privados), con vista de mes navegable.
 - **Clima**: el clima actual y la máxima y mínima del día en tu ciudad (Open-Meteo).
 - **PC**: uso de CPU, GPU y RAM, tiempo encendida, y una herramienta para "liberar espacio" de temporales viejos y la papelera.
@@ -68,7 +68,7 @@ Nada más sale de tu PC.
 Sí, para mostrarlas en la isla: localmente y en solo lectura. Nunca salen de tu PC y su contenido no se escribe en ningún registro. Lo podés apagar en las opciones cuando quieras.
 
 **¿Qué guarda y dónde?**
-Tu configuración, las notas y la posición de la isla quedan en `%LOCALAPPDATA%\DeskIsleBar`. Los links de calendario funcionan como contraseñas, así que se guardan cifrados con DPAPI de Windows: solo tu usuario de Windows los puede leer. Un pequeño registro técnico (`deskislebar.log`, en esa misma carpeta) anota eventos y errores, como qué app mandó una notificación. Nunca anota el contenido de las notificaciones de Windows ni tus links de calendario (sí anota el título de los mensajes que mandan tus propios scripts con `--aviso`).
+Tu configuración, las notas y la posición de la isla quedan en `%LOCALAPPDATA%\DeskIsleBar`. Los links de calendario funcionan como contraseñas, así que se guardan cifrados con DPAPI de Windows: solo tu usuario de Windows los puede leer. Un pequeño registro técnico (`deskislebar.log`, en esa misma carpeta) anota eventos y errores, como qué app mandó una notificación. Nunca anota el contenido de las notificaciones ni de los mensajes que mandan tus scripts con `--aviso`, ni tus links de calendario.
 
 **¿Necesita permisos de administrador?**
 No. Todo funciona con tu usuario, incluido *Arrancar con Windows*.

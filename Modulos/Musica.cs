@@ -25,9 +25,8 @@ public class Musica
         // Volumen: el de su salida (modo exclusivo, ver Volumen.ModoExclusivo)
         ("tidal", "Musica.TidalExclusivo", ["tidal"]),
         ("spotify", "Spotify", ["spotify"]),
-        // App de th-ch y la PWA de YouTube Music instalada desde Chrome/Edge (id de la extension). Chrome
-        // recorta el id en el AppUserModelId: "Chrome._crx_cinhimbnkkghhklpknlkffjgod" (sin "aeohf")
-        ("ytmusic", "YouTube Music", ["youtube-music", "youtubemusic", "cinhimbnkkaeohfgghhklpknlkffjgod", "cinhimbnkkghhklpknlkffjgod"]),
+        // YouTube Music no tiene boton: suena dentro del navegador (la PWA es "Chrome._crx_..."), Automatico la
+        // detecta igual y su volumen es el general (ver Volumen.Navegadores)
         ("applemusic", "Apple Music", ["applemusic"]),
     ];
 

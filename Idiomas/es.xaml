@@ -11,6 +11,7 @@
     <sys:String x:Key="Comun.AbrirApp">Abrir la app</sys:String>
     <sys:String x:Key="Comun.Cancelar">Cancelar</sys:String>
     <sys:String x:Key="Comun.Volver">Volver</sys:String>
+    <sys:String x:Key="Comun.EjemploCiudad">Ej: Buenos Aires</sys:String>
 
     <!-- Inicio -->
     <sys:String x:Key="Inicio.LoUltimo">Lo último</sys:String>
@@ -25,17 +26,21 @@
 
     <!-- Opciones -->
     <sys:String x:Key="Op.Arranque">Arrancar con Windows</sys:String>
+    <sys:String x:Key="Op.ArranqueDetalle">DeskIsleBar se abre sola cuando iniciás sesión en Windows.</sys:String>
     <sys:String x:Key="Op.Foco">Foco en el Pomodoro</sys:String>
     <sys:String x:Key="Op.FocoDetalle">Mientras estudiás, las notificaciones esperan al descanso. Los avisos importantes salen igual.</sys:String>
     <sys:String x:Key="Op.Cerrar">Cerrar DeskIsleBar</sys:String>
-    <sys:String x:Key="Op.Notificaciones">Notificaciones de Windows</sys:String>
+    <sys:String x:Key="Op.Notificaciones">Notificaciones de apps</sys:String>
+    <sys:String x:Key="Op.NotificacionesDetalle">Muestra en la isla las notificaciones de tus apps (Chrome, WhatsApp, Discord...). Se leen solo en tu PC: no se guardan ni se envían a ningún lado.</sys:String>
     <sys:String x:Key="Op.NoMolestar">Respetar No molestar</sys:String>
+    <sys:String x:Key="Op.NoMolestarDetalle">Prendido: cuando Windows está en «No molestar», la isla no muestra notificaciones. Apagado: la isla te las muestra igual, aunque Windows las esconda.</sys:String>
     <sys:String x:Key="Op.Paneles">Paneles</sys:String>
     <sys:String x:Key="Op.Calendario">Calendario</sys:String>
     <sys:String x:Key="Op.Clima">Clima</sys:String>
     <sys:String x:Key="Op.Pc">Estado de la PC</sys:String>
     <sys:String x:Key="Op.Notas">Notas rápidas</sys:String>
     <sys:String x:Key="Op.AppMusica">App de música</sys:String>
+    <sys:String x:Key="Op.AppMusicaDetalle">Qué app de música muestra la isla y de cuál controla el volumen. En Automático detecta sola la que está sonando.</sys:String>
     <sys:String x:Key="Op.Idioma">Idioma</sys:String>
     <sys:String x:Key="Op.IdiomaAuto">Automático</sys:String>
     <sys:String x:Key="Op.PrimerPlano">Primer plano</sys:String>
@@ -47,7 +52,8 @@
     <sys:String x:Key="Op.CapaDetrasDetalle">Detrás de las apps: no tapa pestañas ni botones. Pasa al frente solo para avisos y el volumen.</sys:String>
     <sys:String x:Key="Op.Ciudad">Ciudad (clima)</sys:String>
     <sys:String x:Key="Op.Calendarios">Calendarios</sys:String>
-    <sys:String x:Key="Op.Administrar">Administrar</sys:String>
+    <sys:String x:Key="Op.AdministrarCalendarios">Administrar calendarios</sys:String>
+    <sys:String x:Key="Op.VincularCalendario">Vincular calendario</sys:String>
     <sys:String x:Key="Op.CalNinguno">Ninguno</sys:String>
     <sys:String x:Key="Op.CalUno">1 vinculado</sys:String>
     <sys:String x:Key="Op.CalVarios">{0} vinculados</sys:String>
@@ -188,4 +194,29 @@
     <sys:String x:Key="Tmp.FinDescanso">Terminó el descanso</sys:String>
     <sys:String x:Key="Tmp.AEstudiar">A estudiar de nuevo</sys:String>
     <sys:String x:Key="Tmp.Fin">Terminó el temporizador</sys:String>
+    <!-- Bienvenida (la primera vez que se abre) -->
+    <sys:String x:Key="Bien.Saltar">Saltar</sys:String>
+    <sys:String x:Key="Bien.Siguiente">Siguiente</sys:String>
+    <sys:String x:Key="Bien.Empezar">Empezar</sys:String>
+    <sys:String x:Key="Bien.VerOpciones">Ver Opciones</sys:String>
+    <sys:String x:Key="Bien.VerDeNuevo">Ver la bienvenida de nuevo</sys:String>
+    <sys:String x:Key="Bien.Hola.Titulo">¡Hola! Soy DeskIsleBar</sys:String>
+    <sys:String x:Key="Bien.Hola.Texto">Vivo en el borde de tu pantalla: me abro sola cuando pasás el mouse y me cierro cuando lo sacás. Te muestro lo básico en un minuto. ¿En qué idioma?</sys:String>
+    <sys:String x:Key="Bien.Paneles.Titulo">Cambiar de panel</sys:String>
+    <sys:String x:Key="Bien.Paneles.Texto">Tengo varios paneles: música, calendario, clima, tu PC, notas y accesos. Para pasar de uno a otro, hacé clic, mantené y arrastrá hacia un costado. Los puntitos de abajo te dicen en cuál estás.</sys:String>
+    <sys:String x:Key="Bien.Paneles.Pista">Probalo: arrastrá este panel hacia un costado</sys:String>
+    <sys:String x:Key="Bien.Mover.Titulo">Ponela donde quieras</sys:String>
+    <sys:String x:Key="Bien.Mover.Texto">Cuando estoy cerrada, agarrame y llevame a cualquier parte: arriba, abajo o a un costado. Si alguna vez me perdés, en Opciones está «Centrar».</sys:String>
+    <sys:String x:Key="Bien.Mover.Pista">Probalo: agarrá este panel y movelo</sys:String>
+    <sys:String x:Key="Bien.Volumen.Titulo">Volumen con la ruedita</sys:String>
+    <sys:String x:Key="Bien.Volumen.Texto">Con el mouse encima mío, la ruedita sube y baja el volumen. Si suena música, cambia el de esa app; si no, el de Windows.</sys:String>
+    <sys:String x:Key="Bien.Volumen.Pista">Probalo: girá la ruedita</sys:String>
+    <sys:String x:Key="Bien.Calendario.Titulo">Tu calendario</sys:String>
+    <sys:String x:Key="Bien.Calendario.Texto">En el panel Calendario ves el mes y tus próximos eventos, y te aviso 10 minutos antes de cada uno. Podés vincular Google Calendar u Outlook desde Opciones cuando quieras; no hace falta ahora.</sys:String>
+    <sys:String x:Key="Bien.Calendario.Ejemplo1">Reunión de equipo</sys:String>
+    <sys:String x:Key="Bien.Calendario.Ejemplo2">Fútbol con amigos</sys:String>
+    <sys:String x:Key="Bien.Clima.Titulo">El clima</sys:String>
+    <sys:String x:Key="Bien.Clima.Texto">¿De qué ciudad querés ver el clima? Podés dejarlo vacío y completarlo después en Opciones.</sys:String>
+    <sys:String x:Key="Bien.Opciones.Titulo">Por último: Opciones</sys:String>
+    <sys:String x:Key="Bien.Opciones.Texto">Ahí prendés o apagás paneles y avisos, elegís el idioma, la app de música y si la isla va encima de los juegos. Las encontrás en el panel de accesos, con el ⚙.</sys:String>
 </ResourceDictionary>

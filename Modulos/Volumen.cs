@@ -77,6 +77,13 @@ public class Volumen : IMMNotificationClient
     private static readonly string[] ModoExclusivo = ["TIDAL"];
 
     /// <summary>
+    /// La musica que suena en un navegador (YouTube Music, una pestaña): su volumen en el mezclador es el de TODO el
+    /// navegador y se multiplica con la barrita del reproductor, que desde afuera no se puede mover. Se mueve el
+    /// general, como las teclas de volumen.
+    /// </summary>
+    private static readonly string[] Navegadores = ["chrome", "msedge", "firefox", "brave", "opera", "vivaldi"];
+
+    /// <summary>
     /// Sube o baja el volumen propio de la app de musica (el del mezclador de Windows, no el general).
     /// Devuelve el nivel resultante, o null si esa app no tiene sesion de audio abierta.
     /// </summary>
@@ -95,7 +102,8 @@ public class Volumen : IMMNotificationClient
         static float Redondear(float nivel) => Math.Clamp(MathF.Round(nivel * 50) / 50, 0f, 1f);
         try
         {
-            if (ModoExclusivo.Any(p => proceso.StartsWith(p, StringComparison.OrdinalIgnoreCase)))
+            if (ModoExclusivo.Any(p => proceso.StartsWith(p, StringComparison.OrdinalIgnoreCase)) ||
+                Navegadores.Any(p => proceso.Equals(p, StringComparison.OrdinalIgnoreCase)))
             {
                 var volumen = sesiones[0].Dispositivo.AudioEndpointVolume;
                 float actual = volumen.MasterVolumeLevelScalar, nuevo = Redondear(calcular(actual));
