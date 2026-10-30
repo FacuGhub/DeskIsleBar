@@ -86,7 +86,7 @@ public class Clima
         }
         catch (Exception ex) when (ex is HttpRequestException or TaskCanceledException or JsonException or KeyNotFoundException)
         {
-            Log.Escribir($"clima: {ex.Message}");
+            Log.Escribir($"clima: {ex.GetType().Name}: {ex.Message}");
             // Si ya habia datos se dejan los ultimos; si no, se avisa
             if (Estado is null) Publicar(null, ("Clima.SinConexion", ""));
         }

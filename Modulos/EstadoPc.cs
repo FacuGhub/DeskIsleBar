@@ -116,7 +116,7 @@ public class EstadoPc
         }
         catch (Exception ex)
         {
-            Log.Escribir($"pc: no se pudo leer la GPU, se oculta: {ex.Message}");
+            Log.Escribir($"pc: no se pudo leer la GPU, se oculta: {ex.GetType().Name}: {ex.Message}");
             _sinGpu = true;
             return null;
         }

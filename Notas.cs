@@ -26,7 +26,7 @@ static class Notas
         }
         catch (IOException ex)
         {
-            Log.Escribir($"notas: no se pudieron guardar: {ex.Message}");
+            Log.Escribir($"notas: no se pudieron guardar: {ex.GetType().Name}: {ex.Message}");
         }
     }
 }

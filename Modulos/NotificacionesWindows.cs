@@ -90,7 +90,7 @@ public class NotificacionesWindows
         catch (Exception ex) when (ex is SqliteException or IOException or UnauthorizedAccessException)
         {
             // Windows puede tener la base ocupada un instante: se reintenta en la proxima vuelta
-            Log.Escribir($"notificaciones: no se pudo leer la base: {ex.Message}");
+            Log.Escribir($"notificaciones: no se pudo leer la base: {ex.GetType().Name}: {ex.Message}");
         }
         finally
         {

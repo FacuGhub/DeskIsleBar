@@ -834,7 +834,7 @@ public partial class MainWindow : Window
         }
         catch (Exception ex)
         {
-            Log.Escribir($"musica: no se pudo abrir {app}: {ex.Message}");
+            Log.Escribir($"musica: no se pudo abrir {app}: {ex.GetType().Name}: {ex.Message}");
         }
     }
 
@@ -2471,7 +2471,7 @@ public partial class MainWindow : Window
             ? $"https://calendar.google.com/calendar/r/day/{f.Year}/{f.Month}/{f.Day}"
             : $"https://outlook.live.com/calendar/0/view/day/{f.Year}/{f.Month}/{f.Day}";
         try { System.Diagnostics.Process.Start(new System.Diagnostics.ProcessStartInfo(url) { UseShellExecute = true }); }
-        catch (Exception ex) { Log.Escribir($"calendario: no se pudo abrir el navegador: {ex.Message}"); }
+        catch (Exception ex) { Log.Escribir($"calendario: no se pudo abrir el navegador: {ex.GetType().Name}: {ex.Message}"); }
     }
 
     // Clic en un dia: muestra sus eventos; otro clic en el mismo vuelve a los proximos
@@ -2589,7 +2589,7 @@ public partial class MainWindow : Window
         }
         catch (Exception ex)
         {
-            Log.Escribir($"tutorial: no se pudo abrir el navegador: {ex.Message}");
+            Log.Escribir($"tutorial: no se pudo abrir el navegador: {ex.GetType().Name}: {ex.Message}");
         }
     }
 

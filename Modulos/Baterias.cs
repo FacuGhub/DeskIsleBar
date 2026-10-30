@@ -53,7 +53,7 @@ public class Baterias
             Juntar(lecturas, "xinput", LeerXInput);
             Juntar(lecturas, "controles", LeerControles);
             try { lecturas.AddRange(await LeerBluetoothAsync()); }
-            catch (Exception ex) { Log.Escribir($"baterias: bluetooth: {ex.Message}"); }
+            catch (Exception ex) { Log.Escribir($"baterias: bluetooth: {ex.GetType().Name}: {ex.Message}"); }
 
             foreach (var lectura in lecturas) Evaluar(lectura);
         }
@@ -67,7 +67,7 @@ public class Baterias
     private static void Juntar(List<Lectura> lecturas, string fuente, Func<IEnumerable<Lectura>> leer)
     {
         try { lecturas.AddRange(leer()); }
-        catch (Exception ex) { Log.Escribir($"baterias: {fuente}: {ex.Message}"); }
+        catch (Exception ex) { Log.Escribir($"baterias: {fuente}: {ex.GetType().Name}: {ex.Message}"); }
     }
 
     private static IEnumerable<Lectura> LeerXInput()

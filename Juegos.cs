@@ -46,7 +46,7 @@ static class Juegos
         }
         catch (Exception ex) when (ex is System.Security.SecurityException or UnauthorizedAccessException or System.IO.IOException)
         {
-            Log.Escribir($"juegos: no se pudo leer la lista de Windows: {ex.Message}");
+            Log.Escribir($"juegos: no se pudo leer la lista de Windows: {ex.GetType().Name}: {ex.Message}");
             return;   // queda la lista anterior
         }
         _rutas = rutas;

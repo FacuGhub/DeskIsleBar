@@ -71,7 +71,7 @@ public class AvisosSistema
     private static void Seguro(string que, Action accion)
     {
         try { accion(); }
-        catch (Exception ex) { Log.Escribir($"avisos: {que}: {ex.Message}"); }
+        catch (Exception ex) { Log.Escribir($"avisos: {que}: {ex.GetType().Name}: {ex.Message}"); }
     }
 
     private void Avisar(string icono, string titulo, string detalle, Color color, string tipo, double segundos = 4, bool fijo = false) =>

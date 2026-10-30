@@ -97,7 +97,7 @@ public class Config
         }
         catch (IOException ex)
         {
-            Log.Escribir($"config: no se pudo guardar: {ex.Message}");
+            Log.Escribir($"config: no se pudo guardar: {ex.GetType().Name}: {ex.Message}");
         }
     }
 }

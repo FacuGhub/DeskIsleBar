@@ -41,7 +41,7 @@ public class Volumen : IMMNotificationClient
         }
         catch (Exception ex)
         {
-            Log.Escribir($"volumen: no hay salida de audio: {ex.Message}");
+            Log.Escribir($"volumen: no hay salida de audio: {ex.GetType().Name}: {ex.Message}");
         }
     }
 
@@ -64,7 +64,7 @@ public class Volumen : IMMNotificationClient
         }
         catch (Exception ex)
         {
-            Log.Escribir($"volumen: no se pudo cambiar: {ex.Message}");
+            Log.Escribir($"volumen: no se pudo cambiar: {ex.GetType().Name}: {ex.Message}");
         }
     }
 
@@ -125,7 +125,7 @@ public class Volumen : IMMNotificationClient
         }
         catch (Exception ex)
         {
-            Log.Escribir($"volumen: no se pudo cambiar el de la app: {ex.Message}");
+            Log.Escribir($"volumen: no se pudo cambiar el de la app: {ex.GetType().Name}: {ex.Message}");
             return null;
         }
     }

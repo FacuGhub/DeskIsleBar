@@ -94,7 +94,7 @@ public class Musica
         }
         catch (Exception ex)
         {
-            Log.Escribir($"musica: no se pudo abrir SMTC: {ex.Message}");
+            Log.Escribir($"musica: no se pudo abrir SMTC: {ex.GetType().Name}: {ex.Message}");
             return;
         }
 
@@ -224,7 +224,7 @@ public class Musica
         }
         catch (Exception ex)
         {
-            Log.Escribir($"musica: error leyendo la sesion: {ex.Message}");
+            Log.Escribir($"musica: error leyendo la sesion: {ex.GetType().Name}: {ex.Message}");
         }
     }
 
@@ -259,7 +259,7 @@ public class Musica
         }
         catch (Exception ex)
         {
-            Log.Escribir($"musica: no se pudo cargar la portada: {ex.Message}");
+            Log.Escribir($"musica: no se pudo cargar la portada: {ex.GetType().Name}: {ex.Message}");
             return (null, null);
         }
     }
@@ -302,6 +302,6 @@ public class Musica
     {
         if (_sesion is null) return;
         try { await accion(_sesion); }
-        catch (Exception ex) { Log.Escribir($"musica: fallo un control: {ex.Message}"); }
+        catch (Exception ex) { Log.Escribir($"musica: fallo un control: {ex.GetType().Name}: {ex.Message}"); }
     }
 }

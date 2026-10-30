@@ -181,7 +181,7 @@ public partial class MainWindow
         DragMove();   // vuelve al soltar
         bool movio = Math.Abs(Left - antesX) + Math.Abs(Top - antesY) > 30;
         Reorientar();
-        if (movio)
+        if (movio && !_pasosHechos.Contains(PasoBienvenida.Mover))
         {
             Log.Escribir("bienvenida: isla movida");
             CompletarPasoBienvenida(PasoBienvenida.Mover);

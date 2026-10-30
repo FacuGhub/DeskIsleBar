@@ -28,7 +28,7 @@ static class Arranque
         }
         catch (Exception ex)
         {
-            Log.Escribir($"arranque: no se pudo cambiar: {ex.Message}");
+            Log.Escribir($"arranque: no se pudo cambiar: {ex.GetType().Name}: {ex.Message}");
         }
     }
 }

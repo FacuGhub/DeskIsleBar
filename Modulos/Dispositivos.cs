@@ -73,7 +73,7 @@ public class Dispositivos : IMMNotificationClient
         try { ahora = ControlesConectados().ToDictionary(c => c.Id, c => c.Nombre); }
         catch (Exception ex)
         {
-            Log.Escribir($"dispositivos: controles: {ex.Message}");
+            Log.Escribir($"dispositivos: controles: {ex.GetType().Name}: {ex.Message}");
             return;
         }
 
