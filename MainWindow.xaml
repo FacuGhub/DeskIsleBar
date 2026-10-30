@@ -261,8 +261,14 @@
             </Setter>
         </Style>
 
-        <!-- Bloq Mayus dibujado (flecha hueca + barra, como la tecla): nitido a cualquier tamaño -->
-        <Geometry x:Key="FormaBloqMayus">F0 M6,0 L12,6.5 L8.6,6.5 L8.6,10 L3.4,10 L3.4,6.5 L0,6.5 Z M6,2.1 L2.7,5.4 L4.6,5.4 L4.6,8.8 L7.4,8.8 L7.4,5.4 L9.3,5.4 Z M3.4,11.4 L8.6,11.4 L8.6,13.4 L3.4,13.4 Z</Geometry>
+        <!-- Bloq Mayus: una teclita blanca con la "A" (se lee bien aunque sea chica) -->
+        <Style x:Key="TeclaMayus" TargetType="Border">
+            <Setter Property="Width" Value="12"/>
+            <Setter Property="Height" Value="12"/>
+            <Setter Property="CornerRadius" Value="3"/>
+            <Setter Property="Background" Value="White"/>
+            <Setter Property="VerticalAlignment" Value="Center"/>
+        </Style>
 
         <!-- Flechas a los costados de los paneles -->
         <Style x:Key="FlechaPanel" TargetType="Border">
@@ -362,9 +368,12 @@
                                 Margin="0,0,9,0" Visibility="Collapsed" IsHitTestVisible="False">
                         <Ellipse x:Name="PuntoCamara" Width="7" Height="7" Fill="#FF30D158" Margin="3,0" Visibility="Collapsed"/>
                         <Ellipse x:Name="PuntoMicrofono" Width="7" Height="7" Fill="#FFFF9F0A" Margin="3,0" Visibility="Collapsed"/>
-                        <Path x:Name="PuntoBloqMayus" Data="{StaticResource FormaBloqMayus}" Fill="White" Stretch="Uniform"
-                              Width="9" Height="11" Margin="3,0" VerticalAlignment="Center" Visibility="Collapsed"/>
                     </StackPanel>
+                    <!-- Bloq Mayus a la izquierda, como en el teclado -->
+                    <Border x:Name="PuntoBloqMayus" Style="{StaticResource TeclaMayus}" HorizontalAlignment="Left" Margin="10,0,0,0"
+                            Visibility="Collapsed" IsHitTestVisible="False">
+                        <TextBlock Text="A" Foreground="Black" FontSize="9" FontWeight="Bold" HorizontalAlignment="Center" VerticalAlignment="Center"/>
+                    </Border>
 
                     <!-- Inicio: hora + fecha, clima resumido y lo ultimo escuchado (primer panel cuando no suena nada) -->
                     <Grid x:Name="ContenidoInicio" Opacity="0" Margin="22,0,12,0" Visibility="Collapsed" Background="Transparent"
@@ -1142,7 +1151,7 @@
                     </Grid>
 
                     <!-- "En uso" (camara, microfono, Bloq Mayus) abajo del primer panel, sea Inicio o Musica -->
-                    <WrapPanel x:Name="EnUso" VerticalAlignment="Bottom" HorizontalAlignment="Center" Margin="22,0,22,17" Visibility="Collapsed" IsHitTestVisible="False"/>
+                    <StackPanel x:Name="EnUso" VerticalAlignment="Bottom" HorizontalAlignment="Center" Margin="22,0,22,17" Visibility="Collapsed" IsHitTestVisible="False"/>
 
                     <!-- Destello del borde cuando empieza a usarse la camara o el microfono, o se prende Bloq Mayus -->
                     <Border x:Name="Destello" BorderThickness="2" Opacity="0" IsHitTestVisible="False"

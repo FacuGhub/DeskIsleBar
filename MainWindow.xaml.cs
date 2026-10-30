@@ -923,12 +923,12 @@ public partial class MainWindow : Window
     /// En reposo la pildora muestra la musica si suena (portada + hora + barritas) y el temporizador si corre;
     /// con los dos, la cuenta regresiva ocupa el lugar de la hora, en el color del temporizador.
     /// </summary>
-    private bool ReposoConContenido => _temporizador?.Activo == true || _musica?.Estado?.Reproduciendo == true;
+    private bool ReposoConContenido => _temporizador?.Activo == true || _musica?.Estado?.Reproduciendo == true || CantidadIndicadores > 0;
 
     // Con musica es mas ancha porque lleva la hora (o la cuenta regresiva) en el medio
     /// <summary>
     /// Musica o temporizador agrandan la pildora; los indicadores (camara, microfono, Bloq Mayus) le suman lugar a la
-    /// derecha. Con solo indicadores queda una pildora chica con los puntitos.
+    /// derecha. Con solo indicadores muestra la hora y los indicadores al costado.
     /// </summary>
     private (double Ancho, double Alto) TamañoReposo
     {
@@ -939,13 +939,15 @@ public partial class MainWindow : Window
                               : (96.0, 10.0);
             int indicadores = CantidadIndicadores;
             if (indicadores == 0) return (ancho, alto);
-            return alto < 20 ? (24 + AnchoIndicador * indicadores, 22) : (ancho + AnchoIndicador * indicadores, alto);
+            return alto < 20 ? (70 + AnchoIndicador * indicadores, 28) : (ancho + AnchoIndicador * indicadores, alto);
         }
     }
 
     private void ActualizarReposo()
     {
         bool temporizador = _temporizador?.Activo == true;
+        var casillaPortada = (FrameworkElement)MiniPortada.Parent;
+        casillaPortada.Visibility = Visibility.Visible;
         if (_musica?.Estado is { Reproduciendo: true } estado)
         {
             MiniPortada.Background = estado.Portada is null
@@ -968,6 +970,17 @@ public partial class MainWindow : Window
             TiempoReposo.Text = Formatear(_temporizador.Restante);
             TiempoReposo.Visibility = Visibility.Visible;
             RelojReposo.Visibility = Visibility.Collapsed;
+            Ecualizador.Visibility = Visibility.Collapsed;
+            Ecualizar(false);
+        }
+        else if (CantidadIndicadores > 0)
+        {
+            // Solo indicadores: la hora en el medio (sin portada ni icono) y los indicadores a la derecha
+            casillaPortada.Visibility = Visibility.Collapsed;
+            RelojReposo.Text = DateTime.Now.ToString("HH:mm");
+            RelojReposo.Foreground = Brushes.White;
+            RelojReposo.Visibility = Visibility.Visible;
+            TiempoReposo.Visibility = Visibility.Collapsed;
             Ecualizador.Visibility = Visibility.Collapsed;
             Ecualizar(false);
         }
@@ -1016,13 +1029,12 @@ public partial class MainWindow : Window
     {
         PuntoCamara.Visibility = CamaraEnUso ? Visibility.Visible : Visibility.Collapsed;
         PuntoMicrofono.Visibility = MicrofonoEnUso ? Visibility.Visible : Visibility.Collapsed;
-        PuntoBloqMayus.Visibility = BloqMayusEnUso ? Visibility.Visible : Visibility.Collapsed;
-        int indicadores = CantidadIndicadores;
-        bool conContenido = ReposoConContenido;
-        IndicadoresReposo.HorizontalAlignment = conContenido ? HorizontalAlignment.Right : HorizontalAlignment.Center;
-        IndicadoresReposo.Margin = new Thickness(0, 0, conContenido ? 9 : 0, 0);
-        ContenidoReposo.Margin = new Thickness(5, 0, 10 + (conContenido ? AnchoIndicador * indicadores : 0), 0);
-        IndicadoresReposo.Visibility = _modo == Modo.Reposo && indicadores > 0 ? Visibility.Visible : Visibility.Collapsed;
+        bool reposo = _modo == Modo.Reposo;
+        int derecha = (CamaraEnUso ? 1 : 0) + (MicrofonoEnUso ? 1 : 0);   // camara y microfono a la derecha
+        bool mayus = BloqMayusEnUso;                                       // Bloq Mayus a la izquierda, como en el teclado
+        PuntoBloqMayus.Visibility = reposo && mayus ? Visibility.Visible : Visibility.Collapsed;
+        ContenidoReposo.Margin = new Thickness(5 + (mayus ? AnchoIndicador + 3 : 0), 0, 10 + AnchoIndicador * derecha, 0);
+        IndicadoresReposo.Visibility = reposo && derecha > 0 ? Visibility.Visible : Visibility.Collapsed;
     }
 
     /// <summary>Dos destellos del borde, del color de lo que empezo. Corto: no queda nada animandose.</summary>
@@ -1051,26 +1063,57 @@ public partial class MainWindow : Window
     private void MostrarEnUso(Modo modo)
     {
         bool visible = ConEnUso(modo);
-        ContenidoInicio.Margin = new Thickness(22, 0, 12, visible ? 24 : 0);
-        ContenidoMusica.Margin = new Thickness(14, 0, 12, visible ? 24 : 0);
         EnUso.Children.Clear();
         EnUso.Visibility = visible ? Visibility.Visible : Visibility.Collapsed;
-        if (!visible) return;
+        _altoEnUso = 0;
+        if (visible)
+        {
+            // Puede ocupar mas de un renglon (varias apps): se mide para agrandar el panel lo justo
+            double ancho = (modo == Modo.Inicio ? 452 : 440) - 44;
+            ArmarEnUso(ancho);
+            EnUso.Measure(new Size(ancho, double.PositiveInfinity));
+            _altoEnUso = Math.Ceiling(EnUso.DesiredSize.Height) + 8;
+        }
+        ContenidoInicio.Margin = new Thickness(22, 0, 12, _altoEnUso);
+        ContenidoMusica.Margin = new Thickness(14, 0, 12, _altoEnUso);
+    }
+
+    private double _altoEnUso;   // lo que la linea "En uso" le suma al alto del primer panel
+
+    /// <summary>Arma la linea "En uso" en renglones centrados: si no entran todos los elementos, pasan al siguiente.</summary>
+    private void ArmarEnUso(double ancho)
+    {
+        StackPanel? renglon = null;
+        double ocupado = 0;
         void Agregar(UIElement marca, string texto)
         {
-            var item = new StackPanel { Orientation = Orientation.Horizontal, Margin = new Thickness(8, 0, 8, 0) };
+            var item = new StackPanel { Orientation = Orientation.Horizontal, Margin = new Thickness(8, 1, 8, 1) };
             item.Children.Add(marca);
             item.Children.Add(new TextBlock { Text = texto, Foreground = new SolidColorBrush(Color.FromArgb(0xD9, 0xFF, 0xFF, 0xFF)), FontSize = 11.5,
-                                              Margin = new Thickness(6, 0, 0, 0), VerticalAlignment = VerticalAlignment.Center });
-            EnUso.Children.Add(item);
+                                              Margin = new Thickness(6, 0, 0, 0), VerticalAlignment = VerticalAlignment.Center,
+                                              MaxWidth = ancho - 32, TextTrimming = TextTrimming.CharacterEllipsis });
+            item.Measure(new Size(double.PositiveInfinity, double.PositiveInfinity));
+            double medida = item.DesiredSize.Width;
+            if (renglon is null || ocupado + medida > ancho)
+            {
+                renglon = new StackPanel { Orientation = Orientation.Horizontal, HorizontalAlignment = HorizontalAlignment.Center };
+                EnUso.Children.Add(renglon);
+                ocupado = 0;
+            }
+            renglon.Children.Add(item);
+            ocupado += medida;
         }
         Ellipse Punto(Color color) => new() { Width = 7, Height = 7, Fill = new SolidColorBrush(color), VerticalAlignment = VerticalAlignment.Center };
 
+        if (BloqMayusEnUso)
+            Agregar(new Border
+            {
+                Style = (Style)FindResource("TeclaMayus"),
+                Child = new TextBlock { Text = "A", Foreground = Brushes.Black, FontSize = 9, FontWeight = FontWeights.Bold,
+                                        HorizontalAlignment = HorizontalAlignment.Center, VerticalAlignment = VerticalAlignment.Center },
+            }, Idioma.T("Inicio.BloqMayus"));
         if (CamaraEnUso) Agregar(Punto(Color.FromRgb(0x30, 0xD1, 0x58)), Idioma.T("Inicio.Camara", string.Join(", ", _avisosSistema!.AppsCamara)));
         if (MicrofonoEnUso) Agregar(Punto(Color.FromRgb(0xFF, 0x9F, 0x0A)), Idioma.T("Inicio.Microfono", string.Join(", ", _avisosSistema!.AppsMicrofono)));
-        if (BloqMayusEnUso)
-            Agregar(new Path { Data = (Geometry)FindResource("FormaBloqMayus"), Fill = Brushes.White, Stretch = Stretch.Uniform,
-                               Width = 9, Height = 11, VerticalAlignment = VerticalAlignment.Center }, Idioma.T("Inicio.BloqMayus"));
     }
 
     private void MostrarContenidoReposo()
@@ -1114,14 +1157,14 @@ public partial class MainWindow : Window
     private (FrameworkElement Contenido, double Ancho, double Alto) Forma(Modo modo) => modo switch
     {
         Modo.Aviso => (ContenidoAviso, 380, 64),
-        Modo.Musica => (ContenidoMusica, 440, ConEnUso(modo) ? 116 : 92),
+        Modo.Musica => (ContenidoMusica, 440, 92 + _altoEnUso),
         Modo.Herramientas => (ContenidoHerramientas, 440, 92),
         Modo.Opciones => (ContenidoOpciones, 440, 376),
         Modo.Calendario => (ContenidoCalendario, 440, AltoCalendario()),
         Modo.Clima => (ContenidoClima, 440, 92),
         Modo.Pc => (ContenidoPc, 440, 134),
         Modo.Notas => (ContenidoNotas, 420, 126),
-        Modo.Inicio => (ContenidoInicio, 452, ConEnUso(modo) ? 116 : 92),
+        Modo.Inicio => (ContenidoInicio, 452, 92 + _altoEnUso),
         Modo.Tutorial => (ContenidoTutorial, 440, 250),
         Modo.Calendarios => (ContenidoCalendarios, 440, Math.Min(250, 116 + 28 * _config.Calendarios.Count)),
         Modo.Avisos => (ContenidoAvisos, 440, 90 + 32 * ((TiposAviso.Todos.Length + 1) / 2)),
@@ -1144,6 +1187,7 @@ public partial class MainWindow : Window
         }
         if (modo != Modo.Volumen) SoltarZona();
         IndicadoresReposo.Visibility = Visibility.Collapsed;
+        PuntoBloqMayus.Visibility = Visibility.Collapsed;
         MostrarEnUso(modo);
         if (_modo == Modo.Bienvenida && modo != Modo.Bienvenida) AnimarDemo(null);
         if (modo == Modo.Bienvenida) MostrarPasoBienvenida();
