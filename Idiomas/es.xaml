@@ -229,4 +229,9 @@
     <sys:String x:Key="Act.ErrorDetalle">Probá más tarde o bajala desde GitHub</sys:String>
     <sys:String x:Key="Act.SinConexion">No se pudo buscar actualizaciones</sys:String>
     <sys:String x:Key="Act.SinConexionDetalle">Revisá la conexión a internet</sys:String>
+    <!-- Indicadores de lo que esta en uso -->
+    <sys:String x:Key="Av.Op.Indicadores">Indicadores de cámara, micrófono y Bloq Mayús</sys:String>
+    <sys:String x:Key="Inicio.Camara">Cámara: {0}</sys:String>
+    <sys:String x:Key="Inicio.Microfono">Micrófono: {0}</sys:String>
+    <sys:String x:Key="Inicio.BloqMayus">Bloq Mayús</sys:String>
 </ResourceDictionary>

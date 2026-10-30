@@ -91,6 +91,7 @@ public partial class App : Application
 
         _avisosSistema = new AvisosSistema(Dispatcher);
         _avisosSistema.Aviso += ventana.MostrarAviso;
+        ventana.ConectarIndicadores(_avisosSistema);
         _avisosSistema.Iniciar();
 
         var musica = new Musica(Dispatcher);

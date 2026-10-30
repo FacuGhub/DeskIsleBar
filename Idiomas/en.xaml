@@ -229,4 +229,9 @@
     <sys:String x:Key="Act.ErrorDetalle">Try again later or download it from GitHub</sys:String>
     <sys:String x:Key="Act.SinConexion">Couldn't check for updates</sys:String>
     <sys:String x:Key="Act.SinConexionDetalle">Check your internet connection</sys:String>
+    <!-- Indicadores de lo que esta en uso -->
+    <sys:String x:Key="Av.Op.Indicadores">Camera, microphone and Caps Lock indicators</sys:String>
+    <sys:String x:Key="Inicio.Camara">Camera: {0}</sys:String>
+    <sys:String x:Key="Inicio.Microfono">Microphone: {0}</sys:String>
+    <sys:String x:Key="Inicio.BloqMayus">Caps Lock</sys:String>
 </ResourceDictionary>

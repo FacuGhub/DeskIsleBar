@@ -27,6 +27,21 @@ public class AvisosSistema
 
     public event Action<Aviso>? Aviso;
 
+    /// <summary>
+    /// Cambio lo que esta en uso (camara, microfono, Bloq Mayus). El argumento es lo que acaba de EMPEZAR
+    /// ("webcam", "microphone", "bloqmayus") para el destello de la isla, o null si solo termino algo.
+    /// </summary>
+    public event Action<string?>? EnUsoCambio;
+
+    /// <summary>Apps usando la camara / el microfono ahora (nombres para mostrar, sin repetir).</summary>
+    public IReadOnlyList<string> AppsCamara => AppsDe("webcam");
+    public IReadOnlyList<string> AppsMicrofono => AppsDe("microphone");
+    public bool BloqMayus => _bloqMayus;
+
+    private List<string> AppsDe(string recurso) =>
+        _enUso.Where(u => u.Recurso == recurso).Select(u => u.App).Distinct(StringComparer.OrdinalIgnoreCase)
+              .Order(StringComparer.OrdinalIgnoreCase).ToList();
+
     public AvisosSistema(Dispatcher ui) => _ui = ui;
 
     public void Iniciar()
@@ -50,6 +65,7 @@ public class AvisosSistema
 
         _rapido.Start();
         _lento.Start();
+        EnUsoCambio?.Invoke(null);   // lo que ya estaba en uso al arrancar se ve, sin destello
     }
 
     private static void Seguro(string que, Action accion)
@@ -74,6 +90,7 @@ public class AvisosSistema
         bool activo = BloqMayusActivo();
         if (activo == _bloqMayus) return;
         _bloqMayus = activo;
+        EnUsoCambio?.Invoke(activo ? "bloqmayus" : null);
         Avisar("", Idioma.T(activo ? "Av.BloqMayusSi" : "Av.BloqMayusNo"), "", activo ? Naranja : Gris, TipoBloqMayus, segundos: 1.5);
     }
 
@@ -86,6 +103,8 @@ public class AvisosSistema
     private void RevisarCamaraYMicrofono()
     {
         var ahora = AppsUsando();
+        bool cambio = !ahora.SetEquals(_enUso);
+        var empezo = ahora.Except(_enUso).Select(u => u.Item1).ToHashSet();
         foreach (var (recurso, app) in ahora.Except(_enUso))
         {
             bool camara = recurso == "webcam";
@@ -98,6 +117,7 @@ public class AvisosSistema
             Avisar(camara ? "" : "", Idioma.T(camara ? "Av.CamaraNo" : "Av.MicrofonoNo"), app, Gris, TipoCamara, segundos: 2.5);
         }
         _enUso = ahora;
+        if (cambio) EnUsoCambio?.Invoke(empezo.Contains("webcam") ? "webcam" : empezo.Contains("microphone") ? "microphone" : null);
     }
 
     /// <summary>

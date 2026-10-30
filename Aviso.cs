@@ -18,6 +18,9 @@ public static class TiposAviso
 {
     public const string Baterias = "baterias", Dispositivos = "dispositivos", Recordatorios = "recordatorios", Captura = "captura";
 
+    /// <summary>No es un aviso: los puntitos de camara/microfono/Bloq Mayus en la isla. Se apaga en la misma pantalla.</summary>
+    public const string Indicadores = "indicadores";
+
     public static readonly (string Tipo, string Clave)[] Todos =
     [
         (Baterias, "Av.Op.Baterias"),
@@ -28,5 +31,6 @@ public static class TiposAviso
         (Modulos.AvisosSistema.TipoBloqMayus, "Av.Op.BloqMayus"),
         (Modulos.AvisosSistema.TipoInternet, "Av.Op.Internet"),
         (Captura, "Av.Op.Captura"),
+        (Indicadores, "Av.Op.Indicadores"),
     ];
 }

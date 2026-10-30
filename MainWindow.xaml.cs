@@ -926,10 +926,22 @@ public partial class MainWindow : Window
     private bool ReposoConContenido => _temporizador?.Activo == true || _musica?.Estado?.Reproduciendo == true;
 
     // Con musica es mas ancha porque lleva la hora (o la cuenta regresiva) en el medio
-    private (double Ancho, double Alto) TamañoReposo =>
-        _musica?.Estado?.Reproduciendo == true ? (156, 28)
-        : _temporizador?.Activo == true ? (128, 28)
-        : (96, 10);
+    /// <summary>
+    /// Musica o temporizador agrandan la pildora; los indicadores (camara, microfono, Bloq Mayus) le suman lugar a la
+    /// derecha. Con solo indicadores queda una pildora chica con los puntitos.
+    /// </summary>
+    private (double Ancho, double Alto) TamañoReposo
+    {
+        get
+        {
+            var (ancho, alto) = _musica?.Estado?.Reproduciendo == true ? (156.0, 28.0)
+                              : _temporizador?.Activo == true ? (128.0, 28.0)
+                              : (96.0, 10.0);
+            int indicadores = CantidadIndicadores;
+            if (indicadores == 0) return (ancho, alto);
+            return alto < 20 ? (24 + AnchoIndicador * indicadores, 22) : (ancho + AnchoIndicador * indicadores, alto);
+        }
+    }
 
     private void ActualizarReposo()
     {
@@ -974,6 +986,93 @@ public partial class MainWindow : Window
         else if (ReposoConContenido && ContenidoReposo.Visibility != Visibility.Visible) MostrarContenidoReposo();
     }
 
+    // ---------- Indicadores de lo que esta en uso ----------
+
+    private const double AnchoIndicador = 13;
+    private AvisosSistema? _avisosSistema;
+
+    public void ConectarIndicadores(AvisosSistema avisos)
+    {
+        _avisosSistema = avisos;
+        avisos.EnUsoCambio += AlCambiarEnUso;
+    }
+
+    private bool IndicadoresPrendidos => !Demo.Activo && !_config.AvisosApagados.Contains(TiposAviso.Indicadores);
+    private bool CamaraEnUso => IndicadoresPrendidos && _avisosSistema?.AppsCamara.Count > 0;
+    private bool MicrofonoEnUso => IndicadoresPrendidos && _avisosSistema?.AppsMicrofono.Count > 0;
+    private bool BloqMayusEnUso => IndicadoresPrendidos && _avisosSistema?.BloqMayus == true;
+    private int CantidadIndicadores => (CamaraEnUso ? 1 : 0) + (MicrofonoEnUso ? 1 : 0) + (BloqMayusEnUso ? 1 : 0);
+
+    private void AlCambiarEnUso(string? empezo)
+    {
+        if (empezo is not null && IndicadoresPrendidos) Destellar(empezo);
+        ActualizarIndicadores();
+        if (_modo is Modo.Inicio or Modo.Musica) Expandir(_modo);   // la linea "En uso" cambia el alto
+        ActualizarReposo();   // si esta cerrada, ajusta el tamaño
+    }
+
+    /// <summary>Los puntitos del reposo y el margen del contenido (musica o temporizador) para dejarles lugar.</summary>
+    private void ActualizarIndicadores()
+    {
+        PuntoCamara.Visibility = CamaraEnUso ? Visibility.Visible : Visibility.Collapsed;
+        PuntoMicrofono.Visibility = MicrofonoEnUso ? Visibility.Visible : Visibility.Collapsed;
+        PuntoBloqMayus.Visibility = BloqMayusEnUso ? Visibility.Visible : Visibility.Collapsed;
+        int indicadores = CantidadIndicadores;
+        bool conContenido = ReposoConContenido;
+        IndicadoresReposo.HorizontalAlignment = conContenido ? HorizontalAlignment.Right : HorizontalAlignment.Center;
+        IndicadoresReposo.Margin = new Thickness(0, 0, conContenido ? 9 : 0, 0);
+        ContenidoReposo.Margin = new Thickness(5, 0, 10 + (conContenido ? AnchoIndicador * indicadores : 0), 0);
+        IndicadoresReposo.Visibility = _modo == Modo.Reposo && indicadores > 0 ? Visibility.Visible : Visibility.Collapsed;
+    }
+
+    /// <summary>Dos destellos del borde, del color de lo que empezo. Corto: no queda nada animandose.</summary>
+    private void Destellar(string que)
+    {
+        Destello.BorderBrush = new SolidColorBrush(que switch
+        {
+            "webcam" => Color.FromRgb(0x30, 0xD1, 0x58),
+            "microphone" => Color.FromRgb(0xFF, 0x9F, 0x0A),
+            _ => Color.FromArgb(0xE6, 0xFF, 0xFF, 0xFF),
+        });
+        var animacion = new DoubleAnimationUsingKeyFrames { Duration = TimeSpan.FromMilliseconds(1300) };
+        foreach (var (ms, valor) in new[] { (0, 0.0), (180, 1.0), (450, 0.25), (650, 1.0), (1300, 0.0) })
+            animacion.KeyFrames.Add(new EasingDoubleKeyFrame(valor, KeyTime.FromTimeSpan(TimeSpan.FromMilliseconds(ms)), new QuadraticEase()));
+        Timeline.SetDesiredFrameRate(animacion, 30);
+        Destello.BeginAnimation(OpacityProperty, animacion);
+    }
+
+    /// <summary>Hay linea "En uso" en este panel (el primero de la ronda: Inicio, o Musica si suena algo).</summary>
+    private bool ConEnUso(Modo modo) => modo is Modo.Inicio or Modo.Musica && CantidadIndicadores > 0;
+
+    /// <summary>
+    /// La linea "En uso" abajo del primer panel: que app usa la camara, cual el microfono, y Bloq Mayus.
+    /// El contenido del panel se corre hacia arriba para dejarle lugar.
+    /// </summary>
+    private void MostrarEnUso(Modo modo)
+    {
+        bool visible = ConEnUso(modo);
+        ContenidoInicio.Margin = new Thickness(22, 0, 12, visible ? 24 : 0);
+        ContenidoMusica.Margin = new Thickness(14, 0, 12, visible ? 24 : 0);
+        EnUso.Children.Clear();
+        EnUso.Visibility = visible ? Visibility.Visible : Visibility.Collapsed;
+        if (!visible) return;
+        void Agregar(UIElement marca, string texto)
+        {
+            var item = new StackPanel { Orientation = Orientation.Horizontal, Margin = new Thickness(8, 0, 8, 0) };
+            item.Children.Add(marca);
+            item.Children.Add(new TextBlock { Text = texto, Foreground = new SolidColorBrush(Color.FromArgb(0xD9, 0xFF, 0xFF, 0xFF)), FontSize = 11.5,
+                                              Margin = new Thickness(6, 0, 0, 0), VerticalAlignment = VerticalAlignment.Center });
+            EnUso.Children.Add(item);
+        }
+        Ellipse Punto(Color color) => new() { Width = 7, Height = 7, Fill = new SolidColorBrush(color), VerticalAlignment = VerticalAlignment.Center };
+
+        if (CamaraEnUso) Agregar(Punto(Color.FromRgb(0x30, 0xD1, 0x58)), Idioma.T("Inicio.Camara", string.Join(", ", _avisosSistema!.AppsCamara)));
+        if (MicrofonoEnUso) Agregar(Punto(Color.FromRgb(0xFF, 0x9F, 0x0A)), Idioma.T("Inicio.Microfono", string.Join(", ", _avisosSistema!.AppsMicrofono)));
+        if (BloqMayusEnUso)
+            Agregar(new Path { Data = (Geometry)FindResource("FormaBloqMayus"), Fill = Brushes.White, Stretch = Stretch.Uniform,
+                               Width = 9, Height = 11, VerticalAlignment = VerticalAlignment.Center }, Idioma.T("Inicio.BloqMayus"));
+    }
+
     private void MostrarContenidoReposo()
     {
         ContenidoReposo.Visibility = Visibility.Visible;
@@ -1015,14 +1114,14 @@ public partial class MainWindow : Window
     private (FrameworkElement Contenido, double Ancho, double Alto) Forma(Modo modo) => modo switch
     {
         Modo.Aviso => (ContenidoAviso, 380, 64),
-        Modo.Musica => (ContenidoMusica, 440, 92),
+        Modo.Musica => (ContenidoMusica, 440, ConEnUso(modo) ? 116 : 92),
         Modo.Herramientas => (ContenidoHerramientas, 440, 92),
         Modo.Opciones => (ContenidoOpciones, 440, 376),
         Modo.Calendario => (ContenidoCalendario, 440, AltoCalendario()),
         Modo.Clima => (ContenidoClima, 440, 92),
         Modo.Pc => (ContenidoPc, 440, 134),
         Modo.Notas => (ContenidoNotas, 420, 126),
-        Modo.Inicio => (ContenidoInicio, 452, 92),
+        Modo.Inicio => (ContenidoInicio, 452, ConEnUso(modo) ? 116 : 92),
         Modo.Tutorial => (ContenidoTutorial, 440, 250),
         Modo.Calendarios => (ContenidoCalendarios, 440, Math.Min(250, 116 + 28 * _config.Calendarios.Count)),
         Modo.Avisos => (ContenidoAvisos, 440, 90 + 32 * ((TiposAviso.Todos.Length + 1) / 2)),
@@ -1044,6 +1143,8 @@ public partial class MainWindow : Window
             Nativo.ReafirmarTopmost(_hwnd);
         }
         if (modo != Modo.Volumen) SoltarZona();
+        IndicadoresReposo.Visibility = Visibility.Collapsed;
+        MostrarEnUso(modo);
         if (_modo == Modo.Bienvenida && modo != Modo.Bienvenida) AnimarDemo(null);
         if (modo == Modo.Bienvenida) MostrarPasoBienvenida();
         if (modo == Modo.Herramientas)
@@ -1071,9 +1172,8 @@ public partial class MainWindow : Window
         }
         if (modo == Modo.Avisos)
         {
-            foreach (var fila in InterruptoresAvisos.Children.OfType<StackPanel>())
-                if (fila.Children[0] is ToggleButton { Tag: string tipo } interruptor)
-                    interruptor.IsChecked = !_config.AvisosApagados.Contains(tipo);
+            foreach (var interruptor in _interruptoresAvisos)
+                if (interruptor.Tag is string tipo) interruptor.IsChecked = !_config.AvisosApagados.Contains(tipo);
         }
         if (modo == Modo.Tutorial && PasosTutorial.Children.Count == 0)
         {
@@ -1159,6 +1259,7 @@ public partial class MainWindow : Window
         SoltarZona();
         Pildora.Cursor = null;
         OcultarFlechas();
+        EnUso.Visibility = Visibility.Collapsed;
         if (_modo == Modo.Bienvenida) AnimarDemo(null);
         _modo = Modo.Reposo;
         AplicarCapa();   // "detras de las apps": vuelve atras
@@ -1184,6 +1285,7 @@ public partial class MainWindow : Window
             }
             if (ReposoConContenido) MostrarContenidoReposo();
             else ContenidoReposo.Visibility = Visibility.Collapsed;
+            ActualizarIndicadores();
             MostrarSiguienteDeLaCola();
             // Termino el aviso sobre el video o el juego: vuelve a no tapar
             if ((_conVideo || _ocultaPorPantallaCompleta) && _modo == Modo.Reposo) Hide();
@@ -1486,6 +1588,8 @@ public partial class MainWindow : Window
 
     private void Avisos_Click(object sender, RoutedEventArgs e) => Expandir(Modo.Avisos, deslizarDesde: 40);
 
+    private readonly List<ToggleButton> _interruptoresAvisos = [];
+
     /// <summary>Un interruptor por tipo de aviso (<see cref="TiposAviso.Todos"/>), con su texto del diccionario.</summary>
     private void ArmarInterruptoresAvisos()
     {
@@ -1498,7 +1602,10 @@ public partial class MainWindow : Window
             var fila = new StackPanel { Orientation = Orientation.Horizontal, Margin = new Thickness(0, 0, 0, 10) };
             fila.Children.Add(interruptor);
             fila.Children.Add(texto);
-            InterruptoresAvisos.Children.Add(fila);
+            _interruptoresAvisos.Add(interruptor);
+            // Los indicadores van solos en su fila, a todo el ancho: el texto es largo y en media columna se corta
+            if (tipo == TiposAviso.Indicadores) ((Panel)InterruptoresAvisos.Parent).Children.Add(fila);
+            else InterruptoresAvisos.Children.Add(fila);
         }
     }
 
@@ -1510,6 +1617,7 @@ public partial class MainWindow : Window
         _config.Guardar();
         if (tipo == TiposAviso.Captura && _notificaciones is not null)
             _notificaciones.OmitirRecortes = interruptor.IsChecked == true;
+        if (tipo == TiposAviso.Indicadores) ActualizarIndicadores();
     }
 
     /// <summary>Flecha de volver de Opciones, Calendarios y Tutorial: al panel desde el que se llego.</summary>
