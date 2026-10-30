@@ -9,9 +9,10 @@ namespace DeskIsleBar.Modulos;
 /// <summary>
 /// Clic en una notificacion de la isla: hace lo mismo que Windows al tocar la suya.
 /// 1) Notificacion de protocolo ("activationType=protocol"): abre ese link.
-/// 2) La app registro un activador: en su acceso directo (ToastActivatorCLSID, ej. Chrome y sus apps como WhatsApp
-///    Web) o, si es de la Store, en el manifiesto de su paquete (ej. WhatsApp). Se le pasan los argumentos de la
-///    notificacion, asi abre el chat o la pagina justa.
+/// 2) La app registro un activador: en el registro (AppUserModelId\...\CustomActivator, ej. Outlook clasico,
+///    Firefox, Spotify), en su acceso directo (ToastActivatorCLSID, ej. Chrome y sus apps como WhatsApp Web) o, si
+///    es de la Store, en el manifiesto de su paquete (ej. WhatsApp, Outlook nuevo). Se le pasan los argumentos de
+///    la notificacion, asi abre el chat, el mail o la pagina justa.
 /// 3) Si no (ej. Discord, que recibe el clic dentro de su propio proceso): se trae la app al frente.
 /// Los argumentos solo van a la app que mando la notificacion y nunca al log.
 /// </summary>
@@ -107,6 +108,8 @@ public static class AbrirNotificacion
     {
         lock (Activadores)
         {
+            // Registrado en el registro de Windows: lo primero que mira Windows para las apps de escritorio
+            if (ActivadorRegistrado(aumid) is { } registrado) return registrado;
             // Apps de la Store ("Familia_hash!App"): no tienen acceso directo, el activador esta en su manifiesto
             if (aumid.Contains('!'))
             {
@@ -126,6 +129,25 @@ public static class AbrirNotificacion
             }
             return Activadores.GetValueOrDefault(aumid);
         }
+    }
+
+    /// <summary>
+    /// Activador anotado en HKCU/HKLM\Software\Classes\AppUserModelId\{aumid}\CustomActivator (Outlook clasico lo
+    /// registra asi, sin acceso directo). Solo se lee: el valor lo escribio el instalador de esa app.
+    /// </summary>
+    private static Guid? ActivadorRegistrado(string aumid)
+    {
+        if (aumid.Length == 0 || aumid.Contains('\\')) return null;   // la barra invertida separaria claves del registro
+        foreach (var raiz in new[] { Microsoft.Win32.Registry.CurrentUser, Microsoft.Win32.Registry.LocalMachine })
+        {
+            try
+            {
+                using var clave = raiz.OpenSubKey($@"Software\Classes\AppUserModelId\{aumid}");
+                if (clave?.GetValue("CustomActivator") is string texto && Guid.TryParse(texto, out var clsid)) return clsid;
+            }
+            catch (Exception ex) when (ex is System.Security.SecurityException or UnauthorizedAccessException or IOException) { }
+        }
+        return null;
     }
 
     /// <summary>

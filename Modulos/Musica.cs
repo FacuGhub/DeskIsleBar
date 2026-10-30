@@ -73,6 +73,9 @@ public class Musica
     {
         string id = appUserModelId.Contains('!') ? appUserModelId[(appUserModelId.IndexOf('!') + 1)..] : appUserModelId;
         if (id.EndsWith(".exe", StringComparison.OrdinalIgnoreCase)) id = id[..^4];
+        // Office: "Microsoft.Office.OUTLOOK.EXE.15" → "OUTLOOK" (el numero del final es la version, no el programa)
+        int exe = id.IndexOf(".EXE.", StringComparison.OrdinalIgnoreCase);
+        if (exe > 0) id = id[..exe];
         return id[(id.LastIndexOf('.') + 1)..];
     }
 
