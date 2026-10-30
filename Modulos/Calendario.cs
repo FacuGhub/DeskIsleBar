@@ -21,7 +21,8 @@ public record FuenteCalendario(string Nombre, string Url, Color Color);
 /// </summary>
 public class Calendario
 {
-    private static readonly HttpClient Http = new() { Timeout = TimeSpan.FromSeconds(15) };
+    // Tope de tamaño: un link que devuelva algo enorme no se come la memoria (un .ics normal pesa KB)
+    private static readonly HttpClient Http = new() { Timeout = TimeSpan.FromSeconds(15), MaxResponseContentBufferSize = 20 * 1024 * 1024 };
     private static readonly TimeSpan VentanaProximos = TimeSpan.FromDays(14);
     private const int MaxProximos = 4;
     // Rango que se carga para poder navegar el mini calendario: 2 meses atras y un año adelante

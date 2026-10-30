@@ -38,7 +38,27 @@ public static class Limpieza
 
     private const uint SHERB_NOCONFIRMATION = 0x1, SHERB_NOPROGRESSUI = 0x2, SHERB_NOSOUND = 0x4;
 
-    private static string CarpetaTemporal => Path.GetTempPath();
+    /// <summary>
+    /// La carpeta de temporales, o null si no parece una. Windows la toma de TMP/TEMP y, si faltan, cae al perfil
+    /// del usuario o a C:\Windows: si alguien puso TMP=D:\ o la variable no existe, "limpiar temporales" borraria
+    /// sus archivos de verdad. Solo se acepta una carpeta llamada Temp/Tmp que no sea la raiz de un disco ni este
+    /// dentro de Windows.
+    /// </summary>
+    private static string? CarpetaTemporal
+    {
+        get
+        {
+            string ruta = Path.TrimEndingDirectorySeparator(Path.GetFullPath(Path.GetTempPath()));
+            string nombre = Path.GetFileName(ruta);
+            string windows = Environment.GetFolderPath(Environment.SpecialFolder.Windows);
+            bool pareceTemporal = nombre.Equals("Temp", StringComparison.OrdinalIgnoreCase) || nombre.Equals("Tmp", StringComparison.OrdinalIgnoreCase);
+            bool esRaiz = string.Equals(Path.GetPathRoot(ruta)?.TrimEnd('\\'), ruta, StringComparison.OrdinalIgnoreCase);
+            bool dentroDeWindows = windows.Length > 0 && ruta.StartsWith(windows + "\\", StringComparison.OrdinalIgnoreCase);
+            if (pareceTemporal && !esRaiz && !dentroDeWindows) return ruta;
+            Log.Escribir("limpieza: la carpeta de temporales no parece una carpeta Temp, no se toca");
+            return null;
+        }
+    }
 
     /// <summary>Solo mide, no borra nada.</summary>
     public static AnalisisLimpieza Analizar()
@@ -64,16 +84,20 @@ public static class Limpieza
 
         foreach (var archivo in TemporalesViejos().ToList())
         {
+            bool eraSoloLectura = false;
             try
             {
                 long tamaño = archivo.Length;
-                archivo.Attributes = FileAttributes.Normal;   // los de solo lectura no se borran si no
+                eraSoloLectura = archivo.IsReadOnly;
+                if (eraSoloLectura) archivo.IsReadOnly = false;   // los de solo lectura no se borran si no
                 archivo.Delete();
                 liberados += tamaño;
             }
             catch (Exception ex) when (ex is IOException or UnauthorizedAccessException)
             {
-                salteados++;   // en uso o protegido: queda
+                salteados++;   // en uso o protegido: queda como estaba
+                try { if (eraSoloLectura) archivo.IsReadOnly = true; }
+                catch (Exception e) when (e is IOException or UnauthorizedAccessException) { }
             }
         }
         BorrarCarpetasVacias();
@@ -92,7 +116,8 @@ public static class Limpieza
     private static IEnumerable<FileInfo> TemporalesViejos()
     {
         var limite = DateTime.UtcNow - Antiguedad;
-        var raiz = new DirectoryInfo(CarpetaTemporal);
+        if (CarpetaTemporal is not { } carpeta) yield break;
+        var raiz = new DirectoryInfo(carpeta);
         if (!raiz.Exists) yield break;
 
         foreach (var archivo in raiz.EnumerateFiles("*", Recorrido))
@@ -108,7 +133,9 @@ public static class Limpieza
     private static void BorrarCarpetasVacias()
     {
         var limite = DateTime.UtcNow - Antiguedad;
-        var raiz = new DirectoryInfo(CarpetaTemporal);
+        if (CarpetaTemporal is not { } temporal) return;
+        var raiz = new DirectoryInfo(temporal);
+        if (!raiz.Exists) return;
         var carpetas = raiz.EnumerateDirectories("*", Recorrido).OrderByDescending(d => d.FullName.Length).ToList();
         foreach (var carpeta in carpetas)
         {

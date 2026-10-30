@@ -24,14 +24,19 @@ public record PedidoAviso(string Titulo, string? Detalle, string? Icono, string?
         ["verde"] = MediaColor.FromRgb(0x30, 0xD1, 0x58), ["azul"] = MediaColor.FromRgb(0x0A, 0x84, 0xFF),
     };
 
+    private const int MaxTitulo = 120, MaxDetalle = 300;
+
+    private static string Recortar(string texto, int maximo) => texto.Length <= maximo ? texto : texto[..(maximo - 1)] + "…";
+
     public Aviso ComoAviso()
     {
-        // El icono puede ser un nombre del diccionario o un codigo de Segoe Fluent Icons ("E7BA")
+        // El icono puede ser un nombre del diccionario o un codigo de Segoe Fluent Icons ("E7BA", zona de uso privado)
         string icono = Iconos.GetValueOrDefault(Icono ?? "info") ??
                        (Icono is { Length: 4 } && int.TryParse(Icono, System.Globalization.NumberStyles.HexNumber, null, out int codigo)
+                        && codigo is >= 0xE000 and <= 0xF8FF
                            ? char.ConvertFromUtf32(codigo) : Iconos["info"]);
         MediaColor color = Colores.GetValueOrDefault(Color ?? "", Colors.White);
-        return new Aviso(icono, Titulo, Detalle ?? "", color, Carga: null, Persistente: Fijo);
+        return new Aviso(icono, Recortar(Titulo, MaxTitulo), Recortar(Detalle ?? "", MaxDetalle), color, Carga: null, Persistente: Fijo);
     }
 
     /// <summary>null si los argumentos no traen un --aviso.</summary>
@@ -54,11 +59,17 @@ public record PedidoAviso(string Titulo, string? Detalle, string? Icono, string?
 
 /// <summary>
 /// Pipe local por el que otras instancias de DeskIsleBar.exe (lanzadas por scripts) le pasan avisos a la que esta corriendo.
-/// CurrentUserOnly: solo procesos del mismo usuario pueden escribir.
+/// CurrentUserOnly: solo procesos del mismo usuario pueden escribir, y el que envia verifica que la isla que escucha
+/// sea del mismo usuario. El nombre lleva la sesion de Windows porque los pipes son de toda la PC: sin eso, con dos
+/// usuarios conectados a la vez (cambio rapido de usuario) la isla del segundo no podria abrir el suyo.
 /// </summary>
 static class Canal
 {
-    private const string Nombre = "DeskIsleBar";
+    private static readonly string Nombre = $"DeskIsleBar-{System.Diagnostics.Process.GetCurrentProcess().SessionId}";
+
+    /// <summary>Un aviso es un JSON chico: un cliente que manda de mas o no cierra no traba el canal.</summary>
+    private const int MaxBytes = 16 * 1024;
+    private static readonly TimeSpan EsperaMaxima = TimeSpan.FromSeconds(5);
 
     public static void Escuchar(Dispatcher ui, Action<Aviso> alRecibir)
     {
@@ -71,18 +82,25 @@ static class Canal
                     await using var servidor = new NamedPipeServerStream(Nombre, PipeDirection.In, 1,
                         PipeTransmissionMode.Byte, PipeOptions.Asynchronous | PipeOptions.CurrentUserOnly);
                     await servidor.WaitForConnectionAsync();
-                    using var lector = new StreamReader(servidor);
-                    string json = await lector.ReadToEndAsync();
-
-                    if (JsonSerializer.Deserialize<PedidoAviso>(json) is { Titulo.Length: > 0 } pedido)
+                    using var corte = new CancellationTokenSource(EsperaMaxima);
+                    var buffer = new byte[MaxBytes + 1];
+                    int leidos = 0, n;
+                    while (leidos < buffer.Length && (n = await servidor.ReadAsync(buffer.AsMemory(leidos), corte.Token)) > 0) leidos += n;
+                    if (leidos > MaxBytes)
                     {
-                        Log.Escribir($"canal: aviso \"{pedido.Titulo}\"");
+                        Log.Escribir("canal: aviso descartado (demasiado largo)");
+                        continue;
+                    }
+
+                    if (JsonSerializer.Deserialize<PedidoAviso>(buffer.AsSpan(0, leidos)) is { Titulo.Length: > 0 } pedido)
+                    {
+                        Log.Escribir("canal: aviso recibido");   // sin el texto: puede ser privado
                         _ = ui.InvokeAsync(() => alRecibir(pedido.ComoAviso()));
                     }
                 }
                 catch (Exception ex)
                 {
-                    Log.Escribir($"canal: error: {ex.Message}");
+                    Log.Escribir($"canal: error: {ex.GetType().Name}");
                     await Task.Delay(1000);
                 }
             }
@@ -101,7 +119,7 @@ static class Canal
         }
         catch (Exception ex)
         {
-            Log.Escribir($"canal: no se pudo enviar \"{pedido.Titulo}\": {ex.Message}");
+            Log.Escribir($"canal: no se pudo enviar el aviso: {ex.GetType().Name}");
             return false;
         }
     }

@@ -14,7 +14,7 @@ public record EstadoClima(string Lugar, double Temperatura, double Sensacion, in
 /// </summary>
 public class Clima
 {
-    private static readonly HttpClient Http = new() { Timeout = TimeSpan.FromSeconds(10) };
+    private static readonly HttpClient Http = new() { Timeout = TimeSpan.FromSeconds(10), MaxResponseContentBufferSize = 1024 * 1024 };
 
     private readonly DispatcherTimer _renovacion = new() { Interval = TimeSpan.FromMinutes(15) };
     private string _ciudad = "";

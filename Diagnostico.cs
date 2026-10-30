@@ -133,8 +133,9 @@ static class Diagnostico
             const string propiedad = "{104EA319-6EE2-4701-BD47-8DDBF425BBE5} 2";
             var dispositivos = await Windows.Devices.Enumeration.Pnp.PnpObject.FindAllAsync(
                 Windows.Devices.Enumeration.Pnp.PnpObjectType.Device, [propiedad, "System.ItemNameDisplay"]);
+            // Sin el nombre del dispositivo: suele traer el de la persona ("Auriculares de Juan")
             var conBateria = dispositivos.Where(d => d.Properties.TryGetValue(propiedad, out var v) && v is byte)
-                                         .Select(d => $"{d.Properties["System.ItemNameDisplay"]} {d.Properties[propiedad]}%").ToList();
+                                         .Select(d => $"{d.Properties[propiedad]}%").ToList();
             return (true, conBateria.Count == 0 ? L("ningún dispositivo informa batería", "no device reports battery") : string.Join(", ", conBateria));
         });
 
@@ -150,7 +151,7 @@ static class Diagnostico
             var perfil = Windows.Networking.Connectivity.NetworkInformation.GetInternetConnectionProfile();
             var nivel = perfil?.GetNetworkConnectivityLevel();
             return (nivel == Windows.Networking.Connectivity.NetworkConnectivityLevel.InternetAccess ? true : null,
-                    $"{nivel?.ToString() ?? L("sin red", "no network")}{(perfil is null ? "" : $" ({perfil.ProfileName})")}");
+                    nivel?.ToString() ?? L("sin red", "no network"));   // sin el nombre de la red: puede decir donde esta la PC
         });
 
         Linea(L("Juegos reconocidos", "Recognized games"), () =>
@@ -161,7 +162,12 @@ static class Diagnostico
         informe.AppendLine();
         informe.AppendLine(L("✔ funciona · ⚠ funciona pero conviene mirarlo · ✘ no funciona",
                              "✔ works · ⚠ works but worth a look · ✘ not working"));
-        return informe.ToString();
+
+        // Se pega en issues publicos: un mensaje de error puede traer una ruta con el usuario o el nombre de la PC
+        string texto = informe.ToString();
+        foreach (var (dato, reemplazo) in new[] { (Environment.UserName, "<usuario>"), (Environment.MachineName, "<pc>") })
+            if (dato.Length >= 2) texto = texto.Replace(dato, reemplazo, StringComparison.OrdinalIgnoreCase);
+        return texto;
     }
 
     [System.Runtime.InteropServices.StructLayout(System.Runtime.InteropServices.LayoutKind.Sequential)]
