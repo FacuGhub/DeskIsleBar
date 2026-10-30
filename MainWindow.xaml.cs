@@ -99,6 +99,8 @@ public partial class MainWindow : Window
     private readonly DispatcherTimer _reloj = new() { Interval = TimeSpan.FromSeconds(1) };
     private EstadoMusica? _ultimoEscuchado;   // queda aunque la app de musica se cierre
     private readonly DispatcherTimer _guardarNotas = new() { Interval = TimeSpan.FromSeconds(1) };
+    private readonly DispatcherTimer _buscarActualizacion = new() { Interval = TimeSpan.FromSeconds(20) };
+    private bool _actualizando;
 
     public MainWindow()
     {
@@ -110,6 +112,12 @@ public partial class MainWindow : Window
         ArmarInterruptoresAvisos();
         PrepararBienvenida();
         Idioma.Cambio += AlCambiarIdioma;
+        _buscarActualizacion.Tick += async (_, _) =>
+        {
+            _buscarActualizacion.Interval = TimeSpan.FromHours(24);   // la primera a los 20 s, despues una por dia
+            await BuscarActualizacionAsync(aPedido: false);
+        };
+        if (!Demo.Activo) _buscarActualizacion.Start();
 
         CampoNotas.Text = Demo.Activo ? Demo.Nota : Notas.Leer();
         CampoCiudad.Text = Demo.Activo ? Demo.Ciudad : _config.Ciudad;
@@ -1077,6 +1085,7 @@ public partial class MainWindow : Window
         if (modo != Modo.Pc && !_limpiando) ReiniciarLimpieza();   // salir del panel cancela una confirmacion pendiente
         else _lecturaPc.Stop();
         ActualizarPuntos(modo);
+        if (modo is Modo.Aviso or Modo.Volumen or Modo.Bienvenida || !Paginas.Contains(modo)) Pildora_MouseLeave(Pildora, null!);
 
         // Pantallas con flecha de volver: se recuerda desde que panel se llego (no al volver, para no hacer un ciclo)
         if (modo is Modo.Opciones or Modo.Calendarios or Modo.Tutorial or Modo.Avisos && modo != _modo && EnPanel && !_volviendo)
@@ -1140,6 +1149,7 @@ public partial class MainWindow : Window
         if (_escribiendo) SoltarTeclado();
         SoltarZona();
         Pildora.Cursor = null;
+        Pildora_MouseLeave(Pildora, null!);
         if (_modo == Modo.Bienvenida) AnimarDemo(null);
         _modo = Modo.Reposo;
         AplicarCapa();   // "detras de las apps": vuelve atras
@@ -1176,7 +1186,7 @@ public partial class MainWindow : Window
     {
         if (modo == Modo.Bienvenida)
         {
-            ArmarPuntos(PasosBienvenida.Length, (int)_pasoBienvenida);
+            ArmarPuntos(PasosBienvenida.Length, (int)_pasoBienvenida, soloAtras: true);
             return;
         }
         var paginas = Paginas;
@@ -1186,23 +1196,91 @@ public partial class MainWindow : Window
             Puntos.Visibility = Visibility.Collapsed;
             return;
         }
-        ArmarPuntos(paginas.Length, Array.IndexOf(paginas, modo));
+        ArmarPuntos(paginas.Length, Array.IndexOf(paginas, modo), soloAtras: false);
     }
 
-    private void ArmarPuntos(int cantidad, int actual)
+    /// <summary>
+    /// Cada puntito va dentro de un area de clic mas grande (los puntos miden 5): clic = ir a ese panel.
+    /// En la bienvenida solo se puede volver a pasos anteriores (los de adelante pueden esperar una accion).
+    /// </summary>
+    private void ArmarPuntos(int cantidad, int actual, bool soloAtras)
     {
         Puntos.Children.Clear();
         for (int i = 0; i < cantidad; i++)
         {
-            Puntos.Children.Add(new Ellipse
+            bool clickeable = i != actual && (!soloAtras || i < actual);
+            var punto = new Ellipse
             {
                 Width = 5,
                 Height = 5,
-                Margin = new Thickness(2.5, 0, 2.5, 0),
                 Fill = new SolidColorBrush(i == actual ? Color.FromArgb(0xE6, 0xFF, 0xFF, 0xFF) : Color.FromArgb(0x4D, 0xFF, 0xFF, 0xFF)),
-            });
+            };
+            var area = new Border
+            {
+                Width = 12,
+                Height = 13,
+                Background = Brushes.Transparent,
+                Child = punto,
+                Tag = i,
+                Cursor = clickeable ? Cursors.Hand : null,
+                IsHitTestVisible = clickeable,
+            };
+            area.MouseEnter += (_, _) => punto.Opacity = 0.7;
+            area.MouseLeave += (_, _) => punto.Opacity = 1;
+            area.MouseLeftButtonDown += Punto_MouseLeftButtonDown;
+            Puntos.Children.Add(area);
         }
         Puntos.Visibility = Visibility.Visible;
+    }
+
+    private void Punto_MouseLeftButtonDown(object sender, MouseButtonEventArgs e)
+    {
+        if (sender is not FrameworkElement { Tag: int indice }) return;
+        e.Handled = true;
+        if (_modo == Modo.Bienvenida)
+        {
+            if (indice >= (int)_pasoBienvenida) return;
+            _pasoBienvenida = (PasoBienvenida)indice;
+            Expandir(Modo.Bienvenida, deslizarDesde: -40);
+            return;
+        }
+        var paginas = Paginas;
+        int actual = Array.IndexOf(paginas, _modo);
+        if (actual < 0 || indice == actual || indice >= paginas.Length) return;
+        Expandir(paginas[indice], deslizarDesde: indice > actual ? 40 : -40);
+    }
+
+    // ---------- Flechas a los costados ----------
+
+    private const double ZonaFlecha = 56;   // a cuantos px del borde aparece la flecha de ese lado
+
+    /// <summary>Las flechas aparecen al acercar el mouse a un costado, solo en los paneles de la ronda.</summary>
+    private void Pildora_MouseMove(object sender, MouseEventArgs e)
+    {
+        bool enRonda = _inicioGesto is null && _pistaArrastrada is null && Paginas is { Length: > 1 } paginas && Array.IndexOf(paginas, _modo) >= 0;
+        double x = e.GetPosition(Pildora).X;
+        MostrarFlecha(FlechaIzquierda, enRonda && x < ZonaFlecha);
+        MostrarFlecha(FlechaDerecha, enRonda && x > Pildora.ActualWidth - ZonaFlecha);
+    }
+
+    private void Pildora_MouseLeave(object sender, MouseEventArgs e)
+    {
+        MostrarFlecha(FlechaIzquierda, false);
+        MostrarFlecha(FlechaDerecha, false);
+    }
+
+    private static void MostrarFlecha(Border flecha, bool visible)
+    {
+        if (flecha.IsHitTestVisible == visible) return;
+        flecha.IsHitTestVisible = visible;
+        flecha.BeginAnimation(OpacityProperty, new DoubleAnimation(visible ? 1 : 0, TimeSpan.FromMilliseconds(visible ? 150 : 120)));
+    }
+
+    private void Flecha_MouseLeftButtonDown(object sender, MouseButtonEventArgs e)
+    {
+        if (sender is not FrameworkElement { Tag: string direccion }) return;
+        e.Handled = true;
+        Pasar(int.Parse(direccion));
     }
 
     private static void Animar(UIElement elemento, DependencyProperty propiedad, double hasta,
@@ -1321,6 +1399,58 @@ public partial class MainWindow : Window
     }
 
     private void Salir_Click(object sender, RoutedEventArgs e) => Close();
+
+    // ---------- Actualizaciones ----------
+
+    private static readonly Color AzulAviso = Color.FromRgb(0x0A, 0x84, 0xFF);
+
+    private async void BuscarActualizaciones_Click(object sender, RoutedEventArgs e) => await BuscarActualizacionAsync(aPedido: true);
+
+    /// <summary>Si hay version nueva, un aviso que al tocarlo la instala. A pedido tambien avisa si ya esta al dia.</summary>
+    private async Task BuscarActualizacionAsync(bool aPedido)
+    {
+        if (_actualizando) return;
+        VersionNueva? nueva;
+        try
+        {
+            nueva = await Actualizaciones.BuscarAsync();
+        }
+        catch (Exception ex) when (ex is System.Net.Http.HttpRequestException or TaskCanceledException or System.Text.Json.JsonException
+                                         or KeyNotFoundException or InvalidOperationException)
+        {
+            Log.Escribir($"actualizaciones: no se pudo consultar: {ex.GetType().Name}");
+            if (aPedido)
+                MostrarAviso(new Aviso("\uE774", Idioma.T("Act.SinConexion"), Idioma.T("Act.SinConexionDetalle"), AzulAviso, Carga: null, Persistente: false, Segundos: 5));
+            return;
+        }
+
+        if (nueva is null)
+        {
+            if (aPedido)
+                MostrarAviso(new Aviso("\uE73E", Idioma.T("Act.AlDia"), $"DeskIsleBar {Actualizaciones.Actual}", Color.FromRgb(0x30, 0xD1, 0x58),
+                                       Carga: null, Persistente: false, Segundos: 4));
+            return;
+        }
+        Log.Escribir($"actualizaciones: hay una version nueva ({nueva.Version})");
+        MostrarAviso(new Aviso("\uE896", Idioma.T("Act.Nueva", nueva.Version), Idioma.T("Act.NuevaDetalle"), AzulAviso,
+                               Carga: null, Persistente: false, Segundos: 12, AlTocar: () => _ = InstalarActualizacionAsync(nueva)));
+    }
+
+    private async Task InstalarActualizacionAsync(VersionNueva nueva)
+    {
+        if (_actualizando) return;
+        _actualizando = true;
+        MostrarAviso(new Aviso("\uE896", Idioma.T("Act.Descargando"), $"DeskIsleBar {nueva.Version}", AzulAviso, Carga: null, Persistente: false, Segundos: 60));
+        if (await Actualizaciones.InstalarAsync(nueva))
+        {
+            Application.Current.Shutdown();   // el instalador espera a que se cierre y la vuelve a abrir
+            return;
+        }
+        _actualizando = false;
+        if (_modo == Modo.Aviso) Colapsar();
+        MostrarAviso(new Aviso("\uE7BA", Idioma.T("Act.Error"), Idioma.T("Act.ErrorDetalle"), Color.FromRgb(0xFF, 0x9F, 0x0A),
+                               Carga: null, Persistente: false, Segundos: 8));
+    }
 
     /// <summary>Herramienta de desarrollo: "--panel calendario" abre ese panel al arrancar (para capturas).</summary>
     public void AbrirPanel(string nombre)

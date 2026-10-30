@@ -1,0 +1,186 @@
+<!doctype html>
+<html lang="es" data-idioma="es">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>DeskIsleBar · la isla flotante para Windows</title>
+<meta name="description" content="Una isla flotante para Windows que muestra tu música, notificaciones, calendario, clima y el estado de la PC, y se esconde cuando no la necesitás. Gratis y de código abierto.">
+<meta property="og:title" content="DeskIsleBar · la isla flotante para Windows">
+<meta property="og:description" content="Música, notificaciones, calendario, clima y tu PC en una píldora que se expande cuando pasa algo. Gratis y de código abierto.">
+<meta property="og:image" content="https://facughub.github.io/DeskIsleBar/capturas/musica.png">
+<meta property="og:type" content="website">
+<link rel="icon" type="image/png" href="favicon.png">
+<link rel="stylesheet" href="estilo.css">
+</head>
+<body>
+
+<header class="barra">
+  <a class="marca" href="#inicio"><img src="favicon.png" alt="" width="28" height="28">DeskIsleBar</a>
+  <nav>
+    <a href="#funciones"><span class="es">Funciones</span><span class="en">Features</span></a>
+    <a href="#preguntas"><span class="es">Preguntas</span><span class="en">FAQ</span></a>
+    <a href="https://github.com/FacuGhub/DeskIsleBar">GitHub</a>
+    <div class="idiomas" role="group" aria-label="Idioma / Language">
+      <button type="button" data-cambiar="es">ES</button>
+      <button type="button" data-cambiar="en">EN</button>
+    </div>
+  </nav>
+</header>
+
+<main id="inicio">
+  <section class="portada">
+    <img class="logo" src="icono.png" alt="" width="96" height="96">
+    <h1>
+      <span class="es">Lo importante, sin estorbar.</span>
+      <span class="en">What matters, out of your way.</span>
+    </h1>
+    <p class="bajada">
+      <span class="es">Una isla flotante para Windows que muestra tu música, tus notificaciones, el calendario, el clima y el estado de la PC. Se expande cuando pasa algo y se achica cuando termina.</span>
+      <span class="en">A floating island for Windows that shows your music, notifications, calendar, weather and PC status. It expands when something happens and shrinks back when it's done.</span>
+    </p>
+    <div class="acciones">
+      <a class="boton principal" id="descargar" href="https://github.com/FacuGhub/DeskIsleBar/releases/latest">
+        <svg viewBox="0 0 24 24" width="18" height="18" aria-hidden="true"><path fill="currentColor" d="M3 5.5 10.5 4.4v7.1H3V5.5Zm0 13 7.5 1.1v-7H3v5.9Zm8.4 1.2L21 21V12.6h-9.6v7.1Zm0-15.4v7.2H21V3l-9.6 1.3Z"/></svg>
+        <span class="es">Descargar para Windows</span><span class="en">Download for Windows</span>
+      </a>
+      <a class="boton" href="https://github.com/FacuGhub/DeskIsleBar">
+        <span class="es">Ver el código</span><span class="en">View the code</span>
+      </a>
+    </div>
+    <p class="nota" id="version">
+      <span class="es">Gratis · Windows 10 y 11 (64 bits) · Español e inglés</span>
+      <span class="en">Free · Windows 10 and 11 (64-bit) · English and Spanish</span>
+    </p>
+
+    <div class="escritorio">
+      <img src="capturas/demo.gif" width="560" alt="La isla en reposo se abre en la música, pasa por el calendario, el clima y la PC, y llega una notificación">
+    </div>
+  </section>
+
+  <section id="funciones" class="seccion">
+    <h2><span class="es">Todo en una píldora</span><span class="en">Everything in one pill</span></h2>
+    <div class="grilla">
+      <article class="tarjeta">
+        <img src="capturas/musica.png" alt="" loading="lazy">
+        <h3><span class="es">Música</span><span class="en">Music</span></h3>
+        <p><span class="es">Portada, título, controles y progreso de lo que esté sonando: Spotify, Tidal, Apple Music, YouTube Music o cualquier app con los controles multimedia de Windows. La ruedita del mouse cambia el volumen.</span>
+           <span class="en">Cover, title, controls and progress for whatever is playing: Spotify, Tidal, Apple Music, YouTube Music or any app that uses the Windows media controls. The mouse wheel changes the volume.</span></p>
+      </article>
+      <article class="tarjeta">
+        <img src="capturas/aviso-notificacion.png" alt="" loading="lazy">
+        <h3><span class="es">Notificaciones</span><span class="en">Notifications</span></h3>
+        <p><span class="es">Las notificaciones de tus apps aparecen en la isla con su ícono. Un clic y se abre la app o el chat, como en Windows.</span>
+           <span class="en">Your apps' notifications show up on the island with their icon. One click opens the app or the chat, just like in Windows.</span></p>
+      </article>
+      <article class="tarjeta">
+        <img src="capturas/calendario.png" alt="" loading="lazy">
+        <h3><span class="es">Calendario</span><span class="en">Calendar</span></h3>
+        <p><span class="es">Tus próximos eventos de Google Calendar u Outlook, la vista del mes y un recordatorio 10 minutos antes de cada uno.</span>
+           <span class="en">Your upcoming Google Calendar or Outlook events, a month view and a reminder 10 minutes before each one.</span></p>
+      </article>
+      <article class="tarjeta">
+        <img src="capturas/pc.png" alt="" loading="lazy">
+        <h3><span class="es">Tu PC</span><span class="en">Your PC</span></h3>
+        <p><span class="es">Uso de CPU, GPU y RAM, cuánto hace que está encendida y un botón para liberar espacio de temporales viejos y la papelera.</span>
+           <span class="en">CPU, GPU and RAM usage, uptime and a button to free up space from old temp files and the recycle bin.</span></p>
+      </article>
+      <article class="tarjeta">
+        <img src="capturas/clima.png" alt="" loading="lazy">
+        <h3><span class="es">Clima</span><span class="en">Weather</span></h3>
+        <p><span class="es">El clima actual y la máxima y mínima del día en tu ciudad.</span>
+           <span class="en">Current weather and today's high and low for your city.</span></p>
+      </article>
+      <article class="tarjeta">
+        <img src="capturas/herramientas.png" alt="" loading="lazy">
+        <h3><span class="es">Temporizadores y Pomodoro</span><span class="en">Timers and Pomodoro</span></h3>
+        <p><span class="es">Pomodoro, temporizadores rápidos o a medida y notas. Con el modo foco, las notificaciones esperan al descanso.</span>
+           <span class="en">Pomodoro, quick or custom timers and notes. With focus mode, notifications wait for the break.</span></p>
+      </article>
+    </div>
+  </section>
+
+  <section class="seccion">
+    <h2><span class="es">Avisos que importan</span><span class="en">Alerts that matter</span></h2>
+    <div class="dos-columnas">
+      <ul class="lista">
+        <li><span class="es">Batería baja de joysticks, auriculares y dispositivos Bluetooth</span><span class="en">Low battery on controllers, headphones and Bluetooth devices</span></li>
+        <li><span class="es">Dispositivos y pendrives conectados o desconectados</span><span class="en">Devices and USB drives connected or disconnected</span></li>
+        <li><span class="es">Cámara o micrófono en uso, y qué app los usa</span><span class="en">Camera or microphone in use, and which app</span></li>
+        <li><span class="es">Bloq Mayús, internet caída y captura copiada</span><span class="en">Caps Lock, internet down and copied screenshot</span></li>
+        <li><span class="es">Cada aviso se prende o se apaga en las opciones</span><span class="en">Every alert can be turned on or off in the options</span></li>
+      </ul>
+      <img src="capturas/aviso-bateria.png" alt="" loading="lazy" class="captura-suelta">
+    </div>
+  </section>
+
+  <section class="seccion destacadas">
+    <div class="destacada">
+      <h3><span class="es">No molesta en los juegos</span><span class="en">Stays out of your games</span></h3>
+      <p><span class="es">Se esconde en los juegos a pantalla completa y guarda las notificaciones para cuando salís. Lo urgente, como un joystick sin batería, aparece igual.</span>
+         <span class="en">It hides during full-screen games and saves notifications for later. Urgent things, like a controller running out of battery, still show up.</span></p>
+    </div>
+    <div class="destacada">
+      <h3><span class="es">Liviana</span><span class="en">Lightweight</span></h3>
+      <p><span class="es">Unos 60 MB de RAM y muy por debajo del 1% de CPU.</span>
+         <span class="en">About 60 MB of RAM and well under 1% CPU.</span></p>
+    </div>
+    <div class="destacada">
+      <h3><span class="es">Privada</span><span class="en">Private</span></h3>
+      <p><span class="es">Sin cuentas, sin publicidad y sin telemetría. Tus notificaciones y tus datos no salen de tu PC.</span>
+         <span class="en">No accounts, no ads and no telemetry. Your notifications and data never leave your PC.</span>
+         <a href="privacidad.html"><span class="es">Política de privacidad</span><span class="en">Privacy policy</span></a></p>
+    </div>
+  </section>
+
+  <section id="preguntas" class="seccion preguntas">
+    <h2><span class="es">Preguntas frecuentes</span><span class="en">FAQ</span></h2>
+    <details>
+      <summary><span class="es">¿Es gratis?</span><span class="en">Is it free?</span></summary>
+      <p><span class="es">Sí, y de código abierto (GPL-3.0). No tiene publicidad ni versiones pagas.</span>
+         <span class="en">Yes, and open source (GPL-3.0). No ads and no paid tiers.</span></p>
+    </details>
+    <details>
+      <summary><span class="es">¿Por qué Windows me avisa al abrir el instalador?</span><span class="en">Why does Windows warn me when I open the installer?</span></summary>
+      <p><span class="es">El instalador todavía no tiene firma digital, así que SmartScreen no lo reconoce. Elegí <em>Más información → Ejecutar de todas formas</em>. El código está publicado en GitHub para que cualquiera lo revise.</span>
+         <span class="en">The installer isn't code-signed yet, so SmartScreen doesn't recognize it. Choose <em>More info → Run anyway</em>. The code is on GitHub for anyone to review.</span></p>
+    </details>
+    <details>
+      <summary><span class="es">¿Necesita permisos de administrador?</span><span class="en">Does it need admin rights?</span></summary>
+      <p><span class="es">No. Se instala solo para tu usuario y trae todo lo que necesita.</span>
+         <span class="en">No. It installs just for your user and brings everything it needs.</span></p>
+    </details>
+    <details>
+      <summary><span class="es">¿Cómo se actualiza?</span><span class="en">How does it update?</span></summary>
+      <p><span class="es">Cuando hay una versión nueva, la isla te avisa. Un clic y se actualiza sola, conservando tu configuración.</span>
+         <span class="en">When there's a new version, the island lets you know. One click and it updates itself, keeping your settings.</span></p>
+    </details>
+    <details>
+      <summary><span class="es">¿Cómo la desinstalo?</span><span class="en">How do I uninstall it?</span></summary>
+      <p><span class="es">Como cualquier programa: <em>Configuración → Aplicaciones → DeskIsleBar → Desinstalar</em>. Te pregunta si también querés borrar tu configuración.</span>
+         <span class="en">Like any program: <em>Settings → Apps → DeskIsleBar → Uninstall</em>. It asks whether you also want to delete your settings.</span></p>
+    </details>
+    <details>
+      <summary><span class="es">¿Encontré un error, dónde lo cuento?</span><span class="en">I found a bug, where do I report it?</span></summary>
+      <p><span class="es">En los <a href="https://github.com/FacuGhub/DeskIsleBar/issues">issues de GitHub</a>, o por mail a <a href="mailto:facughub.apps@gmail.com">facughub.apps@gmail.com</a>.</span>
+         <span class="en">On <a href="https://github.com/FacuGhub/DeskIsleBar/issues">GitHub issues</a>, or by email at <a href="mailto:facughub.apps@gmail.com">facughub.apps@gmail.com</a>.</span></p>
+    </details>
+  </section>
+
+  <section class="seccion apoyo">
+    <h2><span class="es">¿Te sirve?</span><span class="en">Find it useful?</span></h2>
+    <p><span class="es">DeskIsleBar es gratis y lo hago en mi tiempo libre. Si querés apoyarlo, invitame un cafecito.</span>
+       <span class="en">DeskIsleBar is free and I build it in my spare time. If you'd like to support it, buy me a coffee.</span></p>
+    <a class="boton cafe" href="https://cafecito.app/facughub">☕ <span class="es">Invitame un cafecito</span><span class="en">Buy me a coffee</span></a>
+  </section>
+</main>
+
+<footer class="pie">
+  <span>DeskIsleBar · GPL-3.0</span>
+  <a href="https://github.com/FacuGhub/DeskIsleBar">GitHub</a>
+  <a href="privacidad.html"><span class="es">Privacidad</span><span class="en">Privacy</span></a>
+  <a href="mailto:facughub.apps@gmail.com"><span class="es">Contacto</span><span class="en">Contact</span></a>
+</footer>
+
+<script src="sitio.js"></script>
+</body>
+</html>

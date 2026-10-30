@@ -4,6 +4,8 @@
 
 Una pequeña isla flotante para Windows que te muestra lo importante sin estorbar: la música que suena, tus notificaciones, el calendario, el clima y el estado de la PC, en una píldora negra que se expande cuando pasa algo y se achica cuando termina.
 
+**Sitio:** [facughub.github.io/DeskIsleBar](https://facughub.github.io/DeskIsleBar/)
+
 <p align="center"><img src="docs/capturas/demo.gif" alt="DeskIsleBar: de la píldora en reposo a la música, el calendario, el clima y la PC, y llega una notificación" width="560"></p>
 
 | | |
@@ -17,7 +19,7 @@ Una pequeña isla flotante para Windows que te muestra lo importante sin estorba
 ## Qué hace
 
 - **Música**: portada, título, controles y progreso de la app que esté sonando (Tidal, Spotify, YouTube Music, Apple Music o cualquiera que use los controles multimedia de Windows). La rueda de volumen mueve el volumen propio de la app, no el de todo el sistema (si la música suena en el navegador, como YouTube Music, mueve el general).
-- **Notificaciones de apps**: las notificaciones de tus apps aparecen en la isla. Con *No molestar* prendido en Windows, la isla puede reemplazar los carteles de Windows (o respetar el *No molestar*, como prefieras).
+- **Notificaciones de apps**: las notificaciones de tus apps aparecen en la isla, con su ícono. Un clic abre la app (o el chat, si la app lo permite, como WhatsApp Web). Con *No molestar* prendido en Windows, la isla puede reemplazar los carteles de Windows (o respetar el *No molestar*, como prefieras).
 - **Calendario**: próximos eventos de tus calendarios de Google u Outlook (links iCal privados), con vista de mes navegable.
 - **Clima**: el clima actual y la máxima y mínima del día en tu ciudad (Open-Meteo).
 - **PC**: uso de CPU, GPU y RAM, tiempo encendida, y una herramienta para "liberar espacio" de temporales viejos y la papelera.
@@ -36,7 +38,7 @@ Una pequeña isla flotante para Windows que te muestra lo importante sin estorba
 ## Cómo se usa
 
 - **Abrirla:** pasá el mouse por encima. Se abre en la música (si algo suena) o en Inicio, y se cierra cuando sacás el mouse.
-- **Cambiar de panel:** arrastrá hacia la izquierda o la derecha sobre la isla (también funciona encima de los botones). Los puntitos de abajo muestran dónde estás: Música/Inicio → Calendario → Clima → PC → Notas → Accesos.
+- **Cambiar de panel:** arrastrá hacia la izquierda o la derecha sobre la isla (también funciona encima de los botones). Los puntitos de abajo muestran dónde estás (Música/Inicio → Calendario → Clima → PC → Notas → Accesos) y con un clic vas directo a ese panel. También aparecen flechitas ‹ › al acercar el mouse a un costado.
 - **Moverla:** arrastrá la isla a cualquier parte de la pantalla. Recuerda el lugar y crece hacia el lado libre (desde abajo crece hacia arriba, desde un costado hacia el centro). *Centrar*, en las opciones, la devuelve arriba.
 - **Volumen:** girá la rueda del mouse sobre la isla. Si suena música cambia el volumen de esa app; si no, el del sistema.
 - **Música:** clic en la portada para traer la app al frente; arrastrá la barra de progreso para saltar a otra parte del tema.
@@ -53,16 +55,19 @@ Una pequeña isla flotante para Windows que te muestra lo importante sin estorba
 
 <!-- TODO: link de la Microsoft Store, cuando esté publicada -->
 
-Descargá `DeskIsleBar-Setup-<versión>.exe` desde [Releases](../../releases) y abrilo. Se instala solo para tu usuario (sin permisos de administrador), agrega DeskIsleBar al menú Inicio y, si querés, la hace arrancar con Windows. Eso lo podés cambiar después en las opciones de la isla.
+Descargá el instalador desde el [sitio](https://facughub.github.io/DeskIsleBar/) o desde [Releases](../../releases) (`DeskIsleBar-Setup-<versión>.exe`) y abrilo. Se instala solo para tu usuario (sin permisos de administrador), agrega DeskIsleBar al menú Inicio y, si querés, la hace arrancar con Windows. Eso lo podés cambiar después en las opciones de la isla.
+
+Para actualizar no hace falta bajar nada: cuando hay una versión nueva, la isla te avisa y se actualiza con un clic, conservando tu configuración (también la podés buscar con el botón de *Opciones*).
 
 ## Preguntas frecuentes
 
 **¿DeskIsleBar recolecta mis datos?**
-No. No tiene telemetría, ni estadísticas de uso, ni cuentas, ni un servidor propio. DeskIsleBar solo se conecta a internet para dos cosas:
+No. No tiene telemetría, ni estadísticas de uso, ni cuentas, ni un servidor propio. DeskIsleBar solo se conecta a internet para tres cosas:
 - **Clima:** manda el nombre de la ciudad que escribiste (y después sus coordenadas) a [Open-Meteo](https://open-meteo.com/), un servicio de clima gratuito, sin ningún dato que te identifique.
 - **Calendario:** descarga los links iCal que agregás *vos*, directamente de Google o de Outlook.
+- **Actualizaciones:** al iniciar, una vez por día y cuando la buscás desde *Opciones*, le pregunta a GitHub cuál es la última versión publicada (sin mandar datos tuyos).
 
-Nada más sale de tu PC.
+Nada más sale de tu PC. Más detalle en la [política de privacidad](https://facughub.github.io/DeskIsleBar/privacidad.html).
 
 **¿Lee mis notificaciones?**
 Sí, para mostrarlas en la isla: localmente y en solo lectura. Nunca salen de tu PC y su contenido no se escribe en ningún registro. Lo podés apagar en las opciones cuando quieras.

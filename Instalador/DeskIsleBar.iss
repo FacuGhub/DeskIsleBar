@@ -67,10 +67,17 @@ Root: HKCU; Subkey: "Software\Microsoft\Windows\CurrentVersion\Run"; ValueType: 
 
 [Run]
 Filename: "{app}\DeskIsleBar.exe"; Description: "{cm:Abrir}"; Flags: nowait postinstall skipifsilent
+; Actualizacion desde la isla (instalacion silenciosa con /actualizar=1): al terminar se vuelve a abrir sola
+Filename: "{app}\DeskIsleBar.exe"; Flags: nowait; Check: EsActualizacion
 
 [Code]
 const
   ClaveRun = 'Software\Microsoft\Windows\CurrentVersion\Run';
+
+function EsActualizacion: Boolean;
+begin
+  Result := ExpandConstant('{param:actualizar|0}') = '1';
+end;
 
 // "Arrancar con Windows": se borra solo si apunta a esta instalacion (la pudo prender el instalador o la app)
 procedure BorrarArranqueSiEsNuestro;

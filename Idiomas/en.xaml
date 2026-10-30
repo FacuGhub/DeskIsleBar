@@ -219,4 +219,14 @@
     <sys:String x:Key="Bien.Clima.Texto">Which city do you want the weather for? You can leave it empty and fill it in later in Options.</sys:String>
     <sys:String x:Key="Bien.Opciones.Titulo">Last one: Options</sys:String>
     <sys:String x:Key="Bien.Opciones.Texto">There you turn panels and alerts on or off, pick the language, the music app and whether the island stays on top of games. Find them in the shortcuts panel, under ⚙.</sys:String>
+    <!-- Actualizaciones -->
+    <sys:String x:Key="Act.Buscar">Check for updates</sys:String>
+    <sys:String x:Key="Act.Nueva">A new version is available: {0}</sys:String>
+    <sys:String x:Key="Act.NuevaDetalle">Click to update · takes a few seconds</sys:String>
+    <sys:String x:Key="Act.AlDia">You're up to date</sys:String>
+    <sys:String x:Key="Act.Descargando">Downloading the update…</sys:String>
+    <sys:String x:Key="Act.Error">Couldn't update</sys:String>
+    <sys:String x:Key="Act.ErrorDetalle">Try again later or download it from GitHub</sys:String>
+    <sys:String x:Key="Act.SinConexion">Couldn't check for updates</sys:String>
+    <sys:String x:Key="Act.SinConexionDetalle">Check your internet connection</sys:String>
 </ResourceDictionary>

@@ -1,0 +1,107 @@
+<!doctype html>
+<html lang="es" data-idioma="es">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Privacidad · DeskIsleBar</title>
+<meta name="description" content="Política de privacidad de DeskIsleBar: qué datos usa, dónde quedan y a qué se conecta.">
+<link rel="icon" type="image/png" href="favicon.png">
+<link rel="stylesheet" href="estilo.css">
+</head>
+<body>
+
+<header class="barra">
+  <a class="marca" href="./"><img src="favicon.png" alt="" width="28" height="28">DeskIsleBar</a>
+  <nav>
+    <a href="./"><span class="es">Inicio</span><span class="en">Home</span></a>
+    <a href="https://github.com/FacuGhub/DeskIsleBar">GitHub</a>
+    <div class="idiomas" role="group" aria-label="Idioma / Language">
+      <button type="button" data-cambiar="es">ES</button>
+      <button type="button" data-cambiar="en">EN</button>
+    </div>
+  </nav>
+</header>
+
+<main>
+<article class="texto es">
+  <h1>Política de privacidad</h1>
+  <p class="fecha">Última actualización: 30 de octubre de 2026</p>
+
+  <p>DeskIsleBar es una app gratuita y de código abierto para Windows. No tiene cuentas, ni publicidad, ni telemetría, ni un servidor propio: no junta datos tuyos y no los vende ni los comparte con nadie.</p>
+
+  <h2>Lo que queda en tu PC</h2>
+  <p>Todo lo que DeskIsleBar guarda está en tu PC, en <code>%LOCALAPPDATA%\DeskIsleBar</code>, y no se envía a ningún lado:</p>
+  <ul>
+    <li>tu configuración, tus notas y la posición de la isla;</li>
+    <li>los links de los calendarios que vinculás, cifrados con DPAPI de Windows: solo tu usuario de Windows los puede leer;</li>
+    <li>un registro técnico (<code>deskislebar.log</code>) con eventos y errores, por ejemplo qué app mandó una notificación. Nunca registra el contenido de las notificaciones ni tus links de calendario.</li>
+  </ul>
+
+  <h2>Notificaciones</h2>
+  <p>Para mostrarlas en la isla, DeskIsleBar lee las notificaciones de tus apps desde la base de datos local de Windows, en solo lectura. Se procesan en tu PC: no se guardan en otro lado ni se envían a ningún servidor. Al hacer clic en una, DeskIsleBar le pasa a la app que la mandó los mismos datos que le pasaría Windows. Lo podés apagar en las opciones.</p>
+
+  <h2>Conexiones a internet</h2>
+  <p>DeskIsleBar solo se conecta a internet para estas cosas:</p>
+  <ul>
+    <li><strong>Clima:</strong> manda el nombre de la ciudad que escribiste, y después sus coordenadas, a <a href="https://open-meteo.com/">Open-Meteo</a>, un servicio de clima gratuito. No manda ningún dato que te identifique.</li>
+    <li><strong>Calendario:</strong> descarga los calendarios cuyos links agregaste vos, directamente desde Google o Microsoft.</li>
+    <li><strong>Actualizaciones</strong> (versión descargada de GitHub): al iniciar, una vez por día y cuando tocás «Buscar actualizaciones», consulta en GitHub cuál es la última versión publicada. Solo pide esa información, sin mandar datos tuyos. Si aceptás actualizar, descarga el instalador desde GitHub y comprueba su huella SHA-256 antes de ejecutarlo. La versión de la Microsoft Store no consulta sola: se actualiza por la Store.</li>
+  </ul>
+  <p>Como en cualquier conexión, esos servicios pueden ver tu dirección IP. Cada uno tiene su propia política de privacidad.</p>
+
+  <h2>Este sitio</h2>
+  <p>Este sitio no usa cookies, ni estadísticas, ni recursos de terceros. Guarda el idioma que elegís en tu navegador y consulta la API de GitHub para que el botón de descarga apunte a la última versión. Está alojado en GitHub Pages.</p>
+
+  <h2>Borrar tus datos</h2>
+  <p>Al desinstalar DeskIsleBar, el desinstalador te pregunta si también querés borrar tu configuración, notas y calendarios vinculados. También podés borrar la carpeta <code>%LOCALAPPDATA%\DeskIsleBar</code> cuando quieras.</p>
+
+  <h2>Cambios y contacto</h2>
+  <p>Si esta política cambia, se actualiza en esta página con su fecha. Por cualquier consulta, escribí a <a href="mailto:facughub.apps@gmail.com">facughub.apps@gmail.com</a>.</p>
+</article>
+
+<article class="texto en">
+  <h1>Privacy policy</h1>
+  <p class="fecha">Last updated: October 30, 2026</p>
+
+  <p>DeskIsleBar is a free, open-source app for Windows. It has no accounts, no ads, no telemetry and no server of its own: it doesn't collect your data, and it doesn't sell or share it with anyone.</p>
+
+  <h2>What stays on your PC</h2>
+  <p>Everything DeskIsleBar stores is on your PC, in <code>%LOCALAPPDATA%\DeskIsleBar</code>, and is never sent anywhere:</p>
+  <ul>
+    <li>your settings, your notes and the island's position;</li>
+    <li>the links of the calendars you link, encrypted with Windows DPAPI: only your Windows user can read them;</li>
+    <li>a technical log (<code>deskislebar.log</code>) with events and errors, such as which app sent a notification. It never records notification content or your calendar links.</li>
+  </ul>
+
+  <h2>Notifications</h2>
+  <p>To show them on the island, DeskIsleBar reads your apps' notifications from Windows' local database, read-only. They are processed on your PC: not stored elsewhere and never sent to any server. When you click one, DeskIsleBar passes the app that sent it the same data Windows would. You can turn this off in the options.</p>
+
+  <h2>Internet connections</h2>
+  <p>DeskIsleBar only connects to the internet for these things:</p>
+  <ul>
+    <li><strong>Weather:</strong> it sends the name of the city you typed, and then its coordinates, to <a href="https://open-meteo.com/">Open-Meteo</a>, a free weather service. It sends nothing that identifies you.</li>
+    <li><strong>Calendar:</strong> it downloads the calendars whose links you added, directly from Google or Microsoft.</li>
+    <li><strong>Updates</strong> (version downloaded from GitHub): at startup, once a day and when you click «Check for updates», it asks GitHub which version is the latest. It only requests that information, without sending any of your data. If you choose to update, it downloads the installer from GitHub and checks its SHA-256 fingerprint before running it. The Microsoft Store version doesn't check on its own: it updates through the Store.</li>
+  </ul>
+  <p>As with any connection, those services can see your IP address. Each has its own privacy policy.</p>
+
+  <h2>This website</h2>
+  <p>This website uses no cookies, no analytics and no third-party resources. It stores the language you pick in your browser and queries the GitHub API so the download button points to the latest version. It is hosted on GitHub Pages.</p>
+
+  <h2>Deleting your data</h2>
+  <p>When you uninstall DeskIsleBar, the uninstaller asks whether you also want to delete your settings, notes and linked calendars. You can also delete the <code>%LOCALAPPDATA%\DeskIsleBar</code> folder at any time.</p>
+
+  <h2>Changes and contact</h2>
+  <p>If this policy changes, it will be updated on this page with its date. For any questions, write to <a href="mailto:facughub.apps@gmail.com">facughub.apps@gmail.com</a>.</p>
+</article>
+</main>
+
+<footer class="pie">
+  <span>DeskIsleBar · GPL-3.0</span>
+  <a href="./"><span class="es">Inicio</span><span class="en">Home</span></a>
+  <a href="mailto:facughub.apps@gmail.com"><span class="es">Contacto</span><span class="en">Contact</span></a>
+</footer>
+
+<script src="sitio.js"></script>
+</body>
+</html>

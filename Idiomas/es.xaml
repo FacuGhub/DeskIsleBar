@@ -219,4 +219,14 @@
     <sys:String x:Key="Bien.Clima.Texto">¿De qué ciudad querés ver el clima? Podés dejarlo vacío y completarlo después en Opciones.</sys:String>
     <sys:String x:Key="Bien.Opciones.Titulo">Por último: Opciones</sys:String>
     <sys:String x:Key="Bien.Opciones.Texto">Ahí prendés o apagás paneles y avisos, elegís el idioma, la app de música y si la isla va encima de los juegos. Las encontrás en el panel de accesos, con el ⚙.</sys:String>
+    <!-- Actualizaciones -->
+    <sys:String x:Key="Act.Buscar">Buscar actualizaciones</sys:String>
+    <sys:String x:Key="Act.Nueva">Hay una versión nueva: {0}</sys:String>
+    <sys:String x:Key="Act.NuevaDetalle">Tocá para actualizar · tarda unos segundos</sys:String>
+    <sys:String x:Key="Act.AlDia">Ya tenés la última versión</sys:String>
+    <sys:String x:Key="Act.Descargando">Descargando la actualización…</sys:String>
+    <sys:String x:Key="Act.Error">No se pudo actualizar</sys:String>
+    <sys:String x:Key="Act.ErrorDetalle">Probá más tarde o bajala desde GitHub</sys:String>
+    <sys:String x:Key="Act.SinConexion">No se pudo buscar actualizaciones</sys:String>
+    <sys:String x:Key="Act.SinConexionDetalle">Revisá la conexión a internet</sys:String>
 </ResourceDictionary>
