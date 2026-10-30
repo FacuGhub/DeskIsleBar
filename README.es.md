@@ -97,7 +97,23 @@ Como cualquier programa: *Configuración → Aplicaciones → Aplicaciones insta
 
 ## ¿Encontraste un error? ¿Tenés una idea?
 
-- **Errores y sugerencias:** abrí un [issue](../../issues) contando qué pasó y qué esperabas. Ayuda mucho adjuntar el informe de diagnóstico: corré `DeskIsleBar.exe --diagnostico` y se abre un archivo de texto con qué funciones de Windows pudo leer la isla en tu PC (no manda nada a ningún lado).
+- **Errores y sugerencias:** abrí un [issue](../../issues) (o escribí al mail de abajo) contando qué pasó, cuándo y qué esperabas. Ayuda mucho adjuntar el registro y el informe de diagnóstico (ver abajo).
+
+### Cómo pasar el registro (log)
+
+1. Apretá **Win + R**, pegá `%LOCALAPPDATA%\DeskIsleBar` y apretá **Enter**. Se abre la carpeta de DeskIsleBar.
+2. Adjuntá el archivo **`deskislebar.log`** al issue o al mail. Si también está **`deskislebar.log.old`** (el registro anterior), mandalo también.
+3. Si podés, copialo justo después de que pase el problema: así queda registrado lo último que hizo la isla.
+
+El registro anota eventos y errores técnicos, como qué app mandó una notificación y cómo se abrió. **No guarda el contenido de tus notificaciones ni tus links de calendario**, y tapa tu nombre de usuario de Windows en las rutas. Igual podés abrirlo con el Bloc de notas y mirarlo antes de mandarlo.
+
+### Informe de diagnóstico (opcional)
+
+Muestra qué funciones de Windows pudo leer la isla en tu PC (notificaciones, música, cámara, baterías…) y no manda nada a ningún lado:
+
+1. Apretá **Win + R** y pegá esto (con las comillas):
+   `"%LOCALAPPDATA%\Programs\DeskIsleBar\DeskIsleBar.exe" --diagnostico`
+2. Apretá **Enter**: se abre un archivo de texto con el informe. Adjuntalo junto con el registro.
 - **Preguntas e ideas:** [Discussions](../../discussions).
 - **Temas privados** (por ejemplo, un problema de seguridad): escribí a [facughub.apps@gmail.com](mailto:facughub.apps@gmail.com).
 - **Soporte para más dispositivos:** la batería de marcas que solo la informan por su propio software (Corsair, Logitech, Razer, SteelSeries…) se puede sumar como integración opcional. Si tenés uno de esos dispositivos y querés ayudar, abrí un issue o un pull request: la integración tiene que activarse solo si está instalado el software de la marca, y necesita a alguien con el equipo para probarla.
