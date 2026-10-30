@@ -234,4 +234,7 @@
     <sys:String x:Key="Inicio.Camara">Cámara: {0}</sys:String>
     <sys:String x:Key="Inicio.Microfono">Micrófono: {0}</sys:String>
     <sys:String x:Key="Inicio.BloqMayus">Bloq Mayús</sys:String>
+    <!-- Al salir -->
+    <sys:String x:Key="Av.Salir">Cerrando DeskIsleBar</sys:String>
+    <sys:String x:Key="Av.SalirDetalle">Volvé a abrirla desde el menú Inicio</sys:String>
 </ResourceDictionary>

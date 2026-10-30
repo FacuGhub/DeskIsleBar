@@ -90,6 +90,9 @@ The GitHub download is not code-signed yet, so Windows doesn't recognize it. You
 **Can scripts send messages to the island?**
 Yes: `DeskIsleBar.exe --aviso "Title" "Detail" [--icono info|alerta|candado|joystick|campana|red] [--color naranja|rojo|verde|azul] [--fijo]` shows a message in the island that is already running (`--fijo` keeps it until you click it).
 
+**I closed the island, how do I open it again?**
+Search for **DeskIsleBar** in the Start menu (or in Windows search) and open it. If *Start with Windows* is on, it also comes back by itself the next time you turn on your PC.
+
 **How do I uninstall it?**
 Like any other program: *Settings → Apps → Installed apps → DeskIsleBar → Uninstall*. It closes the island if it is open, removes *Start with Windows* and asks whether to also delete your settings, notes and linked calendars (`%LOCALAPPDATA%\DeskIsleBar`).
 

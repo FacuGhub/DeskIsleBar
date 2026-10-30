@@ -1590,7 +1590,24 @@ public partial class MainWindow : Window
         if (_modo == Modo.Herramientas) Colapsar();
     }
 
-    private void Salir_Click(object sender, RoutedEventArgs e) => Close();
+    /// <summary>
+    /// Antes de cerrarse dice como volver a abrirla: sin el acceso del escritorio, alguien que toca Salir no
+    /// siempre sabe que esta en el menu Inicio.
+    /// </summary>
+    private async void Salir_Click(object sender, RoutedEventArgs e)
+    {
+        if (_saliendo) return;
+        _saliendo = true;
+        if (_escribiendo) SoltarTeclado();
+        Colapsar();
+        _cola.Clear();
+        MostrarAviso(new Aviso("\uE7E8", Idioma.T("Av.Salir"), Idioma.T("Av.SalirDetalle"), Color.FromRgb(0x98, 0x98, 0x9D),
+                               Carga: null, Persistente: false, Segundos: 4));   // comun: sin el sonido de los importantes
+        await Task.Delay(3200);
+        Close();
+    }
+
+    private bool _saliendo;
 
     // ---------- Actualizaciones ----------
 

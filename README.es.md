@@ -92,6 +92,9 @@ La descarga de GitHub todavía no está firmada digitalmente, así que Windows n
 **¿Se le pueden mandar mensajes desde scripts?**
 Sí: `DeskIsleBar.exe --aviso "Título" "Detalle" [--icono info|alerta|candado|joystick|campana|red] [--color naranja|rojo|verde|azul] [--fijo]` muestra un mensaje en la isla que ya está abierta (`--fijo` lo deja hasta que lo toques).
 
+**Cerré la isla, ¿cómo la vuelvo a abrir?**
+Buscá **DeskIsleBar** en el menú Inicio (o en el buscador de Windows) y abrila. Si tenés activado *Arrancar con Windows*, también vuelve sola la próxima vez que prendas la PC.
+
 **¿Cómo la desinstalo?**
 Como cualquier programa: *Configuración → Aplicaciones → Aplicaciones instaladas → DeskIsleBar → Desinstalar*. Cierra la isla si está abierta, saca *Arrancar con Windows* y te pregunta si querés borrar también tu configuración, notas y calendarios vinculados (`%LOCALAPPDATA%\DeskIsleBar`).
 
