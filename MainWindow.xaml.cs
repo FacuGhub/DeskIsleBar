@@ -241,6 +241,8 @@ public partial class MainWindow : Window
         Pildora.VerticalAlignment = vertical;
         bool abajo = vertical == VerticalAlignment.Bottom;
         Pildora.Margin = new Thickness(14, abajo ? 8 : 4, 14, abajo ? 4 : 8);   // el margen chico, del lado del borde
+        // Las flechas (afuera de la pildora) centradas en su alto
+        FlechaIzquierda.Margin = FlechaDerecha.Margin = new Thickness(0, Pildora.Margin.Top, 0, Pildora.Margin.Bottom);
     }
 
     /// <summary>
@@ -420,6 +422,12 @@ public partial class MainWindow : Window
         notificaciones.Activo = _config.NotificacionesWindows;
         notificaciones.RespetarNoMolestar = _config.RespetarNoMolestar;
         notificaciones.OmitirRecortes = !_config.AvisosApagados.Contains(TiposAviso.Captura);
+        // Misma app que esta sonando y su texto trae el titulo del tema: es el "reproduciendo ahora" (Apple Music).
+        // Las dos condiciones: si suena YouTube en Chrome, las notificaciones de WhatsApp Web (tambien "Chrome") siguen.
+        notificaciones.EsAnuncioDeMusica = (app, textos) =>
+            _musica?.App is { } suena && _musica.Estado is { Titulo.Length: > 0 } estado &&
+            string.Equals(app, suena, StringComparison.OrdinalIgnoreCase) &&
+            textos.Any(t => t.Contains(estado.Titulo, StringComparison.OrdinalIgnoreCase));
     }
 
     // ---------- Avisos ----------
@@ -645,6 +653,7 @@ public partial class MainWindow : Window
     private void Zona_MouseLeave(object sender, MouseEventArgs e)
     {
         _entrada.Stop();
+        OcultarFlechas();
         if (_escribiendo) return;   // escribiendo no se cierra al sacar el mouse: se cierra al hacer clic afuera
         if (EnPanel && _pistaArrastrada is null && _modo != Modo.Bienvenida) _salida.Start();   // la bienvenida no se cierra sola
     }
@@ -1085,7 +1094,7 @@ public partial class MainWindow : Window
         if (modo != Modo.Pc && !_limpiando) ReiniciarLimpieza();   // salir del panel cancela una confirmacion pendiente
         else _lecturaPc.Stop();
         ActualizarPuntos(modo);
-        if (modo is Modo.Aviso or Modo.Volumen or Modo.Bienvenida || !Paginas.Contains(modo)) Pildora_MouseLeave(Pildora, null!);
+        if (modo is Modo.Aviso or Modo.Volumen or Modo.Bienvenida || !Paginas.Contains(modo)) OcultarFlechas();
 
         // Pantallas con flecha de volver: se recuerda desde que panel se llego (no al volver, para no hacer un ciclo)
         if (modo is Modo.Opciones or Modo.Calendarios or Modo.Tutorial or Modo.Avisos && modo != _modo && EnPanel && !_volviendo)
@@ -1149,7 +1158,7 @@ public partial class MainWindow : Window
         if (_escribiendo) SoltarTeclado();
         SoltarZona();
         Pildora.Cursor = null;
-        Pildora_MouseLeave(Pildora, null!);
+        OcultarFlechas();
         if (_modo == Modo.Bienvenida) AnimarDemo(null);
         _modo = Modo.Reposo;
         AplicarCapa();   // "detras de las apps": vuelve atras
@@ -1255,7 +1264,7 @@ public partial class MainWindow : Window
     private const double ZonaFlecha = 56;   // a cuantos px del borde aparece la flecha de ese lado
 
     /// <summary>Las flechas aparecen al acercar el mouse a un costado, solo en los paneles de la ronda.</summary>
-    private void Pildora_MouseMove(object sender, MouseEventArgs e)
+    private void Zona_MouseMove(object sender, MouseEventArgs e)
     {
         bool enRonda = _inicioGesto is null && _pistaArrastrada is null && Paginas is { Length: > 1 } paginas && Array.IndexOf(paginas, _modo) >= 0;
         double x = e.GetPosition(Pildora).X;
@@ -1263,7 +1272,7 @@ public partial class MainWindow : Window
         MostrarFlecha(FlechaDerecha, enRonda && x > Pildora.ActualWidth - ZonaFlecha);
     }
 
-    private void Pildora_MouseLeave(object sender, MouseEventArgs e)
+    private void OcultarFlechas()
     {
         MostrarFlecha(FlechaIzquierda, false);
         MostrarFlecha(FlechaDerecha, false);

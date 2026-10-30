@@ -9,8 +9,9 @@ namespace DeskIsleBar.Modulos;
 /// <summary>
 /// Clic en una notificacion de la isla: hace lo mismo que Windows al tocar la suya.
 /// 1) Notificacion de protocolo ("activationType=protocol"): abre ese link.
-/// 2) La app registro un activador (ToastActivatorCLSID en su acceso directo, ej. Chrome y sus apps como WhatsApp
-///    Web): se le pasan los argumentos de la notificacion, asi abre el chat o la pagina justa.
+/// 2) La app registro un activador: en su acceso directo (ToastActivatorCLSID, ej. Chrome y sus apps como WhatsApp
+///    Web) o, si es de la Store, en el manifiesto de su paquete (ej. WhatsApp). Se le pasan los argumentos de la
+///    notificacion, asi abre el chat o la pagina justa.
 /// 3) Si no (ej. Discord, que recibe el clic dentro de su propio proceso): se trae la app al frente.
 /// Los argumentos solo van a la app que mando la notificacion y nunca al log.
 /// </summary>
@@ -106,6 +107,12 @@ public static class AbrirNotificacion
     {
         lock (Activadores)
         {
+            // Apps de la Store ("Familia_hash!App"): no tienen acceso directo, el activador esta en su manifiesto
+            if (aumid.Contains('!'))
+            {
+                if (!Activadores.TryGetValue(aumid, out var dePaquete)) Activadores[aumid] = dePaquete = ActivadorDePaquete(aumid);
+                return dePaquete;
+            }
             if (!_activadoresLeidos)
             {
                 _activadoresLeidos = true;
@@ -118,6 +125,31 @@ public static class AbrirNotificacion
                 }
             }
             return Activadores.GetValueOrDefault(aumid);
+        }
+    }
+
+    /// <summary>
+    /// Activador declarado en el AppxManifest.xml del paquete (desktop:ToastNotificationActivation de esa aplicacion).
+    /// Windows lo registra para cualquier usuario de la PC; null si la app no declara uno.
+    /// </summary>
+    private static Guid? ActivadorDePaquete(string aumid)
+    {
+        int separador = aumid.IndexOf('!');
+        string familia = aumid[..separador], appId = aumid[(separador + 1)..];
+        try
+        {
+            var paquete = new Windows.Management.Deployment.PackageManager().FindPackagesForUser("", familia).FirstOrDefault();
+            string? carpeta = paquete?.InstalledLocation?.Path;
+            if (carpeta is null) return null;
+            var manifiesto = System.Xml.Linq.XDocument.Load(Path.Combine(carpeta, "AppxManifest.xml"));
+            var aplicacion = manifiesto.Descendants().FirstOrDefault(e => e.Name.LocalName == "Application" && (string?)e.Attribute("Id") == appId);
+            var activacion = aplicacion?.Descendants().FirstOrDefault(e => e.Name.LocalName == "ToastNotificationActivation");
+            return Guid.TryParse((string?)activacion?.Attribute("ToastActivatorCLSID"), out var clsid) ? clsid : null;
+        }
+        catch (Exception ex)
+        {
+            Log.Escribir($"notificaciones: no se pudo leer el manifiesto del paquete: {ex.GetType().Name}");
+            return null;
         }
     }
 

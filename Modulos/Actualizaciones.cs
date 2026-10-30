@@ -109,13 +109,17 @@ public static class Actualizaciones
 
             // El instalador no puede correr con la isla abierta (AppMutex): se lanza con 2 s de demora, oculto,
             // y la isla se cierra mientras tanto. /actualizar=1 hace que al terminar la vuelva a abrir.
-            System.Diagnostics.Process.Start(new System.Diagnostics.ProcessStartInfo
+            // La ruta va en una variable de entorno: cmd la expande una sola vez y no interpreta lo que traiga
+            // (ej. un % o un & en la carpeta del usuario).
+            var lanzador = new System.Diagnostics.ProcessStartInfo
             {
-                FileName = "cmd.exe",
-                Arguments = $"/c ping -n 3 127.0.0.1 >nul & \"{instalador}\" /SILENT /SUPPRESSMSGBOXES /NORESTART /actualizar=1",
+                FileName = Path.Combine(Environment.SystemDirectory, "cmd.exe"),
+                Arguments = "/d /c ping -n 3 127.0.0.1 >nul & \"%DESKISLEBAR_INSTALADOR%\" /SILENT /SUPPRESSMSGBOXES /NORESTART /actualizar=1",
                 UseShellExecute = false,
                 CreateNoWindow = true,
-            });
+            };
+            lanzador.Environment["DESKISLEBAR_INSTALADOR"] = instalador;
+            System.Diagnostics.Process.Start(lanzador);
             Log.Escribir($"actualizaciones: instalando la {nueva.Version}");
             return true;
         }

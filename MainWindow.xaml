@@ -263,17 +263,19 @@
 
         <!-- Flechas a los costados de los paneles -->
         <Style x:Key="FlechaPanel" TargetType="Border">
-            <Setter Property="Width" Value="18"/>
+            <Setter Property="Width" Value="12"/>
             <Setter Property="Height" Value="30"/>
-            <Setter Property="CornerRadius" Value="9"/>
+            <Setter Property="CornerRadius" Value="6"/>
             <Setter Property="VerticalAlignment" Value="Center"/>
-            <Setter Property="Background" Value="#33FFFFFF"/>
+            <Setter Property="Background" Value="#FF000000"/>
+            <Setter Property="BorderBrush" Value="#40FFFFFF"/>
+            <Setter Property="BorderThickness" Value="1"/>
             <Setter Property="Cursor" Value="Hand"/>
             <Setter Property="Opacity" Value="0"/>
             <Setter Property="IsHitTestVisible" Value="False"/>
             <Style.Triggers>
                 <Trigger Property="IsMouseOver" Value="True">
-                    <Setter Property="Background" Value="#59FFFFFF"/>
+                    <Setter Property="Background" Value="#FF2C2C2E"/>
                 </Trigger>
             </Style.Triggers>
         </Style>
@@ -316,11 +318,11 @@
          clickeable) rodea a la pildora para que el mouse la "encuentre" pegado al borde de arriba. -->
     <Grid>
         <Grid x:Name="Zona" Background="#01000000" HorizontalAlignment="Center" VerticalAlignment="Top"
-              MouseEnter="Zona_MouseEnter" MouseLeave="Zona_MouseLeave"
+              MouseEnter="Zona_MouseEnter" MouseLeave="Zona_MouseLeave" MouseMove="Zona_MouseMove"
               MouseLeftButtonDown="Zona_MouseLeftButtonDown" MouseWheel="Zona_MouseWheel">
             <Border x:Name="Pildora" Background="#FF000000" Margin="14,4,14,8"
                     Width="96" Height="10" CornerRadius="5"
-                    MouseLeftButtonUp="Pildora_Click" MouseMove="Pildora_MouseMove" MouseLeave="Pildora_MouseLeave">
+                    MouseLeftButtonUp="Pildora_Click">
 
                 <Grid>
                     <!-- Reposo con contenido: mini portada + ecualizador, o icono + tiempo del temporizador -->
@@ -1130,19 +1132,20 @@
                     <!-- Indicador de pagina de la ronda de paneles (se arma en codigo): cada puntito lleva a su panel -->
                     <StackPanel x:Name="Puntos" Orientation="Horizontal" HorizontalAlignment="Center" VerticalAlignment="Bottom"
                                 Margin="0,0,0,1" Visibility="Collapsed"/>
-
-                    <!-- Flechas para pasar de panel: aparecen al acercar el mouse a un costado (ver Pildora_MouseMove) -->
-                    <Border x:Name="FlechaIzquierda" Tag="-1" Style="{StaticResource FlechaPanel}" HorizontalAlignment="Left" Margin="5,0,0,0"
-                            MouseLeftButtonDown="Flecha_MouseLeftButtonDown">
-                        <TextBlock FontFamily="Segoe Fluent Icons, Segoe MDL2 Assets" Text="&#xE76B;" FontSize="10" Foreground="White"
-                                   HorizontalAlignment="Center" VerticalAlignment="Center"/>
-                    </Border>
-                    <Border x:Name="FlechaDerecha" Tag="1" Style="{StaticResource FlechaPanel}" HorizontalAlignment="Right" Margin="0,0,5,0"
-                            MouseLeftButtonDown="Flecha_MouseLeftButtonDown">
-                        <TextBlock FontFamily="Segoe Fluent Icons, Segoe MDL2 Assets" Text="&#xE76C;" FontSize="10" Foreground="White"
-                                   HorizontalAlignment="Center" VerticalAlignment="Center"/>
-                    </Border>
                 </Grid>
+            </Border>
+
+            <!-- Flechas para pasar de panel: afuera de la pildora (en el margen de la zona) para no tapar el contenido.
+                 Aparecen al acercar el mouse a un costado (ver Zona_MouseMove) -->
+            <Border x:Name="FlechaIzquierda" Tag="-1" Style="{StaticResource FlechaPanel}" HorizontalAlignment="Left" Margin="0,0,0,4"
+                    MouseLeftButtonDown="Flecha_MouseLeftButtonDown">
+                <TextBlock FontFamily="Segoe Fluent Icons, Segoe MDL2 Assets" Text="&#xE76B;" FontSize="8" Foreground="White"
+                           HorizontalAlignment="Center" VerticalAlignment="Center"/>
+            </Border>
+            <Border x:Name="FlechaDerecha" Tag="1" Style="{StaticResource FlechaPanel}" HorizontalAlignment="Right" Margin="0,0,0,4"
+                    MouseLeftButtonDown="Flecha_MouseLeftButtonDown">
+                <TextBlock FontFamily="Segoe Fluent Icons, Segoe MDL2 Assets" Text="&#xE76C;" FontSize="8" Foreground="White"
+                           HorizontalAlignment="Center" VerticalAlignment="Center"/>
             </Border>
         </Grid>
     </Grid>

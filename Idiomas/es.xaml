@@ -29,7 +29,7 @@
     <sys:String x:Key="Op.ArranqueDetalle">DeskIsleBar se abre sola cuando iniciás sesión en Windows.</sys:String>
     <sys:String x:Key="Op.Foco">Foco en el Pomodoro</sys:String>
     <sys:String x:Key="Op.FocoDetalle">Mientras estudiás, las notificaciones esperan al descanso. Los avisos importantes salen igual.</sys:String>
-    <sys:String x:Key="Op.Cerrar">Cerrar DeskIsleBar</sys:String>
+    <sys:String x:Key="Op.Cerrar">Salir</sys:String>
     <sys:String x:Key="Op.Notificaciones">Notificaciones de apps</sys:String>
     <sys:String x:Key="Op.NotificacionesDetalle">Muestra en la isla las notificaciones de tus apps (Chrome, WhatsApp, Discord...). Se leen solo en tu PC: no se guardan ni se envían a ningún lado.</sys:String>
     <sys:String x:Key="Op.NoMolestar">Respetar No molestar</sys:String>

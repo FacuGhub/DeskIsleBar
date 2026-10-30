@@ -43,6 +43,12 @@ public class NotificacionesWindows
     /// </summary>
     public bool OmitirRecortes { get; set; }
 
+    /// <summary>
+    /// Pregunta a la ventana si una notificacion es el anuncio de tema nuevo de la app que esta sonando (ej. Apple
+    /// Music avisa cada tema): (app, textos) → true para omitirla, porque la isla ya muestra el tema en su panel.
+    /// </summary>
+    public Func<string, IReadOnlyList<string>, bool>? EsAnuncioDeMusica { get; set; }
+
     private static bool EsDeRecortes(string aumid) =>
         aumid.Contains("ScreenSketch", StringComparison.OrdinalIgnoreCase) || aumid.Contains("SnippingTool", StringComparison.OrdinalIgnoreCase);
 
@@ -143,6 +149,7 @@ public class NotificacionesWindows
         }
         catch (System.Xml.XmlException) { return null; }
         if (textos.Count == 0) return null;   // toasts sin texto (solo imagen, progreso vacio...)
+        if (EsAnuncioDeMusica?.Invoke(n.App, textos) == true) return null;
 
         string app = NombreDeApp(n.App);
         string detalle = string.Join(" · ", textos.Skip(1));
