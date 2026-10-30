@@ -19,8 +19,8 @@ Una pequeña isla flotante para Windows que te muestra lo importante sin estorba
 ## Qué hace
 
 - **Música**: portada, título, controles y progreso de la app que esté sonando (Tidal, Spotify, YouTube Music, Apple Music o cualquiera que use los controles multimedia de Windows). La rueda de volumen mueve el volumen propio de la app, no el de todo el sistema (si la música suena en el navegador, como YouTube Music, mueve el general).
-- **Notificaciones de apps**: las notificaciones de tus apps aparecen en la isla, con su ícono. Un clic abre la app (o el chat, si la app lo permite, como WhatsApp Web). Con *No molestar* prendido en Windows, la isla puede reemplazar los carteles de Windows (o respetar el *No molestar*, como prefieras).
-- **Calendario**: próximos eventos de tus calendarios de Google u Outlook (links iCal privados), con vista de mes navegable.
+- **Notificaciones de apps**: las notificaciones de tus apps aparecen en la isla, con su ícono, y las abrís directamente desde ahí: un clic en la isla abre la app, o el chat justo si la app lo permite (como WhatsApp). Con *No molestar* prendido en Windows, la isla puede reemplazar los carteles de Windows (o respetar el *No molestar*, como prefieras).
+- **Calendario**: próximos eventos de tus calendarios de Google u Outlook (links iCal privados), con vista de mes navegable. Un clic en un evento, o en su recordatorio cuando aparece en la isla, abre ese día en Google Calendar u Outlook.
 - **Clima**: el clima actual y la máxima y mínima del día en tu ciudad (Open-Meteo).
 - **PC**: uso de CPU, GPU y RAM, tiempo encendida, y una herramienta para "liberar espacio" de temporales viejos y la papelera.
 - **Notas rápidas**, **temporizadores** y **Pomodoro**, con un modo foco opcional: mientras estudiás, las notificaciones esperan al descanso.

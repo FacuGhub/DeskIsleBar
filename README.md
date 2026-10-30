@@ -17,8 +17,8 @@ A small floating island for Windows that shows what matters without getting in t
 ## Features
 
 - **Music** — cover, title, controls and progress for the app that is playing (Tidal, Spotify, YouTube Music, Apple Music or anything that uses the Windows media controls). The volume wheel moves the app's own volume, not the whole system (if the music plays in a browser, like YouTube Music, it moves the system volume).
-- **App notifications** — notifications from your apps appear in the island, with their icon. One click opens the app (or the chat, when the app allows it, like WhatsApp Web). With *Do not disturb* turned on in Windows, the island can replace Windows' own banners (or respect *Do not disturb*, your choice).
-- **Calendar** — upcoming events from your Google or Outlook calendars (private iCal links), with a navigable month view.
+- **App notifications** — notifications from your apps appear in the island, with their icon, and you open them right from there: one click on the island opens the app, or the exact chat when the app allows it (like WhatsApp). With *Do not disturb* turned on in Windows, the island can replace Windows' own banners (or respect *Do not disturb*, your choice).
+- **Calendar** — upcoming events from your Google or Outlook calendars (private iCal links), with a navigable month view. Clicking an event, or its reminder when it pops up on the island, opens that day in Google Calendar or Outlook.
 - **Weather** — current weather and today's high and low for your city (Open-Meteo).
 - **PC** — CPU, GPU and RAM usage, uptime, and a "free up space" tool for old temporary files and the recycle bin.
 - **Quick notes**, **timers** and **Pomodoro** — with an optional focus mode: while you study, notifications wait for the break.

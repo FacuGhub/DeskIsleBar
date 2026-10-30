@@ -405,7 +405,9 @@ public partial class MainWindow : Window
         {
             int minutos = Math.Max(1, (int)Math.Ceiling((e.Inicio - DateTime.Now).TotalMinutes));
             MostrarAviso(new Aviso("", e.Titulo, Idioma.T("Av.RecordatorioDetalle", minutos, e.Inicio.ToString("HH:mm")),
-                                   e.Color, Carga: null, Persistente: false, Segundos: 10, Tipo: TiposAviso.Recordatorios));
+                                   e.Color, Carga: null, Persistente: false, Segundos: 10, Tipo: TiposAviso.Recordatorios,
+                                   // Clic: abre ese dia en Google Calendar u Outlook, como el evento en el panel
+                                   AlTocar: e.Servicio == Servicio.Otro ? null : () => AbrirDiaEnWeb(e)));
         };
     }
 
