@@ -31,12 +31,14 @@ Una pequeña isla flotante para Windows que te muestra lo importante sin estorba
   - cámara o micrófono en uso, y qué app los usa;
   - batería de la notebook (cargando, con batería, baja);
   - Bloq Mayús activado/desactivado, internet caída / volvió, imagen copiada (Win+Shift+S).
+- **Indicadores de privacidad**: mientras una app usa la cámara o el micrófono, la isla muestra un punto verde o naranja junto a la hora (y Bloq Mayús, una teclita a la izquierda); el borde destella cuando empiezan. En el primer panel, la línea *En uso* dice qué app usa cada cosa. Se apagan en *Opciones → Avisos*.
 - **No molesta en los juegos**: se oculta mientras jugás en pantalla completa; con un video a pantalla completa solo aparece para las notificaciones. Los avisos críticos (como el joystick a punto de quedarse sin batería) aparecen igual.
-- **Liviana**: alrededor de 55 MB de RAM y muy por debajo del 1% de CPU.
+- **Liviana**: unos 60 MB de RAM y muy por debajo del 1% de CPU.
 - **En español e inglés**: sigue el idioma de Windows automáticamente, o elegilo en las opciones.
 
 ## Cómo se usa
 
+- **La primera vez** te muestra una bienvenida corta que enseña todo esto practicando. La volvés a ver con el **?** de *Opciones*.
 - **Abrirla:** pasá el mouse por encima. Se abre en la música (si algo suena) o en Inicio, y se cierra cuando sacás el mouse.
 - **Cambiar de panel:** arrastrá hacia la izquierda o la derecha sobre la isla (también funciona encima de los botones). Los puntitos de abajo muestran dónde estás (Música/Inicio → Calendario → Clima → PC → Notas → Accesos) y con un clic vas directo a ese panel. También aparecen flechitas ‹ › al acercar el mouse a un costado.
 - **Moverla:** arrastrá la isla a cualquier parte de la pantalla. Recuerda el lugar y crece hacia el lado libre (desde abajo crece hacia arriba, desde un costado hacia el centro). *Centrar*, en las opciones, la devuelve arriba.

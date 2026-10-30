@@ -29,12 +29,14 @@ A small floating island for Windows that shows what matters without getting in t
   - camera or microphone in use, and which app is using them;
   - laptop battery (charging, on battery, low);
   - Caps Lock on/off, internet down / back online, image copied (Win+Shift+S).
+- **Privacy indicators** — while an app is using the camera or the microphone, the island shows a green or orange dot next to the time (and Caps Lock, a small key on the left); the border flashes when they start. On the first panel, the *In use* line tells which app is using each one. They can be turned off in *Settings → Alerts*.
 - **Stays out of your games** — it hides while you play in full screen; with a full-screen video it only appears for notifications. Critical alerts (like a controller about to die) still show up.
-- **Light on resources** — around 55 MB of RAM and well under 1% CPU.
+- **Light on resources** — about 60 MB of RAM and well under 1% CPU.
 - **English and Spanish** — follows your Windows language automatically, or choose one in the options.
 
 ## How to use it
 
+- **The first time** it shows a short welcome tour that teaches all of this hands-on. You can see it again with the **?** in *Settings*.
 - **Open it:** hover over the island. It opens on the music (if something is playing) or on Home, and closes when you move the mouse away.
 - **Change panel:** drag left or right on the island (it also works over buttons). The dots at the bottom show where you are (Music/Home → Calendar → Weather → PC → Notes → Shortcuts) and clicking one jumps to that panel. Arrows ‹ › also appear when you move the mouse near a side.
 - **Move it:** drag the island anywhere on the screen. It remembers the spot and grows towards the free side (from the bottom it grows upwards, from a side it grows towards the center). *Center* in the settings brings it back to the top.
@@ -55,7 +57,7 @@ A small floating island for Windows that shows what matters without getting in t
 
 Download the installer from the [website](https://facughub.github.io/DeskIsleBar/) or from [Releases](../../releases) (`DeskIsleBar-Setup-<version>.exe`) and run it. It installs for your user only (no administrator permissions), adds DeskIsleBar to the Start menu and, if you want, starts it with Windows. You can change that later in the island's options.
 
-To update you don't need to download anything: when there's a new version, the island lets you know and updates with one click, keeping your settings (you can also check with the button in *Options*).
+To update you don't need to download anything: when there's a new version, the island lets you know and updates with one click, keeping your settings (you can also check with the button in *Settings*).
 
 ## FAQ
 
@@ -63,7 +65,7 @@ To update you don't need to download anything: when there's a new version, the i
 No. There is no telemetry, no analytics, no account and no server of our own. DeskIsleBar only connects to the internet for three things:
 - **Weather:** it sends the name of the city you type (and then its coordinates) to [Open-Meteo](https://open-meteo.com/), a free weather service, without any personal identifier.
 - **Calendar:** it downloads the iCal links *you* add, directly from Google or Outlook.
-- **Updates:** at startup, once a day and when you check from *Options*, it asks GitHub which version is the latest (without sending any of your data).
+- **Updates:** at startup, once a day and when you check from *Settings*, it asks GitHub which version is the latest (without sending any of your data).
 
 Nothing else leaves your PC. More detail in the [privacy policy](https://facughub.github.io/DeskIsleBar/privacidad.html).
 
