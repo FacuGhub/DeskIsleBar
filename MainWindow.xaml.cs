@@ -909,6 +909,36 @@ public partial class MainWindow : Window
         if (soltando && _musica is not null) _ = _musica.SaltarAsync(fraccion);
     }
 
+    // ---------- Mover la isla abierta desde el borde de arriba ----------
+
+    private const double FranjaMover = 12;   // alto de la "agarradera" en el borde superior de un panel abierto
+
+    /// <summary>El mouse esta en la franja de arriba de un panel abierto (no en un aviso, que se cierra al tocarlo).</summary>
+    private bool EnFranjaMover(Point enPildora) =>
+        EnPanel && _modo != Modo.Volumen && enPildora.Y >= 0 && enPildora.Y < FranjaMover &&
+        enPildora.X >= 0 && enPildora.X <= Pildora.ActualWidth;
+
+    private static bool SobreControl(DependencyObject? origen)
+    {
+        for (var d = origen; d is not null; d = d is Visual ? VisualTreeHelper.GetParent(d) : LogicalTreeHelper.GetParent(d))
+            if (d is ButtonBase or TextBox) return true;
+        return false;
+    }
+
+    // Preview: llega antes que los gestos del panel (cambiar de panel) y que los botones
+    private void Zona_PreviewMouseLeftButtonDown(object sender, MouseButtonEventArgs e)
+    {
+        if (!EnFranjaMover(e.GetPosition(Pildora)) || SobreControl(e.OriginalSource as DependencyObject)) return;
+        e.Handled = true;
+        double antesX = Left, antesY = Top;
+        _salida.Stop();
+        DragMove();   // vuelve al soltar
+        bool movio = Math.Abs(Left - antesX) + Math.Abs(Top - antesY) > 30;
+        Reorientar();
+        if (movio) CompletarPasoBienvenida(PasoBienvenida.Mover);   // en la bienvenida, tambien cuenta
+        if (!Zona.IsMouseOver && EnPanel && _modo != Modo.Bienvenida) _salida.Start();
+    }
+
     // Arrastrar solo en reposo: expandida, el clic es para los botones o para cerrar el aviso
     private void Zona_MouseLeftButtonDown(object sender, MouseButtonEventArgs e)
     {
@@ -1414,6 +1444,11 @@ public partial class MainWindow : Window
     /// <summary>Las flechas aparecen al acercar el mouse a un costado, solo en los paneles de la ronda.</summary>
     private void Zona_MouseMove(object sender, MouseEventArgs e)
     {
+        // En la franja de arriba de un panel abierto, el cursor avisa que desde ahi se mueve
+        bool franja = _inicioGesto is null && EnFranjaMover(e.GetPosition(Pildora)) && !SobreControl(e.OriginalSource as DependencyObject);
+        if (franja && Pildora.Cursor != Cursors.SizeAll) Pildora.Cursor = Cursors.SizeAll;
+        else if (!franja && Pildora.Cursor == Cursors.SizeAll) Pildora.Cursor = null;
+
         bool enRonda = _inicioGesto is null && _pistaArrastrada is null && Paginas is { Length: > 1 } paginas && Array.IndexOf(paginas, _modo) >= 0;
         double x = e.GetPosition(Pildora).X;
         MostrarFlecha(FlechaIzquierda, enRonda && x < ZonaFlecha);

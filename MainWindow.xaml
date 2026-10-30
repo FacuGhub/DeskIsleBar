@@ -328,7 +328,7 @@
     <Grid>
         <Grid x:Name="Zona" Background="#01000000" HorizontalAlignment="Center" VerticalAlignment="Top"
               MouseEnter="Zona_MouseEnter" MouseLeave="Zona_MouseLeave" MouseMove="Zona_MouseMove"
-              MouseLeftButtonDown="Zona_MouseLeftButtonDown" MouseWheel="Zona_MouseWheel">
+              MouseLeftButtonDown="Zona_MouseLeftButtonDown" PreviewMouseLeftButtonDown="Zona_PreviewMouseLeftButtonDown" MouseWheel="Zona_MouseWheel">
             <Border x:Name="Pildora" Background="#FF000000" Margin="14,4,14,8"
                     Width="96" Height="10" CornerRadius="5"
                     MouseLeftButtonUp="Pildora_Click">
