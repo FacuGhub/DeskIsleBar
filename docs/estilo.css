@@ -126,6 +126,20 @@ code, kbd {
 }
 .pie a { color: var(--suave); }
 
+/* Cartel de contacto (se abre desde "Contacto" en el pie) */
+.cartel-contacto { flex-basis: 100%; }
+.cartel-caja {
+  max-width: 460px; margin: 8px auto 0; padding: 18px 20px;
+  background: var(--superficie); border: 1px solid var(--borde); border-radius: var(--radio);
+  text-align: center;
+}
+.cartel-contacto p { margin: 0; }
+.cartel-titulo { color: var(--suave); }
+.cartel-mail { color: var(--texto); font-size: 18px; font-weight: 600; margin: 4px 0 14px !important; user-select: all; overflow-wrap: anywhere; }
+.cartel-acciones { display: flex; flex-wrap: wrap; justify-content: center; gap: 8px; }
+.cartel-acciones .boton { font: inherit; font-size: 14px; font-weight: 600; padding: 8px 16px; background: var(--fondo); cursor: pointer; }
+.pie .cartel-acciones a.boton { color: var(--texto); }
+
 /* Pagina de privacidad */
 .texto { max-width: 760px; margin: 0 auto; padding: 48px 0 64px; }
 .texto h1 { font-size: clamp(30px, 5vw, 40px); text-align: left; }
