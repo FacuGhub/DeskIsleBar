@@ -148,6 +148,23 @@
          <span class="en">If you buy me a coffee, the payment happens on Cafecito's site (with Mercado Pago or bank transfer): DeskIsleBar and this website never see that data.</span></p>
     </details>
     <details>
+      <summary><span class="es">No me llegan las notificaciones a la isla</span><span class="en">Notifications don't reach the island</span></summary>
+      <p><span class="es">La isla muestra lo que le llega a Windows: si Windows no muestra su propio cartelito, la isla tampoco. Revisá en orden:</span>
+         <span class="en">The island shows what reaches Windows: if Windows doesn't show its own banner, the island won't either. Check in order:</span></p>
+      <ol class="es">
+        <li><strong>Configuración → Sistema → Notificaciones</strong>: Notificaciones prendido, la app (Chrome, WhatsApp, Discord…) prendida y No molestar apagado.</li>
+        <li>Si esas opciones están grises (Windows "debloateado" o administrado), en PowerShell como administrador: <code>reg delete "HKCU\Software\Policies\Microsoft\Windows\CurrentVersion\PushNotifications" /v NoToastApplicationNotification /f</code></li>
+        <li><kbd>Win</kbd> + <kbd>R</kbd> → <code>services.msc</code>: los dos servicios de <em>notificaciones push de Windows</em> en Automático e iniciados.</li>
+        <li>Reiniciá la PC y probá con un mensaje.</li>
+      </ol>
+      <ol class="en">
+        <li><strong>Settings → System → Notifications</strong>: Notifications on, the app (Chrome, WhatsApp, Discord…) on and Do not disturb off.</li>
+        <li>If those options are greyed out ("debloated" or managed Windows), in PowerShell as administrator: <code>reg delete "HKCU\Software\Policies\Microsoft\Windows\CurrentVersion\PushNotifications" /v NoToastApplicationNotification /f</code></li>
+        <li><kbd>Win</kbd> + <kbd>R</kbd> → <code>services.msc</code>: both <em>Windows Push Notifications</em> services set to Automatic and running.</li>
+        <li>Restart the PC and test with a message.</li>
+      </ol>
+    </details>
+    <details>
       <summary><span class="es">¿Por qué Windows me avisa al abrir el instalador?</span><span class="en">Why does Windows warn me when I open the installer?</span></summary>
       <p><span class="es">El instalador todavía no tiene firma digital, así que SmartScreen no lo reconoce. Elegí <em>Más información → Ejecutar de todas formas</em>. El código está publicado en GitHub para que cualquiera lo revise.</span>
          <span class="en">The installer isn't code-signed yet, so SmartScreen doesn't recognize it. Choose <em>More info → Run anyway</em>. The code is on GitHub for anyone to review.</span></p>

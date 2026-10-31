@@ -74,6 +74,15 @@ Nada más sale de tu PC. Más detalle en la [política de privacidad](https://fa
 **¿Lee mis notificaciones?**
 Sí, para mostrarlas en la isla: localmente y en solo lectura. Nunca salen de tu PC y su contenido no se escribe en ningún registro. Lo podés apagar en las opciones cuando quieras.
 
+**No me llegan las notificaciones a la isla**
+La isla muestra lo que le llega a Windows: si Windows no muestra su propio cartelito, la isla tampoco. Revisá en orden:
+1. *Configuración → Sistema → Notificaciones*: **Notificaciones** prendido, la app (Google Chrome, WhatsApp, Discord…) prendida en la lista y **No molestar** apagado (o *Respetar No molestar* apagado en las opciones de la isla).
+2. Si esas opciones están grises (pasa con Windows "debloateados" o administrados), una directiva las apagó. En PowerShell como administrador: `reg delete "HKCU\Software\Policies\Microsoft\Windows\CurrentVersion\PushNotifications" /v NoToastApplicationNotification /f`
+3. **Win + R** → `services.msc`: el *Servicio del sistema de notificaciones push de Windows* y el *Servicio de usuario de notificaciones push de Windows* tienen que estar en **Automático** e iniciados.
+4. Reiniciá la PC y probá con un mensaje: si aparece el cartelito de Windows, aparece en la isla.
+
+Si usaste un script de "debloat", fijate si tiene una opción para volver a activar las notificaciones. Si sigue sin andar, mandanos el informe de diagnóstico (ver abajo).
+
 **¿Qué guarda y dónde?**
 Tu configuración, las notas y la posición de la isla quedan en `%LOCALAPPDATA%\DeskIsleBar`. Los links de calendario funcionan como contraseñas, así que se guardan cifrados con DPAPI de Windows: solo tu usuario de Windows los puede leer. Un pequeño registro técnico (`deskislebar.log`, en esa misma carpeta) anota eventos y errores, como qué app mandó una notificación. Nunca anota el contenido de las notificaciones ni de los mensajes que mandan tus scripts con `--aviso`, ni tus links de calendario.
 

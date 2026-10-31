@@ -72,6 +72,15 @@ Nothing else leaves your PC. More detail in the [privacy policy](https://facughu
 **Does it read my notifications?**
 Yes, to show them in the island — locally and read-only. They never leave your PC and their content is not written to any log. You can turn it off in the options at any time.
 
+**Notifications don't reach the island**
+The island shows what reaches Windows: if Windows doesn't show its own banner, the island won't either. Check in order:
+1. *Settings → System → Notifications*: **Notifications** on, the app (Google Chrome, WhatsApp, Discord…) on in the list and **Do not disturb** off (or *Respect Do not disturb* off in the island's settings).
+2. If those options are greyed out (common on "debloated" or managed Windows), a policy turned them off. In PowerShell as administrator: `reg delete "HKCU\Software\Policies\Microsoft\Windows\CurrentVersion\PushNotifications" /v NoToastApplicationNotification /f`
+3. **Win + R** → `services.msc`: *Windows Push Notifications System Service* and *Windows Push Notifications User Service* must be **Automatic** and running.
+4. Restart the PC and test with a message: if the Windows banner shows up, it shows up on the island.
+
+If you used a "debloat" script, check whether it can turn notifications back on. If it still doesn't work, send us the diagnostics report (see below).
+
 **What does it store, and where?**
 Your settings, notes and the island's position live in `%LOCALAPPDATA%\DeskIsleBar`. Calendar links work like passwords, so they are encrypted with Windows DPAPI: only your Windows user can read them. A small technical log (`deskislebar.log`, in that same folder) records events and errors, such as which app sent a notification. It never records the content of notifications, of the messages your scripts send with `--aviso`, or your calendar links.
 
