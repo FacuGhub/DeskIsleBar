@@ -212,7 +212,8 @@ public partial class MainWindow : Window
     /// <summary>Donde la dejo el usuario (con su anclaje); si nunca la movio, arriba al centro del principal.</summary>
     private void Ubicar()
     {
-        if (Posicion.Leer() is { } lugar)
+        // En demo (capturas), siempre arriba al centro: no donde la dejo el usuario
+        if (!Demo.Activo && Posicion.Leer() is { } lugar)
         {
             Anclar(lugar.Horizontal, lugar.Vertical);
             Left = lugar.Left;
@@ -272,7 +273,7 @@ public partial class MainWindow : Window
         };
         Top = vertical == VerticalAlignment.Bottom ? y + alto + Pildora.Margin.Bottom - Height : y - Pildora.Margin.Top;
         MeterEnPantalla();
-        Posicion.Guardar(new Posicion.Lugar(Left, Top, horizontal, vertical));
+        if (!Demo.Activo) Posicion.Guardar(new Posicion.Lugar(Left, Top, horizontal, vertical));   // en demo no se guarda nada
     }
 
     /// <summary>La ventana entera dentro del area de trabajo: asi el panel mas grande nunca se sale de la pantalla.</summary>
@@ -1924,6 +1925,12 @@ public partial class MainWindow : Window
         if (!_limpiando) ReiniciarLimpieza();
         ActualizarHora();
         if (_modo == Modo.Opciones) ResumirCalendarios();
+        if (Demo.Activo)
+        {
+            // Los datos de ejemplo tambien cambian de idioma (ej. --idioma para las capturas)
+            CampoNotas.Text = Demo.Nota;
+            _calendario?.MostrarDemo(Demo.Eventos());
+        }
         Log.Escribir($"idioma: {Idioma.Actual}");
     }
 

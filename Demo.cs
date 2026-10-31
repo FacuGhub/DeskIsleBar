@@ -55,7 +55,12 @@ static class Demo
         return imagen;
     }
 
-    public const string Nota = "TODO:\n☕ coffee  ·  💧 drink water  ·  🌱 touch grass\nStop opening the island just to look at it";
+    // Los datos de ejemplo siguen el idioma de la isla (las capturas de la Store van en español y en ingles)
+    private static string T(string es, string en) => Idioma.Actual == "es" ? es : en;
+
+    // Sin emojis: WPF los dibuja en blanco y negro
+    public static string Nota => T("Pendientes:\nCafé  ·  tomar agua  ·  salir a caminar\nDejar de abrir la isla solo para mirarla",
+                                   "TODO:\nCoffee  ·  drink water  ·  go for a walk\nStop opening the island just to look at it");
 
     /// <summary>Eventos relativos a hoy, para que siempre haya proximos y puntitos en el mes.</summary>
     public static IEnumerable<Evento> Eventos()
@@ -68,16 +73,16 @@ static class Demo
         // Uno que empieza en unos minutos: siempre hay un proximo hoy y dispara el recordatorio (sirve para probarlo)
         var pronto = DateTime.Now.AddMinutes(8);
         yield return new Evento(new DateTime(pronto.Year, pronto.Month, pronto.Day, pronto.Hour, pronto.Minute, 0), TodoElDia: false,
-                                "Call with Ana", Paleta(1), Servicio.Google);
-        yield return E(0, 18, 30, "Gym", 2);
-        yield return E(1, 10, 0, "Team meeting", 1, Servicio.Outlook);
+                                T("Llamada con Ana", "Call with Ana"), Paleta(1), Servicio.Google);
+        yield return E(0, 18, 30, T("Gimnasio", "Gym"), 2);
+        yield return E(1, 10, 0, T("Reunión de equipo", "Team meeting"), 1, Servicio.Outlook);
         // Sin emojis: WPF los dibuja en blanco y negro y en la lista de eventos quedan raros
-        yield return E(2, 21, 0, "Pizza night", 0);
-        yield return new Evento(hoy.AddDays(4), TodoElDia: true, "Mom's birthday", Paleta(3), Servicio.Google);
-        yield return E(6, 9, 15, "Dentist", 4);
-        yield return E(9, 20, 0, "Football with friends", 2);
-        yield return E(13, 11, 0, "Project demo", 1, Servicio.Outlook);
-        yield return E(17, 19, 30, "Concert", 5);
-        yield return E(24, 8, 0, "Flight to Lisbon", 0);
+        yield return E(2, 21, 0, T("Noche de pizza", "Pizza night"), 0);
+        yield return new Evento(hoy.AddDays(4), TodoElDia: true, T("Cumpleaños de mamá", "Mom's birthday"), Paleta(3), Servicio.Google);
+        yield return E(6, 9, 15, T("Dentista", "Dentist"), 4);
+        yield return E(9, 20, 0, T("Fútbol con amigos", "Football with friends"), 2);
+        yield return E(13, 11, 0, T("Demo del proyecto", "Project demo"), 1, Servicio.Outlook);
+        yield return E(17, 19, 30, T("Recital", "Concert"), 5);
+        yield return E(24, 8, 0, T("Vuelo a Lisboa", "Flight to Lisbon"), 0);
     }
 }
