@@ -64,7 +64,7 @@ Para actualizar no hace falta bajar nada: cuando hay una versión nueva, la isla
 ## Preguntas frecuentes
 
 **¿DeskIsleBar recolecta mis datos?**
-No. No tiene telemetría, ni estadísticas de uso, ni cuentas, ni un servidor propio. DeskIsleBar solo se conecta a internet para tres cosas:
+No. No tiene telemetría, ni estadísticas de uso, ni cuentas, ni un servidor propio, y no te pide datos personales ni de pago (nombre, mail, documento, tarjetas): no tiene pagos ni compras dentro de la app. Tu configuración (ciudad, notas, calendarios cifrados) queda solo en tu PC. DeskIsleBar solo se conecta a internet para tres cosas:
 - **Clima:** manda el nombre de la ciudad que escribiste (y después sus coordenadas) a [Open-Meteo](https://open-meteo.com/), un servicio de clima gratuito, sin ningún dato que te identifique.
 - **Calendario:** descarga los links iCal que agregás *vos*, directamente de Google o de Outlook.
 - **Actualizaciones:** al iniciar, una vez por día y cuando la buscás desde *Opciones*, le pregunta a GitHub cuál es la última versión publicada (sin mandar datos tuyos).
