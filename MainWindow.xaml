@@ -938,25 +938,25 @@
 
                             <!-- Despues las herramientas -->
                             <UniformGrid x:Name="HerramientasSoporte" Columns="2" Visibility="Collapsed">
-                                <Button Style="{StaticResource BotonAccion}" Margin="0,0,6,8" HorizontalAlignment="Stretch" Click="InformeSoporte_Click">
+                                <Button Style="{StaticResource BotonAccion}" Margin="0,0,6,8" HorizontalAlignment="Stretch" Height="30" Click="InformeSoporte_Click">
                                     <StackPanel Orientation="Horizontal">
                                         <TextBlock FontFamily="Segoe Fluent Icons, Segoe MDL2 Assets" Text="&#xE9D9;" FontSize="12" VerticalAlignment="Center"/>
                                         <TextBlock Text="{DynamicResource Sop.Informe}" Margin="8,0,0,0"/>
                                     </StackPanel>
                                 </Button>
-                                <Button Style="{StaticResource BotonAccion}" Margin="6,0,0,8" HorizontalAlignment="Stretch" Click="CarpetaSoporte_Click">
+                                <Button Style="{StaticResource BotonAccion}" Margin="6,0,0,8" HorizontalAlignment="Stretch" Height="30" Click="CarpetaSoporte_Click">
                                     <StackPanel Orientation="Horizontal">
                                         <TextBlock FontFamily="Segoe Fluent Icons, Segoe MDL2 Assets" Text="&#xE838;" FontSize="12" VerticalAlignment="Center"/>
                                         <TextBlock Text="{DynamicResource Sop.Carpeta}" Margin="8,0,0,0"/>
                                     </StackPanel>
                                 </Button>
-                                <Button Style="{StaticResource BotonAccion}" Margin="0,0,6,0" HorizontalAlignment="Stretch" Click="CopiarVersionSoporte_Click">
+                                <Button Style="{StaticResource BotonAccion}" Margin="0,0,6,0" HorizontalAlignment="Stretch" Height="30" Click="CopiarVersionSoporte_Click">
                                     <StackPanel Orientation="Horizontal">
                                         <TextBlock FontFamily="Segoe Fluent Icons, Segoe MDL2 Assets" Text="&#xE8C8;" FontSize="12" VerticalAlignment="Center"/>
                                         <TextBlock Text="{DynamicResource Sop.Copiar}" Margin="8,0,0,0"/>
                                     </StackPanel>
                                 </Button>
-                                <Button Style="{StaticResource BotonAccion}" Margin="6,0,0,0" HorizontalAlignment="Stretch" Click="ReportarSoporte_Click">
+                                <Button Style="{StaticResource BotonAccion}" Margin="6,0,0,0" HorizontalAlignment="Stretch" Height="30" Click="ReportarSoporte_Click">
                                     <StackPanel Orientation="Horizontal">
                                         <TextBlock FontFamily="Segoe Fluent Icons, Segoe MDL2 Assets" Text="&#xEBE8;" FontSize="12" VerticalAlignment="Center"/>
                                         <TextBlock Text="{DynamicResource Sop.Reportar}" Margin="8,0,0,0"/>

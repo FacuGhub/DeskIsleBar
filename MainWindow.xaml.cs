@@ -434,7 +434,15 @@ public partial class MainWindow : Window
 
     // ---------- Avisos ----------
 
-    public void MostrarAviso(Aviso aviso)
+    /// <summary>Avisos de los modulos (notificaciones, baterias...): con un panel abierto esperan en la cola.</summary>
+    public void MostrarAviso(Aviso aviso) => MostrarAviso(aviso, aPedido: false);
+
+    /// <param name="aPedido">
+    /// true = la respuesta a algo que el usuario acaba de tocar ("copiado", "ya tenes la ultima version"): se muestra
+    /// ya aunque haya un panel abierto. false = llego solo: con un panel abierto espera en la cola (un destello azul
+    /// avisa que llego algo) y sale al cerrar la isla, asi no pisa lo que el usuario estaba mirando o configurando.
+    /// </param>
+    private void MostrarAviso(Aviso aviso, bool aPedido)
     {
         if (aviso.Tipo is { } tipo && _config.AvisosApagados.Contains(tipo)) return;   // apagado en Opciones → Avisos
 
@@ -453,9 +461,10 @@ public partial class MainWindow : Window
             Show();
             Nativo.ReafirmarTopmost(_hwnd);
         }
-        else if (_ocultaPorPantallaCompleta || _modo is Modo.Aviso or Modo.Bienvenida)
+        else if (_ocultaPorPantallaCompleta || _modo is Modo.Aviso or Modo.Bienvenida || (EnPanel && !aPedido))
         {
             if (_cola.Count < MaxCola) _cola.Enqueue(aviso);
+            if (EnPanel && IsVisible) Destellar("aviso");   // llego algo: se avisa sin interrumpir
             return;
         }
 
@@ -1076,6 +1085,7 @@ public partial class MainWindow : Window
         {
             "webcam" => Color.FromRgb(0x30, 0xD1, 0x58),
             "microphone" => Color.FromRgb(0xFF, 0x9F, 0x0A),
+            "aviso" => Color.FromRgb(0x0A, 0x84, 0xFF),
             _ => Color.FromArgb(0xE6, 0xFF, 0xFF, 0xFF),
         });
         var animacion = new DoubleAnimationUsingKeyFrames { Duration = TimeSpan.FromMilliseconds(1300) };
@@ -1603,7 +1613,7 @@ public partial class MainWindow : Window
         Colapsar();
         _cola.Clear();
         MostrarAviso(new Aviso("\uE7E8", Idioma.T("Av.Salir"), Idioma.T("Av.SalirDetalle"), Color.FromRgb(0x98, 0x98, 0x9D),
-                               Carga: null, Persistente: false, Segundos: 4));   // comun: sin el sonido de los importantes
+                               Carga: null, Persistente: false, Segundos: 4), aPedido: true);   // comun: sin el sonido de los importantes
         await Task.Delay(3200);
         Close();
     }
@@ -1649,7 +1659,7 @@ public partial class MainWindow : Window
                        $"Windows {Environment.OSVersion.Version} ({windows}) · {Idioma.Actual}";
         try { Clipboard.SetText(texto); }
         catch (System.Runtime.InteropServices.COMException) { return; }   // otra app tenia el portapapeles abierto
-        MostrarAviso(new Aviso("\uE8C8", Idioma.T("Sop.Copiado"), texto, Color.FromRgb(0x30, 0xD1, 0x58), Carga: null, Persistente: false, Segundos: 3));
+        MostrarAviso(new Aviso("\uE8C8", Idioma.T("Sop.Copiado"), texto, Color.FromRgb(0x30, 0xD1, 0x58), Carga: null, Persistente: false, Segundos: 3), aPedido: true);
     }
 
     private void ReportarSoporte_Click(object sender, RoutedEventArgs e)
@@ -1705,7 +1715,7 @@ public partial class MainWindow : Window
         {
             Log.Escribir($"actualizaciones: no se pudo consultar: {ex.GetType().Name}");
             if (aPedido)
-                MostrarAviso(new Aviso("\uE774", Idioma.T("Act.SinConexion"), Idioma.T("Act.SinConexionDetalle"), AzulAviso, Carga: null, Persistente: false, Segundos: 5));
+                MostrarAviso(new Aviso("\uE774", Idioma.T("Act.SinConexion"), Idioma.T("Act.SinConexionDetalle"), AzulAviso, Carga: null, Persistente: false, Segundos: 5), aPedido);
             return;
         }
 
@@ -1713,19 +1723,19 @@ public partial class MainWindow : Window
         {
             if (aPedido)
                 MostrarAviso(new Aviso("\uE73E", Idioma.T("Act.AlDia"), $"DeskIsleBar {Actualizaciones.Actual}", Color.FromRgb(0x30, 0xD1, 0x58),
-                                       Carga: null, Persistente: false, Segundos: 4));
+                                       Carga: null, Persistente: false, Segundos: 4), aPedido);
             return;
         }
         Log.Escribir($"actualizaciones: hay una version nueva ({nueva.Version})");
         MostrarAviso(new Aviso("\uE896", Idioma.T("Act.Nueva", nueva.Version), Idioma.T("Act.NuevaDetalle"), AzulAviso,
-                               Carga: null, Persistente: false, Segundos: 12, AlTocar: () => _ = InstalarActualizacionAsync(nueva)));
+                               Carga: null, Persistente: false, Segundos: 12, AlTocar: () => _ = InstalarActualizacionAsync(nueva)), aPedido);
     }
 
     private async Task InstalarActualizacionAsync(VersionNueva nueva)
     {
         if (_actualizando) return;
         _actualizando = true;
-        MostrarAviso(new Aviso("\uE896", Idioma.T("Act.Descargando"), $"DeskIsleBar {nueva.Version}", AzulAviso, Carga: null, Persistente: false, Segundos: 60));
+        MostrarAviso(new Aviso("\uE896", Idioma.T("Act.Descargando"), $"DeskIsleBar {nueva.Version}", AzulAviso, Carga: null, Persistente: false, Segundos: 60), aPedido: true);
         if (await Actualizaciones.InstalarAsync(nueva))
         {
             Application.Current.Shutdown();   // el instalador espera a que se cierre y la vuelve a abrir
@@ -1734,7 +1744,7 @@ public partial class MainWindow : Window
         _actualizando = false;
         if (_modo == Modo.Aviso) Colapsar();
         MostrarAviso(new Aviso("\uE7BA", Idioma.T("Act.Error"), Idioma.T("Act.ErrorDetalle"), Color.FromRgb(0xFF, 0x9F, 0x0A),
-                               Carga: null, Persistente: false, Segundos: 8));
+                               Carga: null, Persistente: false, Segundos: 8), aPedido: true);
     }
 
     /// <summary>Herramienta de desarrollo: "--panel calendario" abre ese panel al arrancar (para capturas).</summary>
