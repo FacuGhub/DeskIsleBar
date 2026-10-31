@@ -1,0 +1,51 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!-- Manifiesto del paquete MSIX para la Microsoft Store. La identidad sale de Partner Center
+     (DeskIsleBar for Windows → Identidad del producto) y no se cambia. La version la pone Store\armar-msix.ps1. -->
+<Package
+  xmlns="http://schemas.microsoft.com/appx/manifest/foundation/windows10"
+  xmlns:uap="http://schemas.microsoft.com/appx/manifest/uap/windows10"
+  xmlns:desktop="http://schemas.microsoft.com/appx/manifest/desktop/windows10"
+  xmlns:rescap="http://schemas.microsoft.com/appx/manifest/foundation/windows10/restrictedcapabilities"
+  IgnorableNamespaces="uap desktop rescap">
+
+  <Identity Name="FacuGhub.DeskIsleBarforWindows"
+            Publisher="CN=299D216C-B0B7-4810-B95A-C0D87FA5CEFC"
+            Version="{VERSION}"
+            ProcessorArchitecture="x64" />
+
+  <Properties>
+    <DisplayName>DeskIsleBar for Windows</DisplayName>
+    <PublisherDisplayName>FacuGhub</PublisherDisplayName>
+    <Logo>Assets\StoreLogo.png</Logo>
+  </Properties>
+
+  <Dependencies>
+    <TargetDeviceFamily Name="Windows.Desktop" MinVersion="10.0.19041.0" MaxVersionTested="10.0.26100.0" />
+  </Dependencies>
+
+  <Resources>
+    <Resource Language="en-US" />
+    <Resource Language="es-ES" />
+  </Resources>
+
+  <Applications>
+    <Application Id="App" Executable="DeskIsleBar.exe" EntryPoint="Windows.FullTrustApplication">
+      <uap:VisualElements DisplayName="DeskIsleBar"
+                          Description="A floating island for Windows: music, notifications, calendar, weather and your PC at a glance."
+                          BackgroundColor="transparent"
+                          Square150x150Logo="Assets\Square150x150Logo.png"
+                          Square44x44Logo="Assets\Square44x44Logo.png" />
+      <Extensions>
+        <!-- "Arrancar con Windows": empieza apagada; se prende desde Opciones (y el usuario la ve en Configuracion → Inicio) -->
+        <desktop:Extension Category="windows.startupTask" Executable="DeskIsleBar.exe" EntryPoint="Windows.FullTrustApplication">
+          <desktop:StartupTask TaskId="DeskIsleBarArranque" Enabled="false" DisplayName="DeskIsleBar" />
+        </desktop:Extension>
+      </Extensions>
+    </Application>
+  </Applications>
+
+  <Capabilities>
+    <!-- App de escritorio completa (WPF): la Store la acepta con esta capacidad y la revisa en la certificacion -->
+    <rescap:Capability Name="runFullTrust" />
+  </Capabilities>
+</Package>

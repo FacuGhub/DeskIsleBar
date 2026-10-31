@@ -117,7 +117,7 @@ public partial class MainWindow : Window
             _buscarActualizacion.Interval = TimeSpan.FromHours(24);   // la primera a los 20 s, despues una por dia
             await BuscarActualizacionAsync(aPedido: false);
         };
-        if (!Demo.Activo) _buscarActualizacion.Start();
+        if (!Demo.Activo && !Empaquetado.Activo) _buscarActualizacion.Start();   // la de la Store la actualiza la Store
 
         CampoNotas.Text = Demo.Activo ? Demo.Nota : Notas.Leer();
         CampoCiudad.Text = Demo.Activo ? Demo.Ciudad : _config.Ciudad;
@@ -1613,7 +1613,20 @@ public partial class MainWindow : Window
 
     private static readonly Color AzulAviso = Color.FromRgb(0x0A, 0x84, 0xFF);
 
-    private async void BuscarActualizaciones_Click(object sender, RoutedEventArgs e) => await BuscarActualizacionAsync(aPedido: true);
+    private async void BuscarActualizaciones_Click(object sender, RoutedEventArgs e)
+    {
+        if (Empaquetado.Activo)
+        {
+            // Instalada desde la Store: su ficha muestra si hay version nueva y la actualiza
+            try { System.Diagnostics.Process.Start(new System.Diagnostics.ProcessStartInfo(Empaquetado.FichaStore) { UseShellExecute = true }); }
+            catch (Exception ex) when (ex is System.ComponentModel.Win32Exception or InvalidOperationException)
+            {
+                Log.Escribir($"actualizaciones: no se pudo abrir la Store: {ex.GetType().Name}");
+            }
+            return;
+        }
+        await BuscarActualizacionAsync(aPedido: true);
+    }
 
     /// <summary>Si hay version nueva, un aviso que al tocarlo la instala. A pedido tambien avisa si ya esta al dia.</summary>
     private async Task BuscarActualizacionAsync(bool aPedido)
@@ -1726,7 +1739,9 @@ public partial class MainWindow : Window
         Expandir(destino, deslizarDesde: -40);   // entra desde la izquierda: se lee como "atras"
     }
 
-    private void Arranque_Click(object sender, RoutedEventArgs e) => Arranque.Fijar(InterruptorArranque.IsChecked == true);
+    // Muestra como quedo de verdad: empaquetada, Windows no deja prenderlo si el usuario lo apago desde Configuracion
+    private void Arranque_Click(object sender, RoutedEventArgs e) =>
+        InterruptorArranque.IsChecked = Arranque.Fijar(InterruptorArranque.IsChecked == true);
 
     private void Notificaciones_Click(object sender, RoutedEventArgs e)
     {
