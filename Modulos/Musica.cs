@@ -56,6 +56,19 @@ public class Musica
     private readonly DispatcherTimer _revisarPortada = new() { Interval = TimeSpan.FromSeconds(2) };
 
     public EstadoMusica? Estado { get; private set; }
+
+    // Modo demo: tema de ejemplo (no se lee la musica real); el progreso avanza solo y da la vuelta
+    private DateTime? _demoInicio;
+    private TimeSpan _demoDuracion;
+
+    /// <summary>Muestra un tema de ejemplo en lugar de la musica real (capturas y videos, ver <see cref="Demo"/>).</summary>
+    public void MostrarDemo(EstadoMusica estado, TimeSpan duracion, TimeSpan posicion)
+    {
+        _demoDuracion = duracion;
+        _demoInicio = DateTime.Now - posicion;
+        Estado = estado;
+        _ui.InvokeAsync(() => Cambio?.Invoke(estado));
+    }
     /// <summary>AppUserModelId de la app que se esta mostrando (ej. "com.squirrel.TIDAL.TIDAL").</summary>
     public string? App => _sesion?.SourceAppUserModelId;
     public event Action<EstadoMusica?>? Cambio;
@@ -273,6 +286,8 @@ public class Musica
     /// </summary>
     public (TimeSpan Posicion, TimeSpan Duracion)? Progreso()
     {
+        if (_demoInicio is { } inicio)
+            return (TimeSpan.FromTicks((DateTime.Now - inicio).Ticks % _demoDuracion.Ticks), _demoDuracion);
         if (_sesion is null) return null;
         try
         {

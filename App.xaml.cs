@@ -96,7 +96,8 @@ public partial class App : Application
 
         var musica = new Musica(Dispatcher);
         ventana.ConectarMusica(musica);
-        _ = musica.IniciarAsync();
+        if (Demo.Activo) musica.MostrarDemo(Demo.Musica(), TimeSpan.FromSeconds(214), TimeSpan.FromSeconds(83));
+        else _ = musica.IniciarAsync();
 
         _volumen = new Volumen(Dispatcher);
         ventana.ConectarVolumen(_volumen);
