@@ -53,11 +53,15 @@ A small floating island for Windows that shows what matters without getting in t
 
 ## Installation
 
-<!-- TODO: Microsoft Store link, once published -->
+**Recommended:** get it from the [Microsoft Store](https://apps.microsoft.com/detail/9P54HP5M8FZ7). It's free, has no SmartScreen warning and the Store keeps it updated.
 
-Download the installer from the [website](https://facughub.github.io/DeskIsleBar/) or from [Releases](../../releases) (`DeskIsleBar-Setup-<version>.exe`) and run it. It installs for your user only (no administrator permissions), adds DeskIsleBar to the Start menu and, if you want, starts it with Windows. You can change that later in the island's options.
+<a href="https://apps.microsoft.com/detail/9P54HP5M8FZ7"><img src="https://get.microsoft.com/images/en-us%20dark.svg" alt="Get it from Microsoft" width="200"></a>
 
-To update you don't need to download anything: when there's a new version, the island lets you know and updates with one click, keeping your settings (you can also check with the button in *Settings*).
+**Or with the installer:** download it from the [website](https://facughub.github.io/DeskIsleBar/) or from [Releases](../../releases) (`DeskIsleBar-Setup-<version>.exe`) and run it. It installs for your user only (no administrator permissions), adds DeskIsleBar to the Start menu and, if you want, starts it with Windows. You can change that later in the island's options.
+
+To update you don't need to download anything: when there's a new version, the island lets you know and updates with one click, keeping your settings (you can also check with the button in *Settings*). The Store version is updated by the Store.
+
+Install only one of the two: they're the same app, but each one keeps its own settings.
 
 ## FAQ
 

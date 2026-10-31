@@ -55,11 +55,15 @@ Una pequeña isla flotante para Windows que te muestra lo importante sin estorba
 
 ## Instalación
 
-<!-- TODO: link de la Microsoft Store, cuando esté publicada -->
+**Recomendado:** bajala desde la [Microsoft Store](https://apps.microsoft.com/detail/9P54HP5M8FZ7). Es gratis, no muestra el aviso de SmartScreen y la Store la mantiene actualizada.
 
-Descargá el instalador desde el [sitio](https://facughub.github.io/DeskIsleBar/) o desde [Releases](../../releases) (`DeskIsleBar-Setup-<versión>.exe`) y abrilo. Se instala solo para tu usuario (sin permisos de administrador), agrega DeskIsleBar al menú Inicio y, si querés, la hace arrancar con Windows. Eso lo podés cambiar después en las opciones de la isla.
+<a href="https://apps.microsoft.com/detail/9P54HP5M8FZ7"><img src="https://get.microsoft.com/images/es%20dark.svg" alt="Obtener de Microsoft" width="200"></a>
 
-Para actualizar no hace falta bajar nada: cuando hay una versión nueva, la isla te avisa y se actualiza con un clic, conservando tu configuración (también la podés buscar con el botón de *Opciones*).
+**O con el instalador:** descargalo desde el [sitio](https://facughub.github.io/DeskIsleBar/) o desde [Releases](../../releases) (`DeskIsleBar-Setup-<versión>.exe`) y abrilo. Se instala solo para tu usuario (sin permisos de administrador), agrega DeskIsleBar al menú Inicio y, si querés, la hace arrancar con Windows. Eso lo podés cambiar después en las opciones de la isla.
+
+Para actualizar no hace falta bajar nada: cuando hay una versión nueva, la isla te avisa y se actualiza con un clic, conservando tu configuración (también la podés buscar con el botón de *Opciones*). La versión de la Store la actualiza la Store.
+
+Instalá una sola de las dos: son la misma app, pero cada una guarda su propia configuración.
 
 ## Preguntas frecuentes
 
