@@ -561,6 +561,9 @@
                                     <Button Style="{StaticResource BotonIcono}" Click="BuscarActualizaciones_Click" ToolTip="{DynamicResource Act.Buscar}">
                                         <TextBlock FontFamily="Segoe Fluent Icons, Segoe MDL2 Assets" Text="&#xE896;" FontSize="11"/>
                                     </Button>
+                                    <Button Style="{StaticResource BotonIcono}" Click="Soporte_Click" ToolTip="{DynamicResource Sop.Titulo}">
+                                        <TextBlock FontFamily="Segoe Fluent Icons, Segoe MDL2 Assets" Text="&#xE90F;" FontSize="11"/>
+                                    </Button>
                                 </StackPanel>
                                 <StackPanel Orientation="Horizontal" HorizontalAlignment="Right">
                                     <Button Style="{StaticResource BotonTexto}" Click="Avisos_Click" Margin="0,0,6,0">
@@ -905,6 +908,61 @@
                             <Button x:Name="BotonAnterior" Style="{StaticResource BotonMusica}" Content="&#xE892;" Click="Anterior_Click"/>
                             <Button x:Name="BotonPlay" Style="{StaticResource BotonMusica}" Content="&#xE768;" FontSize="20" Width="42" Height="42" Click="Play_Click"/>
                             <Button x:Name="BotonSiguiente" Style="{StaticResource BotonMusica}" Content="&#xE893;" Click="Siguiente_Click"/>
+                        </StackPanel>
+                    </Grid>
+
+                    <!-- Soporte: herramientas para reportar un problema, detras de un aviso (no cambian nada de la isla) -->
+                    <Grid x:Name="ContenidoSoporte" Opacity="0" Margin="22,0" Visibility="Collapsed" Background="Transparent"
+                          PreviewMouseLeftButtonDown="Panel_PreviewMouseLeftButtonDown" PreviewMouseMove="Panel_PreviewMouseMove" PreviewMouseLeftButtonUp="Panel_PreviewMouseLeftButtonUp">
+                        <Grid.RenderTransform>
+                            <TranslateTransform/>
+                        </Grid.RenderTransform>
+                        <StackPanel VerticalAlignment="Center">
+                            <StackPanel Orientation="Horizontal" Margin="0,0,0,10">
+                                <Button Style="{StaticResource BotonIcono}" Click="Volver_Click" ToolTip="{DynamicResource Comun.Volver}" Margin="-6,0,4,0">
+                                    <TextBlock FontFamily="Segoe Fluent Icons, Segoe MDL2 Assets" Text="&#xE76B;" FontSize="11"/>
+                                </Button>
+                                <TextBlock Text="{DynamicResource Sop.Titulo}" Foreground="White" FontSize="14" FontWeight="SemiBold" VerticalAlignment="Center"/>
+                            </StackPanel>
+
+                            <!-- Primero el aviso -->
+                            <StackPanel x:Name="AvisoSoporte">
+                                <TextBlock Text="{DynamicResource Sop.Aviso}" Foreground="#D9FFFFFF" FontSize="12.5" TextWrapping="Wrap" LineHeight="18"/>
+                                <Button Style="{StaticResource BotonAccion}" HorizontalAlignment="Right" Margin="0,12,0,0" Click="MostrarHerramientasSoporte_Click">
+                                    <StackPanel Orientation="Horizontal">
+                                        <TextBlock Text="{DynamicResource Sop.Mostrar}"/>
+                                        <TextBlock FontFamily="Segoe Fluent Icons, Segoe MDL2 Assets" Text="&#xE76C;" FontSize="10" Margin="6,0,0,0" VerticalAlignment="Center"/>
+                                    </StackPanel>
+                                </Button>
+                            </StackPanel>
+
+                            <!-- Despues las herramientas -->
+                            <UniformGrid x:Name="HerramientasSoporte" Columns="2" Visibility="Collapsed">
+                                <Button Style="{StaticResource BotonAccion}" Margin="0,0,6,8" HorizontalAlignment="Stretch" Click="InformeSoporte_Click">
+                                    <StackPanel Orientation="Horizontal">
+                                        <TextBlock FontFamily="Segoe Fluent Icons, Segoe MDL2 Assets" Text="&#xE9D9;" FontSize="12" VerticalAlignment="Center"/>
+                                        <TextBlock Text="{DynamicResource Sop.Informe}" Margin="8,0,0,0"/>
+                                    </StackPanel>
+                                </Button>
+                                <Button Style="{StaticResource BotonAccion}" Margin="6,0,0,8" HorizontalAlignment="Stretch" Click="CarpetaSoporte_Click">
+                                    <StackPanel Orientation="Horizontal">
+                                        <TextBlock FontFamily="Segoe Fluent Icons, Segoe MDL2 Assets" Text="&#xE838;" FontSize="12" VerticalAlignment="Center"/>
+                                        <TextBlock Text="{DynamicResource Sop.Carpeta}" Margin="8,0,0,0"/>
+                                    </StackPanel>
+                                </Button>
+                                <Button Style="{StaticResource BotonAccion}" Margin="0,0,6,0" HorizontalAlignment="Stretch" Click="CopiarVersionSoporte_Click">
+                                    <StackPanel Orientation="Horizontal">
+                                        <TextBlock FontFamily="Segoe Fluent Icons, Segoe MDL2 Assets" Text="&#xE8C8;" FontSize="12" VerticalAlignment="Center"/>
+                                        <TextBlock Text="{DynamicResource Sop.Copiar}" Margin="8,0,0,0"/>
+                                    </StackPanel>
+                                </Button>
+                                <Button Style="{StaticResource BotonAccion}" Margin="6,0,0,0" HorizontalAlignment="Stretch" Click="ReportarSoporte_Click">
+                                    <StackPanel Orientation="Horizontal">
+                                        <TextBlock FontFamily="Segoe Fluent Icons, Segoe MDL2 Assets" Text="&#xEBE8;" FontSize="12" VerticalAlignment="Center"/>
+                                        <TextBlock Text="{DynamicResource Sop.Reportar}" Margin="8,0,0,0"/>
+                                    </StackPanel>
+                                </Button>
+                            </UniformGrid>
                         </StackPanel>
                     </Grid>
 

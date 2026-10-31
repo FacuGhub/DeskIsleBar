@@ -102,19 +102,17 @@ Like any other program: *Settings → Apps → Installed apps → DeskIsleBar �
 
 ### How to share the log
 
-1. Press **Win + R**, paste `%LOCALAPPDATA%\DeskIsleBar` and press **Enter**. The DeskIsleBar folder opens.
-2. Attach the **`deskislebar.log`** file to the issue or email. If there's also a **`deskislebar.log.old`** (the previous log), send it too.
+1. On the island, go to **Settings → 🛠 Support and diagnostics → Show tools → Open the log folder**. The folder opens with **`deskislebar.log`** already selected.
+2. Attach it to the issue or email. If there's also a **`deskislebar.log.old`** (the previous log), send it too.
 3. If you can, copy it right after the problem happens, so the last things the island did are in it.
+
+If the island won't open: press **Win + R**, paste `%LOCALAPPDATA%\DeskIsleBar` and press **Enter** (GitHub version).
 
 The log records technical events and errors, such as which app sent a notification and how it was opened. **It doesn't store the content of your notifications or your calendar links**, and it masks your Windows user name in paths. You can still open it in Notepad and check it before sending it.
 
 ### Diagnostics report (optional)
 
-It shows which Windows features the island could read on your PC (notifications, music, camera, batteries…) and doesn't send anything anywhere:
-
-1. Press **Win + R** and paste this (with the quotes):
-   `"%LOCALAPPDATA%\Programs\DeskIsleBar\DeskIsleBar.exe" --diagnostico`
-2. Press **Enter**: a text file with the report opens. Attach it along with the log.
+It shows which Windows features the island could read on your PC (notifications, music, camera, batteries…) and doesn't send anything anywhere. In **Settings → 🛠 Support and diagnostics → Show tools → Diagnostics report** it opens in Notepad: attach it along with the log. Right there, **Copy version info** gives you the app and Windows versions ready to paste into the report.
 - **Questions and ideas:** [Discussions](../../discussions).
 - **Private matters** (for example, a security problem): write to [facughub.apps@gmail.com](mailto:facughub.apps@gmail.com).
 - **Support for more devices:** battery readings for brands that only expose it through their own software (Corsair, Logitech, Razer, SteelSeries…) can be added as optional integrations. If you own one of those devices and want to help, open an issue or a pull request: the integration should only turn on when the brand's software is installed, and it needs someone with the hardware to test it.

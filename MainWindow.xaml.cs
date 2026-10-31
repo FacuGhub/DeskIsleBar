@@ -16,7 +16,7 @@ namespace DeskIsleBar;
 
 public partial class MainWindow : Window
 {
-    private enum Modo { Reposo, Aviso, Musica, Volumen, Herramientas, Opciones, Calendario, Clima, Pc, Notas, Tutorial, Calendarios, Inicio, Avisos, Bienvenida }
+    private enum Modo { Reposo, Aviso, Musica, Volumen, Herramientas, Opciones, Calendario, Clima, Pc, Notas, Tutorial, Calendarios, Inicio, Avisos, Bienvenida, Soporte }
 
     private const double DistanciaGesto = 60;   // px de arrastre horizontal para cambiar de panel
 
@@ -1200,6 +1200,7 @@ public partial class MainWindow : Window
         Modo.Tutorial => (ContenidoTutorial, 440, 250),
         Modo.Calendarios => (ContenidoCalendarios, 440, Math.Min(250, 116 + 28 * _config.Calendarios.Count)),
         Modo.Avisos => (ContenidoAvisos, 440, 90 + 32 * ((TiposAviso.Todos.Length + 1) / 2)),
+        Modo.Soporte => (ContenidoSoporte, 440, 150),
         Modo.Bienvenida => (ContenidoBienvenida, 440, 236),
         _ => (ContenidoVolumen, 300, 40),
     };
@@ -1207,7 +1208,7 @@ public partial class MainWindow : Window
     private FrameworkElement[] Contenidos =>
         [ContenidoReposo, ContenidoAviso, ContenidoMusica, ContenidoVolumen, ContenidoHerramientas, ContenidoOpciones,
          ContenidoCalendario, ContenidoClima, ContenidoPc, ContenidoNotas, ContenidoTutorial, ContenidoCalendarios, ContenidoInicio, ContenidoAvisos,
-         ContenidoBienvenida];
+         ContenidoBienvenida, ContenidoSoporte];
 
     /// <param name="deslizarDesde">Si no es 0, el contenido nuevo entra deslizandose desde ese desplazamiento.</param>
     private void Expandir(Modo modo, double deslizarDesde = 0)
@@ -1273,7 +1274,7 @@ public partial class MainWindow : Window
         if (modo is Modo.Aviso or Modo.Volumen or Modo.Bienvenida || !Paginas.Contains(modo)) OcultarFlechas();
 
         // Pantallas con flecha de volver: se recuerda desde que panel se llego (no al volver, para no hacer un ciclo)
-        if (modo is Modo.Opciones or Modo.Calendarios or Modo.Tutorial or Modo.Avisos && modo != _modo && EnPanel && !_volviendo)
+        if (modo is Modo.Opciones or Modo.Calendarios or Modo.Tutorial or Modo.Avisos or Modo.Soporte && modo != _modo && EnPanel && !_volviendo)
             _volverA[modo] = _modo;
         _volviendo = false;
 
@@ -1608,6 +1609,68 @@ public partial class MainWindow : Window
     }
 
     private bool _saliendo;
+
+    // ---------- Soporte (herramientas para reportar un problema) ----------
+
+    private void Soporte_Click(object sender, RoutedEventArgs e)
+    {
+        // Cada vez que se entra, primero el aviso
+        AvisoSoporte.Visibility = Visibility.Visible;
+        HerramientasSoporte.Visibility = Visibility.Collapsed;
+        Expandir(Modo.Soporte, deslizarDesde: 40);
+    }
+
+    private void MostrarHerramientasSoporte_Click(object sender, RoutedEventArgs e)
+    {
+        AvisoSoporte.Visibility = Visibility.Collapsed;
+        HerramientasSoporte.Visibility = Visibility.Visible;
+    }
+
+    private async void InformeSoporte_Click(object sender, RoutedEventArgs e)
+    {
+        Colapsar();
+        try { await Diagnostico.EjecutarAsync(); }   // lo guarda en la carpeta de datos y lo abre en el Bloc de notas
+        catch (Exception ex) { Log.Escribir($"soporte: no se pudo generar el informe: {ex.GetType().Name}: {ex.Message}"); }
+    }
+
+    /// <summary>Abre la carpeta de datos en el Explorador con el registro ya seleccionado (listo para adjuntar).</summary>
+    private void CarpetaSoporte_Click(object sender, RoutedEventArgs e)
+    {
+        Colapsar();
+        string registro = Rutas.Archivo("deskislebar.log");
+        Log.Escribir("soporte: carpeta del registro abierta");   // asi el archivo existe seguro
+        AbrirConShell("explorer.exe", $"/select,\"{registro}\"");
+    }
+
+    private void CopiarVersionSoporte_Click(object sender, RoutedEventArgs e)
+    {
+        string windows = Registry.GetValue(@"HKEY_LOCAL_MACHINE\SOFTWARE\Microsoft\Windows NT\CurrentVersion", "DisplayVersion", "?") as string ?? "?";
+        string texto = $"DeskIsleBar {Actualizaciones.Actual} ({(Empaquetado.Activo ? "Microsoft Store" : "GitHub")}) · " +
+                       $"Windows {Environment.OSVersion.Version} ({windows}) · {Idioma.Actual}";
+        try { Clipboard.SetText(texto); }
+        catch (System.Runtime.InteropServices.COMException) { return; }   // otra app tenia el portapapeles abierto
+        MostrarAviso(new Aviso("\uE8C8", Idioma.T("Sop.Copiado"), texto, Color.FromRgb(0x30, 0xD1, 0x58), Carga: null, Persistente: false, Segundos: 3));
+    }
+
+    private void ReportarSoporte_Click(object sender, RoutedEventArgs e)
+    {
+        Colapsar();
+        AbrirConShell("https://github.com/FacuGhub/DeskIsleBar/issues/new", null);
+    }
+
+    private static void AbrirConShell(string que, string? argumentos)
+    {
+        try
+        {
+            var inicio = new System.Diagnostics.ProcessStartInfo(que) { UseShellExecute = true };
+            if (argumentos is not null) inicio.Arguments = argumentos;
+            System.Diagnostics.Process.Start(inicio);
+        }
+        catch (Exception ex) when (ex is System.ComponentModel.Win32Exception or InvalidOperationException)
+        {
+            Log.Escribir($"soporte: no se pudo abrir: {ex.GetType().Name}");
+        }
+    }
 
     // ---------- Actualizaciones ----------
 

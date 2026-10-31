@@ -19,7 +19,7 @@ static class Diagnostico
     {
         var informe = new StringBuilder();
         var version = typeof(Diagnostico).Assembly.GetName().Version;
-        informe.AppendLine($"DeskIsleBar {version} — {L("diagnóstico", "diagnostics")} {DateTime.Now:yyyy-MM-dd HH:mm}");
+        informe.AppendLine($"DeskIsleBar {version} ({(Empaquetado.Activo ? "Microsoft Store" : "GitHub")}) — {L("diagnóstico", "diagnostics")} {DateTime.Now:yyyy-MM-dd HH:mm}");
         informe.AppendLine($"Windows {Environment.OSVersion.Version} ({Registry.GetValue(@"HKEY_LOCAL_MACHINE\SOFTWARE\Microsoft\Windows NT\CurrentVersion", "DisplayVersion", "?")})");
         informe.AppendLine();
 

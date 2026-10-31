@@ -237,4 +237,13 @@
     <!-- Al salir -->
     <sys:String x:Key="Av.Salir">Closing DeskIsleBar</sys:String>
     <sys:String x:Key="Av.SalirDetalle">Open it again from the Start menu</sys:String>
+    <!-- Soporte -->
+    <sys:String x:Key="Sop.Titulo">Support and diagnostics</sys:String>
+    <sys:String x:Key="Sop.Aviso">These tools are for when something isn't working: they create files you can send when reporting a problem. They don't change your settings.</sys:String>
+    <sys:String x:Key="Sop.Mostrar">Show tools</sys:String>
+    <sys:String x:Key="Sop.Informe">Diagnostics report</sys:String>
+    <sys:String x:Key="Sop.Carpeta">Open the log folder</sys:String>
+    <sys:String x:Key="Sop.Copiar">Copy version info</sys:String>
+    <sys:String x:Key="Sop.Reportar">Report a problem</sys:String>
+    <sys:String x:Key="Sop.Copiado">Version info copied</sys:String>
 </ResourceDictionary>

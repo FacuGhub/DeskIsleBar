@@ -237,4 +237,13 @@
     <!-- Al salir -->
     <sys:String x:Key="Av.Salir">Cerrando DeskIsleBar</sys:String>
     <sys:String x:Key="Av.SalirDetalle">Volvé a abrirla desde el menú Inicio</sys:String>
+    <!-- Soporte -->
+    <sys:String x:Key="Sop.Titulo">Soporte y diagnóstico</sys:String>
+    <sys:String x:Key="Sop.Aviso">Estas herramientas son para cuando algo no anda: generan archivos que podés mandar al reportar un problema. No cambian tu configuración.</sys:String>
+    <sys:String x:Key="Sop.Mostrar">Mostrar herramientas</sys:String>
+    <sys:String x:Key="Sop.Informe">Informe de diagnóstico</sys:String>
+    <sys:String x:Key="Sop.Carpeta">Abrir carpeta del registro</sys:String>
+    <sys:String x:Key="Sop.Copiar">Copiar datos de la versión</sys:String>
+    <sys:String x:Key="Sop.Reportar">Reportar un problema</sys:String>
+    <sys:String x:Key="Sop.Copiado">Datos de la versión copiados</sys:String>
 </ResourceDictionary>
