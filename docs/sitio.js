@@ -44,6 +44,8 @@
         '<a class="boton" href="mailto:' + mail + '?subject=' + asunto + '"><span class="es">App de correo</span><span class="en">Mail app</span></a>' +
       '</div></div>';
     link.parentNode.insertBefore(cartel, link.nextSibling);
+    // Queda abajo del pie: se lleva a la vista para no tener que scrollear
+    link.parentNode.scrollIntoView({ behavior: 'smooth', block: 'end' });
     var copiar = cartel.querySelector('[data-copiar]');
     copiar.addEventListener('click', function () {
       var listo = function () {
